@@ -30,8 +30,8 @@ const projects = [
   {
     id: 1,
     title: "PaddyScan",
-    description: "A mobile application for Offline image based detection of rice disease detection",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+    description: "A mobile application for offline image-based detection of rice disease detection",
+    image: "./images/paddyscan.png",
     tags: [
       { name: "Flutter", icon: SiFlutter, color: "#02569B" },
       { name: "Dart", icon: SiDart, color: "#0175C2" },
@@ -43,7 +43,7 @@ const projects = [
   {
     id: 2,
     title: "TaskHive",
-    description: "Project management web app with real-time task tracking. Lightweight task manager that helps users work from idea to done without unnecessary complexity. Focus on what matters—priorities, progress, and quick reviews.",
+    description: "A Lightweight task manager that helps users work from idea to done without unnecessary complexity. Focus on what matters—priorities, progress, and quick reviews.",
     image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80",
     tags: [
       { name: "Next.js", icon: SiNextdotjs, color: "#000000" },
@@ -56,20 +56,8 @@ const projects = [
     github: "https://github.com/diegoforrest/taskhive-management-tool",
     live: "https://taskhive-webapp.vercel.app",
   },
-    {
-    id: 3,
-    title: "Marci Metzer Homes",
-    description: "Real estate listing website mockup with property search, detailed listings, and interactive map integration for enhanced user experience.",
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80",
-    tags: [
-      { name: "HTML5", icon: SiHtml5, color: "#E34F26" },
-      { name: "CSS3", icon: SiCss3, color: "#1572B6" },
-    ],
-    github: "https://github.com/diegoforrest/marci-metzger-mockup",
-    live: "https://home-project-diego-cruz.vercel.app",
-  },
   {
-    id: 4,
+    id: 3,
     title: "Personal Portfolio",
     description: "Personal portfolio website showcasing projects, skills, and experience with interactive UI and responsive design.",
     image: "https://images.unsplash.com/photo-1555421689-d68471e189f2?w=800&q=80",
