@@ -1,78 +1,88 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { GitHub, LaunchOutlined, CheckCircle, EmojiEvents } from '@mui/icons-material';
+import { GitHub, LaunchOutlined } from '@mui/icons-material';
 import { useRef } from 'react';
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 },
-};
-
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
+import { 
+  SiReact, 
+  SiNodedotjs, 
+  SiFirebase, 
+  SiOpenai,
+  SiNextdotjs,
+  SiTypescript,
+  SiPostgresql,
+  SiChartdotjs,
+  SiMui,
+  SiMongodb,
+  SiTailwindcss,
+  SiJavascript,
+  SiHtml5,
+  SiCss3,
+  SiPython,
+  SiFlask,
+  SiTensorflow,
+  SiFramer,
+  SiFlutter,
+  SiDart,
+  SiNestjs,
+  SiMysql
+} from 'react-icons/si';
 
 const projects = [
   {
     id: 1,
-    title: "Project Name 1",
-    description: "A modern web application built with React and Node.js.",
-    results: [
-      { title: "Built a GenAI-powered inventory management system" },
-      { title: "Integrated AI assistant for personalized insights" },
-      { title: "Reduced processing time by 60%" }
-    ],
+    title: "PaddyScan",
+    description: "A mobile application for Offline image based detection of rice disease detection",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
-    tags: ["React", "Node.js", "MongoDB", "TailwindCSS"],
-    github: "https://github.com/yourusername/project1",
-    live: "https://project1.com",
+    tags: [
+      { name: "Flutter", icon: SiFlutter, color: "#02569B" },
+      { name: "Dart", icon: SiDart, color: "#0175C2" },
+      { name: "Python", icon: SiPython, color: "#3776AB" },
+      { name: "TensorFlow", icon: SiTensorflow, color: "#FF6F00" }
+    ],
+    github: "https://github.com/diegoforrest/PaddyScan",
   },
   {
     id: 2,
-    title: "Project Name 2",
-    description: "E-commerce platform with advanced filtering and payment integration.",
-    results: [
-      { title: "Developed a full-stack e-commerce solution" },
-      { title: "Implemented secure payment processing" },
-      { title: "Achieved 10k+ monthly active users" }
-    ],
+    title: "TaskHive",
+    description: "Project management web app with real-time task tracking. Lightweight task manager that helps users work from idea to done without unnecessary complexity. Focus on what matters—priorities, progress, and quick reviews.",
     image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80",
-    tags: ["Next.js", "TypeScript", "Stripe", "PostgreSQL"],
-    github: "https://github.com/yourusername/project2",
-    live: "https://project2.com",
-  },
-  {
-    id: 3,
-    title: "Project Name 3",
-    description: "Social media dashboard with analytics and real-time notifications.",
-    results: [
-      { title: "Built real-time analytics dashboard" },
-      { title: "Integrated data visualization with Chart.js" },
-      { title: "Supported 5k+ concurrent users" }
+    tags: [
+      { name: "Next.js", icon: SiNextdotjs, color: "#000000" },
+      { name: "Nest.js", icon: SiNestjs, color: "#E0234E" },
+      { name: "Node.js", icon: SiNodedotjs, color: "#339933" },
+      { name: "Tailwind CSS", icon: SiTailwindcss, color: "#06B6D4" },
+      { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
+      { name: "MySQL", icon: SiMysql, color: "#4479A1" }
     ],
-    image: "https://images.unsplash.com/photo-1555421689-d68471e189f2?w=800&q=80",
-    tags: ["React", "Firebase", "Chart.js", "Material-UI"],
-    github: "https://github.com/yourusername/project3",
-    live: "https://project3.com"
+    github: "https://github.com/diegoforrest/taskhive-management-tool",
+    live: "https://taskhive-webapp.vercel.app",
+  },
+    {
+    id: 3,
+    title: "Marci Metzer Homes",
+    description: "Real estate listing website mockup with property search, detailed listings, and interactive map integration for enhanced user experience.",
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80",
+    tags: [
+      { name: "HTML5", icon: SiHtml5, color: "#E34F26" },
+      { name: "CSS3", icon: SiCss3, color: "#1572B6" },
+    ],
+    github: "https://github.com/diegoforrest/marci-metzger-mockup",
+    live: "https://home-project-diego-cruz.vercel.app",
   },
   {
     id: 4,
-    title: "Project Name 4",
-    description: "Task management application with real-time collaboration.",
-    results: [
-      { title: "Developed real-time collaboration features" },
-      { title: "Implemented drag-and-drop functionality" },
-      { title: "Improved team productivity by 40%" }
+    title: "Personal Portfolio",
+    description: "Personal portfolio website showcasing projects, skills, and experience with interactive UI and responsive design.",
+    image: "https://images.unsplash.com/photo-1555421689-d68471e189f2?w=800&q=80",
+    tags: [
+      { name: "React", icon: SiReact, color: "#61DAFB" },
+      { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
+      { name: "CSS3", icon: SiCss3, color: "#1572B6" },
+      { name: "Material-UI", icon: SiMui, color: "#007FFF" },
+      { name: "Framer Motion", icon: SiFramer, color: "#0055FF" }
     ],
-    image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&q=80",
-    tags: ["Vue.js", "Express", "Socket.io", "Redis"],
-    github: "https://github.com/yourusername/project4",
-    live: "https://project4.com",
-  }
+    github: "https://github.com/diegoforrest/portfolio-diego",
+    live: "https://project3.com"
+  },
 ];
 
 const ProjectCard = ({ project, index }) => {
@@ -93,32 +103,31 @@ const ProjectCard = ({ project, index }) => {
         opacity,
         position: 'sticky',
         top: `${100 + index * 40}px`
-        
       }}
       className="project-card-stack"
-      variants={staggerContainer}
     >
-      <motion.div className="project-card-inner">
+      <div className="project-card-inner">
         <div className="project-content-section">
-          <motion.h3 className="project-title">{project.title}</motion.h3>
+          <h3 className="project-title">{project.title}</h3>
           
           <div className="project-divider"></div>
 
-          <ul className="project-results">
-            {project.results.map((result, i) => (
-              <motion.li
-                key={i}
-                className="project-result-item"
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <CheckCircle className="result-icon" />
-                <span>{result.title}</span>
-              </motion.li>
-            ))}
-          </ul>
+          <p className="project-description">{project.description}</p>
+
+          <div className="project-tech-stack">
+            {project.tags.map((tag, i) => {
+              const IconComponent = tag.icon;
+              return (
+                <span key={i} className="tech-tag">
+                  <IconComponent 
+                    className="tech-icon" 
+                    style={{ color: tag.color }}
+                  />
+                  {tag.name}
+                </span>
+              );
+            })}
+          </div>
 
           <div className="project-actions">
             <motion.a
@@ -129,54 +138,33 @@ const ProjectCard = ({ project, index }) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span>Source Code</span>
+                <span>GitHub</span>
               <GitHub sx={{ fontSize: 20 }} />
             </motion.a>
-            <motion.a
-              href={project.live}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-btn project-btn-secondary"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span>Live Demo</span>
-              <LaunchOutlined sx={{ fontSize: 20 }} />
-            </motion.a>
+            {project.live && (
+              <motion.a
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="project-btn project-btn-secondary"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span>Live Demo</span>
+                <LaunchOutlined sx={{ fontSize: 20 }} />
+              </motion.a>
+            )}
           </div>
-
-          {project.awards && (
-            <div className="project-awards">
-              <div className="award-badge">
-                <EmojiEvents sx={{ fontSize: 20 }} />
-                <span>{project.awards.text}</span>
-              </div>
-              <div className="award-count">
-                <span>{project.awards.count}</span>
-              </div>
-            </div>
-          )}
         </div>
 
         <div className="project-image-section">
-          <div className="project-image-wrapper">
-            <img
-              src={project.image}
-              alt={project.title}
-              className="project-image"
-            />
-            <div className="project-image-overlay">
-              <div className="project-tags-overlay">
-                {project.tags.map((tag, i) => (
-                  <span key={i} className="project-tag-overlay">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
+          <img
+            src={project.image}
+            alt={project.title}
+            className="project-image"
+          />
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 };
