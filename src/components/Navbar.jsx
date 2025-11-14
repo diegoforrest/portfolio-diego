@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useTheme } from './ThemeProvider';
-import { Moon, Sun } from 'lucide-react';
+import {  DarkModeTwoTone, LightModeTwoTone } from "@mui/icons-material";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -26,13 +26,14 @@ export const Navbar = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <motion.div
+      <motion.a
+        href="#home"
         className="logo"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
         diego
-      </motion.div>
+      </motion.a>
 
       <motion.ul
         className="nav-links"
@@ -52,13 +53,13 @@ export const Navbar = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         >
-          <a href="#Resume">Resume</a>
+          <a href="https://drive.google.com/file/d/1ZxbI0Jjl3APAb_R1RP5419B4b_bC0Wih/view?usp=drive_link" target="_blank">Resume</a>
         </motion.li>
         <motion.li variants={fadeInUp}
         whileHover={{ scale: 1.3 }}
           whileTap={{ scale: 1 }}>
           <button className="theme-toggle" onClick={toggleTheme}>
-            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+            {theme === 'light' ? <DarkModeTwoTone size={20} /> : <LightModeTwoTone size={20} />}
           </button>
         </motion.li>
       </motion.ul>

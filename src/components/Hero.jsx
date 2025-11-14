@@ -1,58 +1,142 @@
-import { motion } from 'framer-motion';
-import { Github, Linkedin, FileText } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowDownward, GitHub, Instagram, KeyboardArrowDown, LinkedIn, TextSnippetOutlined  } from '@mui/icons-material'
+import { useState } from 'react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { InteractiveGradient } from './InteractiveGradient';
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6 },
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
 
 export const Hero = () => {
+    const [isHovering, setIsHovering] = useState(false);
+    
     return (
-        <section className="hero">
-            <div className="hero-content">
-                <motion.h1 
-                    className="hero-title"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
-                >
-                    Diego Forrest <br />Cruz
-                </motion.h1>
+        <motion.section 
+        id="home" 
+        className="hero"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        >
+            <InteractiveGradient />
+            <div className="hero-container">
+                <motion.div className="hero-content" variants={staggerContainer} initial="initial" animate="animate">
 
-                <motion.div 
-                    className="hero-badge"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <span className="badge-dot"></span>
-                    Software Engineer | Front-End Developer
-                </motion.div>
-                
-                <motion.p 
-                    className="hero-description"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                >
-                    Passionate about creating beautiful, responsive web applications. 
-                    Specialized in React, modern JavaScript, and user-centric design. 
-                    Let's build something amazing together.
-                </motion.p>
-                
-                <motion.div 
-                    className="hero-buttons"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                >
-                    <a href="#resume" className="btn btn-primary">
-                        <FileText size={18} />
-                        Resume
-                    </a>
-                    <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
-                        <Linkedin size={18} />
-                        LinkedIn
-                    </a>
-                    <a href="https://github.com/yourprofile" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
-                        <Github size={18} />
-                        GitHub
-                    </a>
+                    <motion.h1 className="hero-title" variants={fadeInUp} whileHover={{ scale: 1.02 }}>
+                        Diego Forrest <br /> Cruz
+                    </motion.h1>
+
+                    <motion.div 
+                        className="hero-badge"
+                        variants={fadeInUp}
+                    >
+                        <span className="badge-dot"></span>
+                        Software Engineer | Web Developer
+                    </motion.div>
+
+                    <motion.p 
+                        className="hero-description"
+                        variants={fadeInUp}
+                    >
+                        Passionate about building clean, modern, and responsive web experiences using React, JavaScript, and Tailwind. I love turning ideas into smooth, user-friendly interfaces while continuously improving my skills and creativity.
+                    </motion.p>
+
+                    <motion.div 
+                        className="hero-buttons"
+                        variants={staggerContainer}
+                    >
+                        <motion.a 
+                            href="#projects" 
+                            variants={fadeInUp}
+                            className="btn btn-secondary"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onMouseEnter={() => setIsHovering(true)}
+                            onMouseLeave={() => setIsHovering(false)}
+                        >
+                            View My Work
+                            <AnimatePresence mode="wait">
+                                {isHovering ? (
+                                    <motion.div
+                                        key="arrow"
+                                        initial={{ scale: 0.5, opacity: 0, y: -5 }}
+                                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.5 }}
+                                        style={{ display: 'flex', marginTop: '2px' }}
+                                    >
+                                        <ArrowDownward size={16} />
+                                    </motion.div>
+                                ) : (
+                                    <motion.div
+                                        key="chevron"
+                                        initial={{ scale: 0.5, opacity: 0, y: -5 }}
+                                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.2 }}
+                                        style={{ display: 'flex', marginTop: '2px' }}
+                                    >
+                                        <KeyboardArrowDown size={16} />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </motion.a>
+                        <motion.a href="https://drive.google.com/file/d/1ZxbI0Jjl3APAb_R1RP5419B4b_bC0Wih/view?usp=drive_link" 
+                        variants={fadeInUp}
+                        target='_blank' 
+                        className="btn btn-primary" 
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        >
+                            Resume
+                            <TextSnippetOutlined size={18} />
+                        </motion.a>
+                        <motion.a href="https://www.linkedin.com/in/diegoforrestcruz" 
+                        variants={fadeInUp}
+                        target='_blank' 
+                        className="btn btn-secondary"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}>
+                            Let's Connect
+                            <LinkedIn size={18} />
+                        </motion.a>
+                    </motion.div>
+
+                    <motion.div 
+                        className="hero-socials"
+                        variants={staggerContainer}
+                    >
+                        <motion.a href="https://github.com/diegoforrest" 
+                        variants={fadeInUp}
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="social-link"
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.95 }}>
+                            <GitHub sx={{ fontSize: 35 }}/>
+                        </motion.a>
+                        <motion.a href="https://www.instagram.com/diegod.666" 
+                        variants={fadeInUp}
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="social-link"
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.95 }}>
+                            <Instagram sx={{ fontSize: 35 }} />
+                        </motion.a>
+                    </motion.div>
+
                 </motion.div>
             </div>
 
@@ -60,23 +144,46 @@ export const Hero = () => {
                 className="hero-image"
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
+                transition={{ duration: 0.8, delay: 0.4 }}  
             >
-                {/* Add your image here */}
-                <div style={{
-                    width: '400px',
-                    height: '400px',
-                    background: 'rgba(99, 91, 255, 0.1)',
-                    borderRadius: '20px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    border: '2px dashed rgba(99, 91, 255, 0.3)',
-                    color: 'var(--light-text)'
-                }}>
-                    Your Image Here
-                </div>
+                <div className="Code-Display">
+                    <SyntaxHighlighter
+                        language="typescript"
+                        customStyle={{ 
+                            margin: 0, 
+                            padding: "2rem", 
+                            height: "100%", 
+                            borderRadius: "20px 0 0 20px", 
+                            background: "rgba(30,41,59,1)", 
+                            backdropFilter: "blur(10px)" 
+                        }}
+                        style={vscDarkPlus}
+                    >
+                        {`const aboutMe: DeveloperProfile = {
+  codename: "Diego Forrest Cruz",
+  origin: "Bacoor, Philippines — somewhere between Dota2 and Vs Code",
+  role: "Software Engineer and Web Developer",
+
+  stack: {
+    languages: ["JavaScript", "TypeScript", "HTML", "CSS" , "Python" , "PHP"],
+    frameworks: ["React", "Next.js", "TailwindCSS" , "Node.js" , "Nest.Js"],
+  },
+
+  traits: [
+    "UI/UX enthusiast",
+    "Passionate Coder",
+    "Gamer at heart",
+    "Continues Learning",
+  ],
+
+  missionStatement:
+    "Building smooth, modern interfaces while leveling up every day.",
+  availability: "Open for work opportunities!",
+};`}
+                    </SyntaxHighlighter>
+                </div> 
             </motion.div>
-        </section>
+
+        </motion.section>
     );
 };
