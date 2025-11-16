@@ -373,9 +373,9 @@ body {
 }
 
 .projects-container {
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 0 max(24px, calc((100% - 1400px) / 2));
+  padding: 0 max(24px, calc((100% - 1600px) / 2));
 }
 
 .projects-header {
@@ -403,12 +403,15 @@ body {
 .projects-stack-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding-bottom: 400px;
+  gap: 30px;
+  padding: 80px 0 400px;
 }
 
 .project-card-stack {
   will-change: transform;
+  margin: 0 10px;
+  display: flex;
+  justify-content: center;
 }
 
 .project-card-inner {
@@ -416,8 +419,16 @@ body {
   border-radius: 20px;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 600px;
+  /* slightly wider content area / narrower image to increase perceived width */
+  grid-template-columns: 1.2fr 0.8fr;
+  /* allow height to grow with content; constrain width to 960px */
+  min-height: 0;
+  max-width: 960px;
+  width: 100%;
+  height: auto;
+  max-height: 600px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--card-border);
   transition: all 0.3s ease;
 }
@@ -428,10 +439,12 @@ body {
 }
 
 .project-content-section {
-  padding: 4rem;
+  /* reduce internal padding so the card can show more content width */
+  padding: 3rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* keep title at the top */
+  height: 100%; /* fill the card so items align relative to top */
   order: 1;
 }
 
@@ -551,8 +564,70 @@ body {
   transition: transform 0.5s ease;
 }
 
+.project-image-section {
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.project-image {
+  border-radius: 12px;
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
 .project-card-inner:hover .project-image {
   transform: scale(1.05);
+}
+
+/* More projects button */
+.more-projects-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: -28px;
+  margin-bottom: 16px;
+}
+
+.more-projects-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  transition: all 0.18s ease;
+}
+
+.more-projects-btn .icon-default,
+.more-projects-btn .icon-hover {
+  transition: transform 0.18s ease, opacity 0.18s ease;
+  opacity: 1;
+}
+
+.more-projects-btn .icon-hover {
+  position: relative;
+  opacity: 0;
+  transform: translateX(-6px) scale(0.95);
+}
+
+.more-projects-btn:hover {
+  transform: translateY(-3px);
+}
+
+.more-projects-btn:hover .icon-default {
+  opacity: 0;
+  transform: translateX(6px) scale(0.95);
+}
+
+.more-projects-btn:hover .icon-hover {
+  opacity: 1;
+  transform: translateX(0) scale(1);
 }
 
 
@@ -634,6 +709,9 @@ body {
   .project-card-inner {
     grid-template-columns: 1fr;
     min-height: auto;
+    height: auto; /* allow cards to size naturally on mobile */
+    max-height: none;
+    overflow: visible;
   }
 
   .project-content-section {
@@ -644,6 +722,7 @@ body {
   .project-image-section {
     height: 250px;
     order: 1;
+    padding: 0; /* remove desktop padding on small screens */
   }
 
   .project-title {
@@ -661,5 +740,10 @@ body {
 
   .project-btn {
     width: 100%;
+  }
+
+  .more-projects-wrap {
+    margin-top: 8px;
+    margin-bottom: 24px;
   }
 }

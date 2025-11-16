@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { GitHub, LaunchOutlined } from '@mui/icons-material';
+import { GitHub, LaunchOutlined, ChevronRight, ArrowRightAlt } from '@mui/icons-material';
 import { useRef } from 'react';
 import { 
   SiReact, 
@@ -90,7 +90,8 @@ const ProjectCard = ({ project, index }) => {
         scale,
         opacity,
         position: 'sticky',
-        top: `${100 + index * 40}px`
+        top: `${140 + index * 140}px`,
+        zIndex: index + 1
       }}
       className="project-card-stack"
     >
@@ -170,7 +171,7 @@ export const Projects = () => {
         >
           <h2 className="projects-title">Featured Projects</h2>
           <p className="projects-subtitle">
-            A collection of projects that showcase my skills and creativity
+           A glimpse into the projects I've built as I continue to improve, explore new ideas, and grow as a developer.
           </p>
         </motion.div>
 
@@ -178,6 +179,14 @@ export const Projects = () => {
           {projects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
+        </div>
+
+        <div className="more-projects-wrap">
+          <button className="more-projects-btn" type="button" aria-label="More projects">
+            <span>More projects</span>
+            <ChevronRight className="icon-default" sx={{ fontSize: 20 }} />
+            <ArrowRightAlt className="icon-hover" sx={{ fontSize: 20 }} />
+          </button>
         </div>
       </div>
     </section>

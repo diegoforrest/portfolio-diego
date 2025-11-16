@@ -11,9 +11,22 @@ import { motion } from 'framer-motion'
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
+useEffect(() => {
+  const originalScrollRestoration = window.history.scrollRestoration;
+  
+  if ('scrollRestoration' in window.history) {
+    window.history.scrollRestoration = 'manual';
+  }
+  
+  window.scrollTo(0, 0);
+  setIsLoaded(true);
+
+  return () => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = originalScrollRestoration;
+    }
+  };
+}, []);
 
   return (
     <ThemeProvider>
