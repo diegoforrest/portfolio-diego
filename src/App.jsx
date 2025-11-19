@@ -5,7 +5,9 @@ import { Projects } from './components/Projects.jsx'
 import { Contact } from './components/Contact.jsx'
 import { ThemeProvider } from './components/ThemeProvider.jsx'
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'  
+import { motion } from 'framer-motion'    
+import { About } from './components/About.jsx'
+
 
 
 function App() {
@@ -34,6 +36,7 @@ useEffect(() => {
         <Navbar />
         <Hero />
         <Projects />
+        <About />
         <Contact />
 
         <footer>

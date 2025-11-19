@@ -1,30 +1,7 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { GitHub, LaunchOutlined, ChevronRight, ArrowRightAlt } from '@mui/icons-material';
-import { useRef } from 'react';
-import { 
-  SiReact, 
-  SiNodedotjs, 
-  SiFirebase, 
-  SiOpenai,
-  SiNextdotjs,
-  SiTypescript,
-  SiPostgresql,
-  SiChartdotjs,
-  SiMui,
-  SiMongodb,
-  SiTailwindcss,
-  SiJavascript,
-  SiHtml5,
-  SiCss3,
-  SiPython,
-  SiFlask,
-  SiTensorflow,
-  SiFramer,
-  SiFlutter,
-  SiDart,
-  SiNestjs,
-  SiMysql
-} from 'react-icons/si';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { GitHub, LaunchOutlined, ChevronRight, ArrowRightAlt, ArrowForward, KeyboardArrowRight } from '@mui/icons-material';
+import { useRef, useState } from 'react';
+import { Icon } from './Icon';
 
 const projects = [
   {
@@ -33,10 +10,10 @@ const projects = [
     description: "A mobile application for offline image-based detection of rice disease detection",
     image: "./images/paddyscan.png",
     tags: [
-      { name: "Flutter", icon: SiFlutter, color: "#02569B" },
-      { name: "Dart", icon: SiDart, color: "#0175C2" },
-      { name: "Python", icon: SiPython, color: "#3776AB" },
-      { name: "TensorFlow", icon: SiTensorflow, color: "#FF6F00" }
+      { name: "Flutter", icon: "flutter", color: "#02569B" },
+      { name: "Dart", icon: "dart", color: "#0175C2" },
+      { name: "Python", icon: "python", color: "#3776AB" },
+      { name: "TensorFlow", icon: "tensorflow", color: "#FF6F00" }
     ],
     github: "https://github.com/diegoforrest/PaddyScan",
   },
@@ -46,12 +23,12 @@ const projects = [
     description: "A Lightweight task manager that helps users work from idea to done without unnecessary complexity. Focus on what matters—priorities, progress, and quick reviews.",
     image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80",
     tags: [
-      { name: "Next.js", icon: SiNextdotjs, color: "#000000" },
-      { name: "Nest.js", icon: SiNestjs, color: "#E0234E" },
-      { name: "Node.js", icon: SiNodedotjs, color: "#339933" },
-      { name: "Tailwind CSS", icon: SiTailwindcss, color: "#06B6D4" },
-      { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
-      { name: "MySQL", icon: SiMysql, color: "#4479A1" }
+      { name: "Next.js", icon: "nextjs", color: "#000000" },
+      { name: "Nest.js", icon: "nestjs", color: "#E0234E" },
+      { name: "Node.js", icon: "nodejs", color: "#339933" },
+      { name: "Tailwind CSS", icon: "tailwind", color: "#06B6D4" },
+      { name: "TypeScript", icon: "typescript", color: "#3178C6" },
+      { name: "MySQL", icon: "mysql", color: "#4479A1" }
     ],
     github: "https://github.com/diegoforrest/taskhive-management-tool",
     live: "https://taskhive-webapp.vercel.app",
@@ -62,17 +39,19 @@ const projects = [
     description: "Personal portfolio website showcasing projects, skills, and experience with interactive UI and responsive design.",
     image: "https://images.unsplash.com/photo-1555421689-d68471e189f2?w=800&q=80",
     tags: [
-      { name: "React", icon: SiReact, color: "#61DAFB" },
-      { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
-      { name: "CSS3", icon: SiCss3, color: "#1572B6" },
-      { name: "Material-UI", icon: SiMui, color: "#007FFF" },
-      { name: "Framer Motion", icon: SiFramer, color: "#0055FF" }
+      { name: "React", icon: "react", color: "#61DAFB" },
+      { name: "JavaScript", icon: "javascript", color: "#F7DF1E" },
+      { name: "CSS3", icon: "css3", color: "#1572B6" },
+      { name: "Framer Motion", icon: "framer", color: "#0055FF" }
     ],
     github: "https://github.com/diegoforrest/portfolio-diego",
     live: "https://project3.com"
   },
 ];
 
+// stacking configuration
+const STACK_BASE = 140;
+const STACK_STEP = 140;
 const ProjectCard = ({ project, index }) => {
   const cardRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -90,8 +69,7 @@ const ProjectCard = ({ project, index }) => {
         scale,
         opacity,
         position: 'sticky',
-        top: `${140 + index * 140}px`,
-        zIndex: index + 1
+        top: `${STACK_BASE + index * STACK_STEP}px`,
       }}
       className="project-card-stack"
     >
@@ -105,10 +83,10 @@ const ProjectCard = ({ project, index }) => {
 
           <div className="project-tech-stack">
             {project.tags.map((tag, i) => {
-              const IconComponent = tag.icon;
               return (
                 <span key={i} className="tech-tag">
-                  <IconComponent 
+                  <Icon 
+                    name={tag.icon}
                     className="tech-icon" 
                     style={{ color: tag.color }}
                   />
@@ -159,6 +137,7 @@ const ProjectCard = ({ project, index }) => {
 };
 
 export const Projects = () => {
+  const [isHovering, setIsHovering] = useState(false);
   return (
     <section id="projects" className="projects-section">
       <div className="projects-container">
@@ -182,11 +161,40 @@ export const Projects = () => {
         </div>
 
         <div className="more-projects-wrap">
-          <button className="more-projects-btn" type="button" aria-label="More projects">
+          <motion.button
+            className="more-projects-btn"
+            type="button"
+            aria-label="More projects"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+            whileHover={{ translateY: -2 }}
+            whileTap={{ scale: 0.98 }}
+          >
             <span>More projects</span>
-            <ChevronRight className="icon-default" sx={{ fontSize: 20 }} />
-            <ArrowRightAlt className="icon-hover" sx={{ fontSize: 20 }} />
-          </button>
+            <AnimatePresence mode="wait">
+              {isHovering ? (
+                <motion.span
+                  key="arrow"
+                  initial={{ scale: 0.6, opacity: 0, y: 2.5 }}
+                  animate={{ scale: 1, opacity: 1, x: 0 }}
+                  exit={{ scale: 0.8, opacity: 0, x: 3,}}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ArrowForward sx={{ fontSize: 20 }} />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="chevron"
+                  initial={{ scale: 0.6, opacity: 0, y: 2.5 }}
+                  animate={{ scale: 1, opacity: 1, x: 0 }}
+                  exit={{ scale: 0.8, opacity: 0, x: 3 }}
+                  transition={{ duration: 0.1 }}
+                >
+                  <KeyboardArrowRight sx={{ fontSize: 20 }} />
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </motion.button>
         </div>
       </div>
     </section>
