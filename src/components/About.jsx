@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Coffee, DirectionsRun, Headset, MovieFilter, Shuffle, SportsBasketball, TrackChanges, Movie, SportsEsports, LaunchOutlined } from '@mui/icons-material';
+import { Coffee, DirectionsRun, Headset, MovieFilter, Shuffle, SportsBasketball, TrackChanges, Movie, SportsEsports, LaunchOutlined, ChevronLeft, ChevronRight } from '@mui/icons-material';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { TechToolbox } from './TechToolbox';
 
@@ -217,6 +217,29 @@ const films = [
   }
 ];
 
+const games = [
+  {
+    title: 'Dota 2',
+    image: 'https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota2_social.jpg'
+  },
+  {
+    title: 'CS:GO',
+    image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/header.jpg'
+  },
+  {
+    title: 'Valorant',
+    image: 'https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/4a0767c445b55a96ca967f8fb8c9af4c600d4054-1920x1080.jpg'
+  },
+  {
+    title: 'League of Legends',
+    image: 'https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/bf0138469dd2e5393c0c98f7e8e4f4c28c1f56a2-1920x1080.jpg'
+  },
+  {
+    title: 'Apex Legends',
+    image: 'https://cdn1.epicgames.com/offer/55978b50e5bb44b08b0c09f3313cda6e/EGS_ApexLegends_RespawnEntertainment_S1_2560x1440-e8c615b7c45fbd1e1948ee0b72eb6703'
+  }
+];
+
 const hobbies = [  
   { name: 'Coffee', icon: Coffee },
   { name: 'Films', icon: Movie },
@@ -231,10 +254,24 @@ const hobbies = [
 
 export const About = () => {
   const [filmOrder, setFilmOrder] = useState(films);
+  const [currentGameIndex, setCurrentGameIndex] = useState(0);
 
   const shuffleFilms = () => {
     const shuffled = [...filmOrder].sort(() => Math.random() - 0.5);
     setFilmOrder(shuffled);
+  };
+
+  const nextGame = () => {
+    setCurrentGameIndex((prev) => (prev + 1) % games.length);
+  };
+
+  const prevGame = () => {
+    setCurrentGameIndex((prev) => (prev - 1 + games.length) % games.length);
+  };
+
+  const shuffleGames = () => {
+    const randomIndex = Math.floor(Math.random() * games.length);
+    setCurrentGameIndex(randomIndex);
   };
 
   return (
@@ -254,11 +291,39 @@ export const About = () => {
         </motion.div>
 
         <div className="bento-grid">
-          {/* Education */}
+          {/* myself */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true }}
+            className="bento-card profile-card"
+          >
+            <img src="/images/pfp.png" alt="Diego Forrest Cruz" />
+          </motion.div>
+
+          {/* Intro*/}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            viewport={{ once: true }}
+            className="bento-card intro-card"
+          >
+            <h1>Diego Forrest Cruz</h1>
+            <p>
+            My journey in the world of front-end development began with a deep curiosity for how digital experiences are brought to life.
+            From those early moments of discovery to the skills I’ve cultivated today, I’ve learned to transform ideas into clean, engaging, and intuitive interfaces.
+            I’ve dedicated myself to building projects that blend thoughtful design with purposeful functionality, creating experiences that feel seamless and meaningful.
+            Let’s craft something remarkable together.
+            </p>
+          </motion.div>
+
+          {/* Education */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             viewport={{ once: true }}
             className="bento-card education-card"
           >
@@ -278,7 +343,7 @@ export const About = () => {
                 <div className="education-header">
                   <img src="/images/dlsud.png" alt="DLSUD" className="education-logo" />
                   <div>
-                    <h4>Senior High-School</h4>
+                    <h4>Senior High School</h4>
                     <p className="education-school">De La Salle University - Dasmariñas</p>
                   </div>
                 </div>
@@ -291,7 +356,7 @@ export const About = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
             viewport={{ once: true }}
             className="bento-card tech-stack-card"
           >
@@ -299,69 +364,11 @@ export const About = () => {
             <TechToolbox />
           </motion.div>
 
-          {/* GitHub Contributions */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="bento-card github-card"
-          >
-            <div className="github-card-header">
-              <h3 className="bento-card-title">GitHub Activity</h3>
-              <motion.a
-                href="https://github.com/diegoforrest"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="github-profile-icon"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label="Open GitHub profile"
-              >
-                <LaunchOutlined sx={{ fontSize: 18 }} />
-              </motion.a>
-            </div>
-            <div className="github-content">
-              <GitHubContributions />
-            </div>
-          </motion.div>
-
-          {/* Beyond the Code */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="bento-card beyond-card"
-          >
-            <h3 className="bento-card-title">Beyond The Code</h3>
-            <p className="beyond-subtitle">Explore my interests and hobbies.</p>
-            <div className="hobbies-grid">
-              {hobbies.map((hobby, index) => {
-                const IconComponent = hobby.icon;
-                return (
-                  <motion.div
-                    key={hobby.name}
-                    className="hobby-pill"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, delay: index * 0.03 }}
-                    viewport={{ once: true }}
-                    whileHover={{ scale: 1.05, y: -2 }}
-                  >
-                    <IconComponent className="hobby-icon" sx={{ fontSize: 20 }} />
-                    <span>{hobby.name}</span>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </motion.div>
-
           {/* My Favorite Films */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
             viewport={{ once: true }}
             className="bento-card films-card"
           >
@@ -395,6 +402,123 @@ export const About = () => {
               </motion.button>
             </div>
           </motion.div>
+
+          {/* Games I Play */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.32 }}
+            viewport={{ once: true }}
+            className="bento-card games-card"
+          >
+            <h3 className="bento-card-title">Games I Play</h3>
+            <div className="games-content">
+              <motion.div
+                key={currentGameIndex}
+                className="game-image-container"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <img 
+                  src={games[currentGameIndex].image} 
+                  alt={games[currentGameIndex].title}
+                  className="game-image"
+                />
+                <div className="game-overlay">
+                  <span className="game-title">{games[currentGameIndex].title}</span>
+                </div>
+              </motion.div>
+              <div className="games-controls">
+                <motion.button
+                  className="game-nav-btn"
+                  onClick={prevGame}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  aria-label="Previous game"
+                >
+                  <ChevronLeft sx={{ fontSize: 24 }} />
+                </motion.button>
+                <motion.button
+                  className="shuffle-btn game-shuffle"
+                  onClick={shuffleGames}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Shuffle sx={{ fontSize: 18 }} />
+                </motion.button>
+                <motion.button
+                  className="game-nav-btn"
+                  onClick={nextGame}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  aria-label="Next game"
+                >
+                  <ChevronRight sx={{ fontSize: 24 }} />
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Beyond box */}
+          <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="bento-card hobbies-card beyond-card"
+          >
+            <h3 className="bento-card-title">Beyond The Code</h3> 
+            <p className="beyond-subtitle">Explore my interests and hobbies.</p>
+            <div className="hobbies-grid">
+              {hobbies.map((hobby, index) => {
+                const IconComponent = hobby.icon;
+                return (
+                <motion.div
+                key={hobby.name}
+                className="hobby-pill"
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.03 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.05, y: -2 }}
+                >
+                  <IconComponent className="hobby-icon" sx={{ fontSize: 20 }} />
+                  <span>{hobby.name}</span>
+                  </motion.div>
+                  );
+                  })}
+                  </div>
+                  </motion.div>
+
+          {/* GitHub Contributions */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.35 }}
+            viewport={{ once: true }}
+            className="bento-card github-card"
+          >
+            <div className="github-card-header">
+              <h3 className="bento-card-title">GitHub Activity</h3>
+              <motion.a
+                href="https://github.com/diegoforrest"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="github-profile-icon"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Open GitHub profile"
+              >
+                <LaunchOutlined sx={{ fontSize: 18 }} />
+              </motion.a>
+            </div>
+            <div className="github-content">
+              <GitHubContributions />
+            </div>
+          </motion.div>
+
         </div>
       </div>
     </section>

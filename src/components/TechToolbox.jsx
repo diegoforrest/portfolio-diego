@@ -1,8 +1,5 @@
-import React from 'react';
 import { ToolboxItems } from './ToolboxItems';
-import { Icon } from './Icon';
 
-// Tech stack provided by user — split into two rows (first row 9 items, second row 8 items)
 const toolboxItems1 = [
   { title: 'React', iconType: 'react' },
   { title: 'JavaScript', iconType: 'javascript' },
