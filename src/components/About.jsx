@@ -201,42 +201,99 @@ const GitHubContributions = () => {
 
 const films = [
   {
-    title: 'Nausicaä of the Valley of the Wind',
-    image: 'https://image.tmdb.org/t/p/w500/jW7XzfRunHdKgbkw07qfcGcEpUG.jpg',
-    year: '1984'
+    title: 'Breaking Bad',
+    image: '/films/breakingbad.png'
   },
   {
-    title: 'Princess Mononoke',
-    image: 'https://image.tmdb.org/t/p/w500/jHWmNr7m544fJ8eItsfNk8fs2Ed.jpg',
-    year: '1997'
+    title: 'Blue Lock',
+    image: '/films/bluelock.png'
   },
   {
-    title: 'Spider-Man: Into the Spider-Verse',
-    image: 'https://image.tmdb.org/t/p/w500/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg',
-    year: '2018'
-  }
+    title: '50 First Dates',
+    image: '/films/firstdate.png'
+  },
+  {
+    title: 'Game Of Thrones',
+    image: '/films/got.png'
+  },
+  {
+    title: 'Haikyu!!',
+    image: '/films/haikyuu.png'
+  },
+  {
+    title: 'Hunter x Hunter',
+    image: '/films/hxh.png'
+  },
+  {
+    title: 'Naruto',
+    image: '/films/naruto.png'
+  },
+  {
+    title: 'One Piece',
+    image: '/films/op.png'
+  },
+  {
+    title: 'Peaky Blinders',
+    image: '/films/peaky.png'
+  },
+  {
+    title: 'Shameless',
+    image: '/films/shameless.png'
+  },
+  {
+    title: 'Teen Wolf',
+    image: '/films/teenwolf.png'
+  },
+  {
+    title: 'Vampire Diaries',
+    image: '/films/vamp.png'
+  },
+  {
+    title: 'Vikings',
+    image: '/films/vikings.png'
+  },
+  {
+    title: 'White Chicks',
+    image: '/films/whitechic.png'
+  },
+  {
+    title: 'Witcher',
+    image: '/films/witcher.png'
+  },
+  {
+    title: 'You',
+    image: '/films/you.png'
+  },
 ];
 
 const games = [
   {
     title: 'Dota 2',
-    image: 'https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota2_social.jpg'
+    image: '/games/dota.png'
   },
   {
-    title: 'CS:GO',
-    image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/header.jpg'
+    title: 'Counter-Strike 2',
+    image: '/games/csgo.png'
   },
   {
     title: 'Valorant',
-    image: 'https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/4a0767c445b55a96ca967f8fb8c9af4c600d4054-1920x1080.jpg'
+    image: '/games/valorant.png'
   },
   {
-    title: 'League of Legends',
-    image: 'https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/bf0138469dd2e5393c0c98f7e8e4f4c28c1f56a2-1920x1080.jpg'
+    title: 'GTA V',
+    image: '/games/gta.png'
   },
   {
-    title: 'Apex Legends',
-    image: 'https://cdn1.epicgames.com/offer/55978b50e5bb44b08b0c09f3313cda6e/EGS_ApexLegends_RespawnEntertainment_S1_2560x1440-e8c615b7c45fbd1e1948ee0b72eb6703'
+    title: 'NBA 2k',
+    image: '/games/nba.png'
+  },
+  {
+    title: 'Red Dead Redemption 2',
+    image: '/games/rdr.png'
+  },
+  {
+    title: 'Rust',
+    image: '/games/rust.png'
   }
 ];
 
@@ -386,7 +443,6 @@ export const About = () => {
                     <img src={film.image} alt={film.title} />
                     <div className="film-overlay">
                       <span className="film-title">{film.title}</span>
-                      <span className="film-year">{film.year}</span>
                     </div>
                   </motion.div>
                 ))}
