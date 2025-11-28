@@ -21,21 +21,26 @@ const toolboxItems2 = [
   { title: 'Nest.js', iconType: 'nestjs' },
   { title: 'C++', iconType: 'c-plusplus' },
   { title: 'Figma', iconType: 'figma' },
+  { title: 'Arduino', iconType: 'arduino' },
 ];
 
 export const TechToolbox = () => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <div className="toolbox-vertical-container">
       <ToolboxItems
         items={toolboxItems1}
-        itemsWraperClassName="animate-move-left"
-        animationDuration={'28s'}
+        itemsWraperClassName="animate-move-up"
+        animationDuration={'25s'}
+        vertical
+        column="left"
       />
 
       <ToolboxItems
         items={toolboxItems2}
-        itemsWraperClassName="animate-move-right"
-        animationDuration={'20s'}
+        itemsWraperClassName="animate-move-down"
+        animationDuration={'25s'}
+        vertical
+        column="right"
       />
     </div>
   );

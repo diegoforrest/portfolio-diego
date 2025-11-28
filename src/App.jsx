@@ -3,10 +3,12 @@ import { Navbar } from './components/Navbar.jsx'
 import { Hero } from './components/Hero.jsx'
 import { Projects } from './components/Projects.jsx'
 import { Contact } from './components/Contact.jsx'
+import { Footer } from './components/Footer.jsx'
 import { ThemeProvider } from './components/ThemeProvider.jsx'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'    
 import { About } from './components/About.jsx'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 
 
@@ -32,17 +34,22 @@ useEffect(() => {
 
   return (
     <ThemeProvider>
-      <div className={`app ${isLoaded ? "loaded" : ""}`}>
-        <Navbar />
-        <Hero />
-        <Projects />
-        <About />
-        <Contact />
-
-        <footer>
-          <p> &copy; 2025. All rights reserved.</p>
-        </footer>
-      </div>
+      <BrowserRouter>
+        <div className={`app ${isLoaded ? "loaded" : ""}`}>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={
+              <>
+                <Hero />
+                <Projects />
+                <About />
+                <Footer />
+              </>
+            } />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }

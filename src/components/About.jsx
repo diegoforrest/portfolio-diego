@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Coffee, DirectionsRun, Headset, MovieFilter, Shuffle, SportsBasketball, TrackChanges, Movie, SportsEsports, LaunchOutlined, ChevronLeft, ChevronRight } from '@mui/icons-material';
+import { Coffee, DirectionsRun, Headset, MovieFilter, Shuffle, SportsBasketball, TrackChanges, Movie, SportsEsports, LaunchOutlined, ChevronLeft, ChevronRight, RocketLaunch, Whatshot } from '@mui/icons-material';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { TechToolbox } from './TechToolbox';
 
@@ -13,7 +13,7 @@ const ContributionDay = ({ day, index }) => {
     new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), []);
 
   if (!day.date) {
-    return <div key={index} style={{ width: '10px', height: '10px', borderRadius: '2px', backgroundColor: 'transparent' }} />;
+    return <div key={index} style={{ width: '10px', height: '10px', borderRadius: '3px', backgroundColor: '#1a1a2e' }} />;
   }
 
   return (
@@ -24,7 +24,7 @@ const ContributionDay = ({ day, index }) => {
             style={{ 
               width: '10px', 
               height: '10px', 
-              borderRadius: '2px', 
+              borderRadius: '3px', 
               backgroundColor: getColorForLevel(day.level),
               cursor: 'pointer',
               transition: 'transform 0.2s ease'
@@ -55,32 +55,43 @@ const GitHubContributions = () => {
   const [streak, setStreak] = useState(0);
 
   const processedData = useMemo(() => {
-    if (!contributions.length) return { weeks: [], isEmpty: true };
+    if (!contributions.length) return { rows: [], isEmpty: true, firstDate: null, lastDate: null };
 
-    const weeks = [];
-    let currentWeek = [];
-
-    const firstDay = new Date(contributions[0].date).getDay();
-    for (let i = 0; i < firstDay; i++) {
-      currentWeek.push({ date: '', count: 0, level: 0 });
+    // Get the last 182 days (26 weeks) of contributions
+    const recentDays = contributions.slice(-182);
+    
+    if (!recentDays.length) return { rows: [], isEmpty: true, firstDate: null, lastDate: null };
+    
+    // Create 7 rows (one for each day of the week)
+    const rows = [[], [], [], [], [], [], []];
+    
+    const firstDayOfWeek = new Date(recentDays[0].date).getDay();
+    
+    // Add empty cells for days before the first contribution (to align the week)
+    for (let i = 0; i < firstDayOfWeek; i++) {
+      rows[i].push({ date: '', count: 0, level: 0 });
     }
-
-    contributions.forEach(day => {
-      currentWeek.push(day);
-      if (currentWeek.length === 7) {
-        weeks.push([...currentWeek]);
-        currentWeek = [];
+    
+    // Fill in the contributions
+    recentDays.forEach(day => {
+      const dayOfWeek = new Date(day.date).getDay();
+      rows[dayOfWeek].push(day);
+    });
+    
+    // Pad rows to have equal length (fill remaining days of current week)
+    const maxLength = Math.max(...rows.map(row => row.length));
+    rows.forEach(row => {
+      while (row.length < maxLength) {
+        row.push({ date: '', count: 0, level: 0 });
       }
     });
 
-    if (currentWeek.length > 0) {
-      while (currentWeek.length < 7) {
-        currentWeek.push({ date: '', count: 0, level: 0 });
-      }
-      weeks.push(currentWeek);
-    }
+    // First date is the first actual contribution
+    const firstDate = recentDays[0]?.date || null;
+    // Last date is the last actual contribution  
+    const lastDate = recentDays[recentDays.length - 1]?.date || null;
 
-    return { weeks, isEmpty: false };
+    return { rows, isEmpty: false, firstDate, lastDate };
   }, [contributions]);
 
   useEffect(() => {
@@ -110,7 +121,9 @@ const GitHubContributions = () => {
 
         const allDays = data.contributions;
         const total = data.total?.lastYear || 0;
-        const days = allDays.slice(-182); // 6 months
+        
+        // Get all available days - processedData will handle the 182 day slice
+        const days = allDays;
 
         let streakCount = 0, currentStreak = 0;
         const processed = days.map((day) => {
@@ -147,12 +160,16 @@ const GitHubContributions = () => {
     };
   }, []);
 
-  const renderWeeks = useCallback(() => {
+  const renderGrid = useCallback(() => {
     if (isLoading) {
       return (
-        <div style={{ display: 'flex', gap: '3px', flexWrap: 'wrap' }}>
-          {Array.from({ length: 50 }).map((_, i) => (
-            <div key={i} style={{ width: '10px', height: '10px', borderRadius: '2px', backgroundColor: '#1a1a2e' }} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} style={{ display: 'flex', gap: '2px' }}>
+              {Array.from({ length: 26 }).map((_, j) => (
+                <div key={j} style={{ width: '10px', height: '10px', borderRadius: '3px', backgroundColor: '#1a1a2e' }} />
+              ))}
+            </div>
           ))}
         </div>
       );
@@ -164,10 +181,10 @@ const GitHubContributions = () => {
 
     return (
       <div style={{ width: '100%', overflowX: 'auto' }}>
-        <div style={{ display: 'flex', gap: '3px', minWidth: 'max-content' }}>
-          {processedData.weeks.map((week, i) => (
-            <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-              {week.map((day, j) => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', minWidth: 'max-content' }}>
+          {processedData.rows.map((row, i) => (
+            <div key={i} style={{ display: 'flex', gap: '2px' }}>
+              {row.map((day, j) => (
                 <ContributionDay key={`${i}-${j}`} day={day} index={`${i}-${j}`} />
               ))}
             </div>
@@ -179,20 +196,10 @@ const GitHubContributions = () => {
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-        <div style={{ fontSize: '0.875rem', color: 'var(--light-text)' }}>
-          <span style={{ fontWeight: '600', color: 'var(--text-color)', fontSize: '1.25rem' }}>{totalContributions}</span>
-          <div style={{ fontSize: '0.75rem', marginTop: '2px' }}>Total contributions</div>
-        </div>
-        <div style={{ fontSize: '0.875rem', color: 'var(--light-text)', textAlign: 'right' }}>
-          <span style={{ fontWeight: '600', color: 'var(--text-color)', fontSize: '1.25rem' }}>{streak}</span>
-          <div style={{ fontSize: '0.75rem', marginTop: '2px' }}>Day streak</div>
-        </div>
-      </div>
-      <div style={{ flex: 1, marginBottom: '12px' }}>{renderWeeks()}</div>
+      <div style={{ flex: 1, marginBottom: '12px' }}>{renderGrid()}</div>
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--light-text)' }}>
-        <span>{contributions.length > 0 ? new Date(contributions[0].date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Failed to fetch API'}</span>
-        <span>{contributions.length > 0 ? new Date(contributions[contributions.length - 1].date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Failed to fetch API'}</span>
+        <span>{processedData.firstDate ? new Date(processedData.firstDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : ''}</span>
+        <span>{processedData.lastDate ? new Date(processedData.lastDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : ''}</span>
       </div>
     </div>
   );
@@ -268,33 +275,62 @@ const films = [
 
 const games = [
   {
-    title: 'Dota 2',
-    image: '/games/dota.png'
+    title: 'Dota Devotee',
+    image: '/games/dota.png',
+    emoji: '🎮',
+    description: "I've played Dota 2 for years. It's chaotic, punishing, and I keep coming back for more.",
+    color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
   },
   {
     title: 'Counter-Strike 2',
-    image: '/games/csgo.png'
+    image: '/games/csgo.png',
+    emoji: '🎯',
+    description: "From CS:GO to CS2, the tactical shooter that never gets old. Rush B, anyone?",
+    color: 'linear-gradient(135deg, #f39c12 0%, #e67e22 100%)'
   },
   {
     title: 'Valorant',
-    image: '/games/valorant.png'
+    image: '/games/valorant.png',
+    emoji: '🔫',
+    description: "When I want tactical shooting with abilities. The agent gameplay keeps it fresh.",
+    color: 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)'
   },
   {
     title: 'GTA V',
-    image: '/games/gta.png'
+    image: '/games/gta.png',
+    emoji: '🚗',
+    description: "Los Santos is my second home. Chaos, heists, and endless possibilities.",
+    color: 'linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)'
   },
   {
     title: 'NBA 2k',
-    image: '/games/nba.png'
+    image: '/games/nba.png',
+    emoji: '🏀',
+    description: "My go-to for basketball action. Building dynasties and breaking ankles.",
+    color: 'linear-gradient(135deg, #e67e22 0%, #d35400 100%)'
   },
   {
     title: 'Red Dead Redemption 2',
-    image: '/games/rdr.png'
+    image: '/games/rdr.png',
+    emoji: '🤠',
+    description: "The most beautiful game I've ever played. Arthur Morgan's story hits different.",
+    color: 'linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%)'
   },
   {
     title: 'Rust',
-    image: '/games/rust.png'
+    image: '/games/rust.png',
+    emoji: '🏠',
+    description: "Survival at its finest. Trust no one, build everything, lose it all.",
+    color: 'linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)'
   }
+];
+
+// Stack card colors
+const stackColors = [
+  'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)',
+  'linear-gradient(135deg, #f39c12 0%, #e67e22 100%)',
+  'linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)',
+  'linear-gradient(135deg, #3498db 0%, #2980b9 100%)',
 ];
 
 const hobbies = [  
@@ -312,21 +348,28 @@ const hobbies = [
 export const About = () => {
   const [filmOrder, setFilmOrder] = useState(films);
   const [currentGameIndex, setCurrentGameIndex] = useState(0);
+  const [flipDirection, setFlipDirection] = useState(1); // 1 for next, -1 for prev
+
+  // Only show 3 films at a time
+  const visibleFilms = filmOrder.slice(0, 3);
 
   const shuffleFilms = () => {
-    const shuffled = [...filmOrder].sort(() => Math.random() - 0.5);
+    const shuffled = [...films].sort(() => Math.random() - 0.5);
     setFilmOrder(shuffled);
   };
 
   const nextGame = () => {
+    setFlipDirection(1);
     setCurrentGameIndex((prev) => (prev + 1) % games.length);
   };
 
   const prevGame = () => {
+    setFlipDirection(-1);
     setCurrentGameIndex((prev) => (prev - 1 + games.length) % games.length);
   };
 
   const shuffleGames = () => {
+    setFlipDirection(1);
     const randomIndex = Math.floor(Math.random() * games.length);
     setCurrentGameIndex(randomIndex);
   };
@@ -367,9 +410,9 @@ export const About = () => {
             viewport={{ once: true }}
             className="bento-card intro-card"
           >
-            <h1>Diego Forrest Cruz</h1>
+            <h1>I'M DIEGO</h1>
             <p>
-            My journey in the world of front-end development began with a deep curiosity for how digital experiences are brought to life.
+            My journey in the world of CODES began with a deep curiosity for how digital experiences are brought to life.
             From those early moments of discovery to the skills I’ve cultivated today, I’ve learned to transform ideas into clean, engaging, and intuitive interfaces.
             I’ve dedicated myself to building projects that blend thoughtful design with purposeful functionality, creating experiences that feel seamless and meaningful.
             Let’s craft something remarkable together.
@@ -417,104 +460,8 @@ export const About = () => {
             viewport={{ once: true }}
             className="bento-card tech-stack-card"
           >
-            <h3 className="bento-card-title">Tech Stack</h3>
+            <h3 className="bento-card-title techstack-title">Tech Stack</h3>
             <TechToolbox />
-          </motion.div>
-
-          {/* My Favorite Films */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="bento-card films-card"
-          >
-            <h3 className="bento-card-title">My Favorite Films</h3>
-            <div className="films-content">
-              <div className="film-stack">
-                {filmOrder.map((film, index) => (
-                  <motion.div
-                    key={film.title}
-                    className={`film-card film-${index}`}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                  >
-                    <img src={film.image} alt={film.title} />
-                    <div className="film-overlay">
-                      <span className="film-title">{film.title}</span>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-              <motion.button
-                className="shuffle-btn"
-                onClick={shuffleFilms}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Shuffle sx={{ fontSize: 18 }} />
-                <span>Shuffle</span>
-              </motion.button>
-            </div>
-          </motion.div>
-
-          {/* Games I Play */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.32 }}
-            viewport={{ once: true }}
-            className="bento-card games-card"
-          >
-            <h3 className="bento-card-title">Games I Play</h3>
-            <div className="games-content">
-              <motion.div
-                key={currentGameIndex}
-                className="game-image-container"
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.3 }}
-              >
-                <img 
-                  src={games[currentGameIndex].image} 
-                  alt={games[currentGameIndex].title}
-                  className="game-image"
-                />
-                <div className="game-overlay">
-                  <span className="game-title">{games[currentGameIndex].title}</span>
-                </div>
-              </motion.div>
-              <div className="games-controls">
-                <motion.button
-                  className="game-nav-btn"
-                  onClick={prevGame}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  aria-label="Previous game"
-                >
-                  <ChevronLeft sx={{ fontSize: 24 }} />
-                </motion.button>
-                <motion.button
-                  className="shuffle-btn game-shuffle"
-                  onClick={shuffleGames}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Shuffle sx={{ fontSize: 18 }} />
-                </motion.button>
-                <motion.button
-                  className="game-nav-btn"
-                  onClick={nextGame}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  aria-label="Next game"
-                >
-                  <ChevronRight sx={{ fontSize: 24 }} />
-                </motion.button>
-              </div>
-            </div>
           </motion.div>
 
           {/* Beyond box */}
@@ -548,6 +495,140 @@ export const About = () => {
                   </div>
                   </motion.div>
 
+          {/* My Favorite Films */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.32 }}
+            viewport={{ once: true }}
+            className="bento-card films-card"
+          >
+            <div className="films-header">
+              <h3 className="bento-card-title">
+                <img src="/icons/popcorn.svg" alt="popcorn" style={{ width: 24, height: 20, filter: 'brightness(0) invert(1)' }} />
+                Binged & Loved
+              </h3>
+              <motion.button
+                className="shuffle-btn-icon"
+                onClick={shuffleFilms}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Shuffle sx={{ fontSize: 20 }} />
+              </motion.button>
+            </div>
+            <div className="films-content">
+              <div className="film-stack">
+                {visibleFilms.map((film, index) => (
+                  <motion.div
+                    key={film.title}
+                    className={`film-card film-${index}`}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                  >
+                    <img src={film.image} alt={film.title} />
+                    <div className="film-overlay">
+                      <span className="film-title">{film.title}</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Games I Play */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.34 }}
+            viewport={{ once: true }}
+            className="bento-card games-card"
+          >
+            <div className="games-header">
+              <h3 className="bento-card-title">
+                <SportsEsports sx={{ fontSize: 24 }} />
+                Games I Play
+              </h3>
+              <div className="games-nav-buttons">
+                <motion.button
+                  className="game-nav-btn"
+                  onClick={prevGame}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  aria-label="Previous game"
+                >
+                  <ChevronLeft sx={{ fontSize: 20 }} />
+                </motion.button>
+                <motion.button
+                  className="game-nav-btn"
+                  onClick={shuffleGames}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  aria-label="Shuffle games"
+                >
+                  <Shuffle sx={{ fontSize: 18 }} />
+                </motion.button>
+                <motion.button
+                  className="game-nav-btn"
+                  onClick={nextGame}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  aria-label="Next game"
+                >
+                  <ChevronRight sx={{ fontSize: 20 }} />
+                </motion.button>
+              </div>
+            </div>
+            <div className="games-content">
+              <div className="game-stack">
+                {/* Background cards for stack effect - colors shift based on current index */}
+                {stackColors.map((color, i) => (
+                  <div 
+                    key={i}
+                    className={`game-stack-card game-stack-${4 - i}`}
+                    style={{ background: stackColors[(currentGameIndex + i + 1) % stackColors.length] }}
+                  />
+                ))}
+                <motion.div
+                  key={currentGameIndex}
+                  className="game-card-main"
+                  style={{ background: games[currentGameIndex].color }}
+                  initial={{ 
+                    y: 20,
+                    opacity: 0,
+                    scale: 0.95
+                  }}
+                  animate={{ 
+                    y: 0,
+                    opacity: 1,
+                    scale: 1
+                  }}
+                  transition={{ 
+                    duration: 0.3,
+                    ease: 'easeOut'
+                  }}
+                >
+                  <div className="game-card-image">
+                    <img 
+                      src={games[currentGameIndex].image} 
+                      alt={games[currentGameIndex].title}
+                      className="game-image"
+                    />
+                  </div>
+                  <div className="game-card-info">
+                    <span className="game-card-title">
+                      {games[currentGameIndex].emoji} {games[currentGameIndex].title}
+                    </span>
+                    <p className="game-card-description">
+                      {games[currentGameIndex].description}
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+
           {/* GitHub Contributions */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -558,17 +639,7 @@ export const About = () => {
           >
             <div className="github-card-header">
               <h3 className="bento-card-title">GitHub Activity</h3>
-              <motion.a
-                href="https://github.com/diegoforrest"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="github-profile-icon"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label="Open GitHub profile"
-              >
-                <LaunchOutlined sx={{ fontSize: 18 }} />
-              </motion.a>
+              <span className="github-badge">Last 6 Months</span>
             </div>
             <div className="github-content">
               <GitHubContributions />

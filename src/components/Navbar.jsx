@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useTheme } from './ThemeProvider';
 import {  DarkModeTwoTone, LightModeTwoTone } from "@mui/icons-material";
+import { Link } from 'react-router-dom';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -27,7 +28,7 @@ export const Navbar = () => {
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <motion.a
-        href="#home"
+        href="/"
         className="logo"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -53,7 +54,7 @@ export const Navbar = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         >
-          <a href="https://drive.google.com/file/d/1ZxbI0Jjl3APAb_R1RP5419B4b_bC0Wih/view?usp=drive_link" target="_blank">Resume</a>
+          <Link to="/contact">Contact</Link>
         </motion.li>
         <motion.li variants={fadeInUp}
         whileHover={{ scale: 1.3 }}
