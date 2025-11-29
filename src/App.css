@@ -801,8 +801,8 @@ body {
 .bento-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr 1fr 1fr;
-  grid-template-rows: 275px 275px 350px 0px;
-  gap: 24px;
+  grid-template-rows: 275px 275px 375px 0px;
+  gap: 12px;
   max-width: 95%;
   width: 100%;
   margin: 0 auto;
@@ -820,7 +820,7 @@ body {
 .bento-card-title {
   font-family: 'Inter';
   font-size: 1.7rem;
-  font-weight: 400;
+  font-weight: 900;
   color: var(--text-color);
   margin-bottom: 24px;
 }
@@ -830,6 +830,7 @@ body {
   text-align: center !important;
   width: 100% !important;
 }
+
 
 /* Profile Picture Card */
 .profile-card {
@@ -1437,19 +1438,44 @@ body {
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
+.shuffle-btn-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 15px;
+  margin-top: 8px;
+  background: rgba(102, 126, 234, 0.2);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 8px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter';
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.shuffle-btn-box:hover {
+  background: rgba(102, 126, 234, 0.3);
+  border-color: rgba(102, 126, 234, 0.5);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
 .films-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   flex: 1;
   justify-content: center;
+  gap: 10px;
 }
 
 .film-stack {
   position: relative;
   width: 280px;
-  height: 280px;
-  margin: 10px 0;
+  height: 220px;
+  isolation: isolate;
 }
 
 .film-card {
@@ -1459,8 +1485,8 @@ body {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
+  will-change: transform;
 }
 
 .film-card img {
@@ -1495,33 +1521,29 @@ body {
   font-family: 'Inter';
 }
 
-/* Film stack positioning - default spread out */
+/* Film stack positioning - middle card on top */
 .film-0 {
-  transform: rotate(-8deg) scale(0.9);
   z-index: 1;
-  left: 0;
-  top: 20px;
-}
-
-.film-1 {
-  transform: rotate(4deg) scale(0.95);
-  z-index: 2;
-  left: 70px;
-  top: 0;
-}
-
-.film-2 {
-  transform: rotate(8deg) scale(0.9);
-  z-index: 3;
-  left: 130px;
+  left: -45px;
   top: 30px;
 }
 
-/* On hover - cards pop up slightly */
+.film-1 {
+  z-index: 3;
+  left: 70px;
+  top: -10px;
+}
+
+.film-2 {
+  z-index: 2;
+  left: 185px;
+  top: 30px;
+}
+
+/* On hover - cards pop up and come to front */
 .film-card:hover {
-  transform: translateY(-8px) scale(1.02);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  z-index: 10;
+  z-index: 10 !important;
 }
 
 .shuffle-btn {
@@ -1571,11 +1593,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   flex: 1;
-  perspective: 1000px;
+  overflow: hidden;
+  padding: 10px 0;
 }
 
-.game-stack {
+/* New carousel layout */
+.game-carousel {
   position: relative;
   width: 100%;
   height: 100%;
@@ -1584,44 +1609,57 @@ body {
   align-items: center;
 }
 
-.game-stack-card {
+.game-carousel-card {
   position: absolute;
-  width: 70%;
-  height: 80%;
   border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.game-stack-4 {
-  transform: translateY(12px) translateX(12px);
-  z-index: 1;
-}
-
-.game-stack-3 {
-  transform: translateY(8px) translateX(8px);
-  z-index: 2;
-}
-
-.game-stack-2 {
-  transform: translateY(4px) translateX(4px);
-  z-index: 3;
-}
-
-.game-stack-1 {
-  transform: translateY(2px) translateX(2px);
-  z-index: 4;
-}
-
-.game-card-main {
-  position: relative;
-  width: 70%;
-  height: 80%;
-  border-radius: 16px;
-  overflow: hidden;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  z-index: 5;
+  transition: all 0.3s ease;
+}
+
+/* Center card - main visible card */
+.game-card-center {
+  width: 65%;
+  height: 90%;
+  z-index: 10;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+/* Left stacked cards */
+.game-card-left {
+  width: 55%;
+  height: 80%;
+}
+
+.game-card-left-1 {
+  left: 15%;
+  z-index: 5;
+  transform: rotate(-6deg);
+}
+
+.game-card-left-2 {
+  left: 12%;
+  z-index: 2;
+  transform: rotate(-10deg);
+}
+
+/* Right stacked cards */
+.game-card-right {
+  width: 55%;
+  height: 80%;
+}
+
+.game-card-right-1 {
+  right: 15%;
+  z-index: 5;
+  transform: rotate(6deg);
+}
+
+.game-card-right-2 {
+  right: 12%;
+  z-index: 2;
+  transform: rotate(10deg);
 }
 
 .game-card-image {

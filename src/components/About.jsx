@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Coffee, DirectionsRun, Headset, MovieFilter, Shuffle, SportsBasketball, TrackChanges, Movie, SportsEsports, LaunchOutlined, ChevronLeft, ChevronRight, RocketLaunch, Whatshot } from '@mui/icons-material';
+import { Coffee, DirectionsRun, Headset, MovieFilter, Shuffle, SportsBasketball, TrackChanges, Movie, SportsEsports, ChevronLeft, ChevronRight } from '@mui/icons-material';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { TechToolbox } from './TechToolbox';
 
@@ -504,36 +504,43 @@ export const About = () => {
             className="bento-card films-card"
           >
             <div className="films-header">
-              <h3 className="bento-card-title">
+              <h3 className="bento-card-title filmbox-title">
                 <img src="/icons/popcorn.svg" alt="popcorn" style={{ width: 24, height: 20, filter: 'brightness(0) invert(1)' }} />
                 Binged & Loved
               </h3>
-              <motion.button
-                className="shuffle-btn-icon"
-                onClick={shuffleFilms}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Shuffle sx={{ fontSize: 20 }} />
-              </motion.button>
             </div>
             <div className="films-content">
               <div className="film-stack">
-                {visibleFilms.map((film, index) => (
-                  <motion.div
-                    key={film.title}
-                    className={`film-card film-${index}`}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                  >
-                    <img src={film.image} alt={film.title} />
-                    <div className="film-overlay">
-                      <span className="film-title">{film.title}</span>
-                    </div>
-                  </motion.div>
-                ))}
+                {visibleFilms.map((film, index) => {
+                  const rotations = [-15, 0, 12];
+                  const scales = [0.9, 1, 0.9];
+                  return (
+                    <motion.div
+                      key={film.title}
+                      className={`film-card film-${index}`}
+                      initial={{ opacity: 0, scale: 0.8, rotate: rotations[index] }}
+                      animate={{ opacity: 1, scale: scales[index], rotate: rotations[index] }}
+                      whileHover={{ rotate: 0, scale: 1.05 }}
+                      transition={{ duration: 0.3 }}
+                      style={{ position: 'absolute' }}
+                    >
+                      <img src={film.image} alt={film.title} draggable="false" />
+                      <div className="film-overlay">
+                        <span className="film-title">{film.title}</span>
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </div>
+              <motion.button
+                className="shuffle-btn-box"
+                onClick={shuffleFilms}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Shuffle sx={{ fontSize: 18 }} />
+                <span>Shuffle</span>
+              </motion.button>
             </div>
           </motion.div>
 
@@ -581,50 +588,93 @@ export const About = () => {
               </div>
             </div>
             <div className="games-content">
-              <div className="game-stack">
-                {/* Background cards for stack effect - colors shift based on current index */}
-                {stackColors.map((color, i) => (
-                  <div 
-                    key={i}
-                    className={`game-stack-card game-stack-${4 - i}`}
-                    style={{ background: stackColors[(currentGameIndex + i + 1) % stackColors.length] }}
-                  />
-                ))}
-                <motion.div
-                  key={currentGameIndex}
-                  className="game-card-main"
-                  style={{ background: games[currentGameIndex].color }}
-                  initial={{ 
-                    y: 20,
-                    opacity: 0,
-                    scale: 0.95
-                  }}
-                  animate={{ 
-                    y: 0,
-                    opacity: 1,
-                    scale: 1
-                  }}
-                  transition={{ 
-                    duration: 0.3,
-                    ease: 'easeOut'
-                  }}
-                >
-                  <div className="game-card-image">
-                    <img 
-                      src={games[currentGameIndex].image} 
-                      alt={games[currentGameIndex].title}
-                      className="game-image"
+              <div className="game-carousel">
+                {/* Left stacked cards (previous games) */}
+                {[2, 1].map((offset) => {
+                  const idx = (currentGameIndex - offset + games.length) % games.length;
+                  return (
+                    <motion.div
+                      key={`left-${offset}`}
+                      className={`game-carousel-card game-card-left game-card-left-${offset}`}
+                      style={{ background: games[idx].color }}
+                      animate={{ 
+                        left: offset === 1 ? '15%' : '12%',
+                        rotate: offset === 1 ? -6 : -10
+                      }}
+                      transition={{ 
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 30
+                      }}
                     />
-                  </div>
-                  <div className="game-card-info">
-                    <span className="game-card-title">
-                      {games[currentGameIndex].emoji} {games[currentGameIndex].title}
-                    </span>
-                    <p className="game-card-description">
-                      {games[currentGameIndex].description}
-                    </p>
-                  </div>
-                </motion.div>
+                  );
+                })}
+
+                {/* Main center card */}
+                <AnimatePresence mode="popLayout" initial={false}>
+                  <motion.div
+                    key={currentGameIndex}
+                    className="game-carousel-card game-card-center"
+                    style={{ background: games[currentGameIndex].color }}
+                    initial={{ 
+                      x: flipDirection > 0 ? -80 : 80,
+                      rotate: flipDirection > 0 ? -8 : 8,
+                      scale: 0.9
+                    }}
+                    animate={{ 
+                      x: 0,
+                      rotate: 0,
+                      scale: 1
+                    }}
+                    exit={{ 
+                      x: flipDirection > 0 ? 80 : -80,
+                      rotate: flipDirection > 0 ? 8 : -8,
+                      scale: 0.9
+                    }}
+                    transition={{ 
+                      type: 'spring',
+                      stiffness: 300,
+                      damping: 30
+                    }}
+                  >
+                    <div className="game-card-image">
+                      <img 
+                        src={games[currentGameIndex].image} 
+                        alt={games[currentGameIndex].title}
+                        className="game-image"
+                      />
+                    </div>
+                    <div className="game-card-info">
+                      <span className="game-card-title">
+                        {games[currentGameIndex].emoji} {games[currentGameIndex].title}
+                      </span>
+                      <p className="game-card-description">
+                        {games[currentGameIndex].description}
+                      </p>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Right stacked cards (next games) */}
+                {[1, 2].map((offset) => {
+                  const idx = (currentGameIndex + offset) % games.length;
+                  return (
+                    <motion.div
+                      key={`right-${offset}`}
+                      className={`game-carousel-card game-card-right game-card-right-${offset}`}
+                      style={{ background: games[idx].color }}
+                      animate={{ 
+                        right: offset === 1 ? '15%' : '12%',
+                        rotate: offset === 1 ? 6 : 10
+                      }}
+                      transition={{ 
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 30
+                      }}
+                    />
+                  );
+                })}
               </div>
             </div>
           </motion.div>
