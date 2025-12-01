@@ -1,8 +1,10 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Coffee, DirectionsRun, Headset, MovieFilter, Shuffle, SportsBasketball, TrackChanges, Movie, SportsEsports, ChevronLeft, ChevronRight } from '@mui/icons-material';
+import { Coffee, DirectionsRun, Headset, MovieFilter, Shuffle, SportsBasketball, TrackChanges, Movie, DoNotStep, MusicNote, SportsEsports } from '@mui/icons-material';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { TechToolbox } from './TechToolbox';
+import  AlbumCarousel  from './AlbumCarousel';
+import  GameCarousel  from './GameCarousel';
 
 const ContributionDay = ({ day, index }) => {
   const getColorForLevel = useCallback((level) => {
@@ -322,7 +324,112 @@ const games = [
     emoji: '🏠',
     description: "Survival at its finest. Trust no one, build everything, lose it all.",
     color: 'linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)'
-  }
+  },
+  {
+    title: 'For Honor',
+    image: '/games/forhonor.png',
+    emoji: '🏠',
+    description: "Survival at its finest. Trust no one, build everything, lose it all.",
+    color: 'linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)'
+  },
+  {
+    title: 'Rainbow 6 Siege X',
+    image: '/games/r6.png',
+    emoji: '🏠',
+    description: "Survival at its finest. Trust no one, build everything, lose it all.",
+    color: 'linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)'
+  },
+  {
+    title: 'PUBG: Battlegrounds',
+    image: '/games/pubg.png',
+    emoji: '🏠',
+    description: "Survival at its finest. Trust no one, build everything, lose it all.",
+    color: 'linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)'
+  },
+  {
+    title: 'R.E.P.O.',
+    image: '/games/repo.png',
+    emoji: '🏠',
+    description: "Survival at its finest. Trust no one, build everything, lose it all.",
+    color: 'linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)'
+  },
+  
+  
+];
+
+const albums = [
+  {
+    title: 'SUGAR',
+    artist: 'BROCKHAMPTON',
+    image: '/albums/sugar.png',
+    spotifyUrl: 'https://open.spotify.com/track/6U0FIYXCQ3TGrk4tFpLrEA?si=e52685bf93a243b9'
+  },
+  {
+    title: 'Yvette',
+    artist: 'Vedo',
+    image: '/albums/yvette.png',
+    spotifyUrl: 'https://open.spotify.com/album/5Pj5xT0hGsXwM0X6cGxWLl'
+  },
+  {
+    title: 'Love to Dream',
+    artist: 'Doja Cat',
+    image: '/albums/lovetodream.png',
+    spotifyUrl: 'https://open.spotify.com/album/4yP0hdKOZPNshxUOjY0cZj'
+  },
+  {
+    title: 'Coming Back',
+    artist: 'J.Tajor',
+    image: '/albums/comingback.png',
+    spotifyUrl: 'https://open.spotify.com/album/3T4tUhGYeRNVUGevb0wThu'
+  },
+  {
+    title: 'Folded',
+    artist: 'Kehlani',
+    image: '/albums/folded.png',
+    spotifyUrl: 'https://open.spotify.com/album/3mH6qwIy9crq0I9YQbOuDf'
+  },
+  {
+    title: 'BLEACH',
+    artist: 'BROCKHAMPTON',
+    image: '/albums/bleach.png',
+    spotifyUrl: 'https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe'
+  },
+  {
+    title: 'Ride',
+    artist: 'Aaron May',
+    image: '/albums/ride.png',
+    spotifyUrl: 'https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe'
+  },
+  {
+    title: 'The Fight is Over',
+    artist: 'Urbandub',
+    image: '/albums/fightisover.png',
+    spotifyUrl: 'https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe'
+  },
+  {
+    title: 'I wanted you',
+    artist: 'INA',
+    image: '/albums/iwantedyou.png',
+    spotifyUrl: 'https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe'
+  },
+  {
+    title: 'No Scrubs',
+    artist: 'TLC',
+    image: '/albums/noscrubs.png',
+    spotifyUrl: 'https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe'
+  },
+  {
+    title: 'Overboard',
+    artist: 'Justin Bieber ft Jessica Jarrell',
+    image: '/albums/overboard.png',
+    spotifyUrl: 'https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe'
+  },
+  {
+    title: 'Next to you',
+    artist: 'Chris Brown ft Justin Bieber',
+    image: '/albums/nexttoyou.png',
+    spotifyUrl: 'https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe'
+  },
 ];
 
 // Stack card colors
@@ -343,12 +450,11 @@ const hobbies = [
   { name: 'Running', icon: DirectionsRun },
   { name: 'Basketball', icon: SportsBasketball },
   { name: 'Billiards', icon: TrackChanges },
+  { name: 'Sneakers', icon: DoNotStep },
 ];
 
 export const About = () => {
   const [filmOrder, setFilmOrder] = useState(films);
-  const [currentGameIndex, setCurrentGameIndex] = useState(0);
-  const [flipDirection, setFlipDirection] = useState(1); // 1 for next, -1 for prev
 
   // Only show 3 films at a time
   const visibleFilms = filmOrder.slice(0, 3);
@@ -356,22 +462,6 @@ export const About = () => {
   const shuffleFilms = () => {
     const shuffled = [...films].sort(() => Math.random() - 0.5);
     setFilmOrder(shuffled);
-  };
-
-  const nextGame = () => {
-    setFlipDirection(1);
-    setCurrentGameIndex((prev) => (prev + 1) % games.length);
-  };
-
-  const prevGame = () => {
-    setFlipDirection(-1);
-    setCurrentGameIndex((prev) => (prev - 1 + games.length) % games.length);
-  };
-
-  const shuffleGames = () => {
-    setFlipDirection(1);
-    const randomIndex = Math.floor(Math.random() * games.length);
-    setCurrentGameIndex(randomIndex);
   };
 
   return (
@@ -473,7 +563,6 @@ export const About = () => {
           className="bento-card hobbies-card beyond-card"
           >
             <h3 className="bento-card-title">Beyond The Code</h3> 
-            <p className="beyond-subtitle">Explore my interests and hobbies.</p>
             <div className="hobbies-grid">
               {hobbies.map((hobby, index) => {
                 const IconComponent = hobby.icon;
@@ -552,129 +641,39 @@ export const About = () => {
             viewport={{ once: true }}
             className="bento-card games-card"
           >
-            <div className="games-header">
-              <h3 className="bento-card-title">
-                <SportsEsports sx={{ fontSize: 24 }} />
-                Games I Play
+            <GameCarousel games={games} />
+          </motion.div>
+
+          {/* Music Box */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.35 }}
+            viewport={{ once: true }}
+            className="bento-card music-card"
+          >
+            <div className="music-header">
+              <h3 className="bento-card-title music-title">
+                MY ALBUM COLLECTIONS
               </h3>
-              <div className="games-nav-buttons">
-                <motion.button
-                  className="game-nav-btn"
-                  onClick={prevGame}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  aria-label="Previous game"
-                >
-                  <ChevronLeft sx={{ fontSize: 20 }} />
-                </motion.button>
-                <motion.button
-                  className="game-nav-btn"
-                  onClick={shuffleGames}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  aria-label="Shuffle games"
-                >
-                  <Shuffle sx={{ fontSize: 18 }} />
-                </motion.button>
-                <motion.button
-                  className="game-nav-btn"
-                  onClick={nextGame}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  aria-label="Next game"
-                >
-                  <ChevronRight sx={{ fontSize: 20 }} />
-                </motion.button>
-              </div>
+              <MusicNote sx={{ fontSize: 24 }} />
             </div>
-            <div className="games-content">
-              <div className="game-carousel">
-                {/* Left stacked cards (previous games) */}
-                {[2, 1].map((offset) => {
-                  const idx = (currentGameIndex - offset + games.length) % games.length;
-                  return (
-                    <motion.div
-                      key={`left-${offset}`}
-                      className={`game-carousel-card game-card-left game-card-left-${offset}`}
-                      style={{ background: games[idx].color }}
-                      animate={{ 
-                        left: offset === 1 ? '15%' : '12%',
-                        rotate: offset === 1 ? -6 : -10
-                      }}
-                      transition={{ 
-                        type: 'spring',
-                        stiffness: 300,
-                        damping: 30
-                      }}
-                    />
-                  );
-                })}
-
-                {/* Main center card */}
-                <AnimatePresence mode="popLayout" initial={false}>
-                  <motion.div
-                    key={currentGameIndex}
-                    className="game-carousel-card game-card-center"
-                    style={{ background: games[currentGameIndex].color }}
-                    initial={{ 
-                      x: flipDirection > 0 ? -80 : 80,
-                      rotate: flipDirection > 0 ? -8 : 8,
-                      scale: 0.9
-                    }}
-                    animate={{ 
-                      x: 0,
-                      rotate: 0,
-                      scale: 1
-                    }}
-                    exit={{ 
-                      x: flipDirection > 0 ? 80 : -80,
-                      rotate: flipDirection > 0 ? 8 : -8,
-                      scale: 0.9
-                    }}
-                    transition={{ 
-                      type: 'spring',
-                      stiffness: 300,
-                      damping: 30
-                    }}
-                  >
-                    <div className="game-card-image">
-                      <img 
-                        src={games[currentGameIndex].image} 
-                        alt={games[currentGameIndex].title}
-                        className="game-image"
-                      />
-                    </div>
-                    <div className="game-card-info">
-                      <span className="game-card-title">
-                        {games[currentGameIndex].emoji} {games[currentGameIndex].title}
-                      </span>
-                      <p className="game-card-description">
-                        {games[currentGameIndex].description}
-                      </p>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* Right stacked cards (next games) */}
-                {[1, 2].map((offset) => {
-                  const idx = (currentGameIndex + offset) % games.length;
-                  return (
-                    <motion.div
-                      key={`right-${offset}`}
-                      className={`game-carousel-card game-card-right game-card-right-${offset}`}
-                      style={{ background: games[idx].color }}
-                      animate={{ 
-                        right: offset === 1 ? '15%' : '12%',
-                        rotate: offset === 1 ? 6 : 10
-                      }}
-                      transition={{ 
-                        type: 'spring',
-                        stiffness: 300,
-                        damping: 30
-                      }}
-                    />
-                  );
-                })}
+            <div className="music-content">
+              <AlbumCarousel albums={albums} />
+            </div>
+            {/* Sliding marquee */}
+            <div className="music-marquee">
+              <div className="music-marquee-track">
+                <div className="music-marquee-content">
+                  <span><MusicNote sx={{ fontSize: 16 }} /> Music Never Sleeps</span>
+                  <span><MusicNote sx={{ fontSize: 16 }} /> Music Never Sleeps</span>
+                  <span><MusicNote sx={{ fontSize: 16 }} /> Music Never Sleeps</span>
+                </div>
+                <div className="music-marquee-content" aria-hidden="true">
+                  <span><MusicNote sx={{ fontSize: 16 }} /> Music Never Sleeps</span>
+                  <span><MusicNote sx={{ fontSize: 16 }} /> Music Never Sleeps</span>
+                  <span><MusicNote sx={{ fontSize: 16 }} /> Music Never Sleeps</span>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -683,7 +682,7 @@ export const About = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.35 }}
+            transition={{ duration: 0.5, delay: 0.37 }}
             viewport={{ once: true }}
             className="bento-card github-card"
           >

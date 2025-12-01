@@ -801,7 +801,7 @@ body {
 .bento-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr 1fr 1fr;
-  grid-template-rows: 275px 275px 375px 0px;
+  grid-template-rows: 275px 275px 375px 375px;
   gap: 12px;
   max-width: 95%;
   width: 100%;
@@ -897,7 +897,7 @@ body {
 
 /* Beyond the Code Card */
 .beyond-card {
-  grid-column: 2 / 4;
+  grid-column: 2 / 3;
   grid-row: 2 / 3;
 
 }
@@ -905,7 +905,7 @@ body {
 /* GitHub Card */
 .github-card {
     grid-column: 3 / 4;
-  grid-row: 3 / 4;
+  grid-row: 2 / 3;
 
 }
 
@@ -918,6 +918,12 @@ body {
 /* Film Card */
 .films-card {
   grid-column: 1 / 2;
+  grid-row: 3 / 4;
+}
+
+/* Music Card */
+.music-card {
+  grid-column: 3 / 4;
   grid-row: 3 / 4;
 }
 
@@ -1722,6 +1728,381 @@ body {
 .game-shuffle {
   padding: 10px 20px;
   font-size: 0.875rem;
+}
+
+/* Game Carousel Stacking Card Styles */
+.game-carousel-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.game-carousel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+}
+
+.game-carousel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Inter';
+  margin: 0;
+}
+
+.game-nav-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.game-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(60, 60, 70, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.game-nav-btn:hover {
+  background: rgba(80, 80, 90, 0.95);
+}
+
+.game-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.game-cards-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px 20px 20px;
+  overflow: visible;
+}
+
+.game-swiper {
+  width: 180px;
+  height: 260px;
+  overflow: visible;
+}
+
+.game-swiper-slide {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.game-stack-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: grab;
+}
+
+.game-stack-card:active {
+  cursor: grabbing;
+}
+
+.game-stack-image {
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+}
+
+.game-stack-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.game-stack-info {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.game-stack-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: white;
+  font-family: 'Inter';
+}
+
+.game-stack-description {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Inter';
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Music Box Card */
+.music-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 20px 0 0 0;
+}
+
+.music-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 0 20px;
+}
+
+.music-header .bento-card-title {
+  margin-bottom: 0;
+}
+
+.music-title {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.music-nav-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.music-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(102, 126, 234, 0.2);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 8px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter';
+}
+
+.music-nav-btn:hover {
+  background: rgba(102, 126, 234, 0.3);
+  border-color: rgba(102, 126, 234, 0.5);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.music-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+
+/* Album Carousel Wrapper */
+.album-carousel-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+/* Swiper Carousel Styles */
+.album-swiper {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.album-swiper .swiper-wrapper {
+  align-items: center;
+}
+
+.album-swiper-slide {
+  width: 270px !important;
+  height: 250px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.album-slide-link {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  cursor: grab;
+}
+
+.album-slide-link:active {
+  cursor: grabbing;
+}
+
+.album-slide-link:hover .album-overlay {
+  opacity: 2;
+}
+
+.album-slide-link .album-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: 12px;
+}
+
+
+.album-nav-btn {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 5px;
+  background: rgba(60, 60, 70, 0);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 25;
+  backdrop-filter: blur(4px);
+}
+
+.album-nav-btn svg {
+  width: 8px;
+  height: 8px;
+}
+
+.album-nav-left {
+  left: 10px;
+}
+
+.album-nav-right {
+  right: 10px;
+}
+
+.album-nav-btn:hover {
+  background: rgba(60, 60, 70, 0.85);
+  transform: scale(1.1);
+}
+
+.album-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.3) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.album-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: white;
+  font-family: 'Inter';
+  text-align: center;
+}
+
+.album-artist {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'Inter';
+  text-align: center;
+}
+
+.album-icon {
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  padding: 6px;
+  color: white;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0);
+  padding: 4px;
+}
+
+.music-marquee {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: auto;
+  overflow: hidden;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 10px 0;
+  border-radius: 0 0 20px 20px;
+}
+
+.music-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.music-marquee-content {
+  display: flex;
+  gap: 40px;
+  padding-right: 40px;
+}
+
+.music-marquee-content span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter';
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #667eea;
+  white-space: nowrap;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* Contact Section */
