@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { EffectCards, Navigation } from 'swiper/modules'
-import { ChevronLeft, ChevronRight, Shuffle, SportsEsports } from '@mui/icons-material'
+import { ChevronLeft, ChevronRight, Shuffle, SportsEsports, SportsEsportsOutlined } from '@mui/icons-material'
 import { motion } from 'framer-motion'
 
 import 'swiper/css'
@@ -35,8 +35,8 @@ export const GameCarousel = ({ games }) => {
     <div className="game-carousel-container">
       <div className="game-carousel-header">
         <h3 className="game-carousel-title">
-          <SportsEsports sx={{ fontSize: 20 }} />
-          Games I Play
+          <SportsEsportsOutlined sx={{ fontSize: 20 }} />
+          GAMES.TXT
         </h3>
         <div className="game-nav-buttons">
           <motion.button

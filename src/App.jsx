@@ -4,7 +4,9 @@ import { Hero } from './components/Hero.jsx'
 import { Projects } from './components/Projects.jsx'
 import { Contact } from './components/Contact.jsx'
 import { Footer } from './components/Footer.jsx'
-import { ThemeProvider } from './components/ThemeProvider.jsx'
+import { ThemeProvider } from '@/components/ui/theme-provider'
+import { ThemeCustomizerProvider } from './components/ThemeCustomizerProvider.jsx'
+import { ThemeCustomizer } from './components/ThemeCustomizerShadcn.jsx'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'    
 import { About } from './components/About.jsx'
@@ -33,23 +35,27 @@ useEffect(() => {
 }, []);
 
   return (
-    <ThemeProvider>
-      <BrowserRouter>
-        <div className={`app ${isLoaded ? "loaded" : ""}`}>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={
-              <>
-                <Hero />
-                <Projects />
-                <About />
-                <Footer />
-              </>
-            } />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
+    <ThemeProvider defaultTheme="dark" storageKey="portfolio-theme">
+      <ThemeCustomizerProvider>
+        <BrowserRouter>
+          <ThemeCustomizer>
+            <div className={`app ${isLoaded ? "loaded" : ""}`}>
+              <Navbar />
+              <Routes>
+                <Route path="/" element={
+                  <>
+                    <Hero />
+                    <Projects />
+                    <About />
+                    <Footer />
+                  </>
+                } />
+                <Route path="/contact" element={<Contact />} />
+              </Routes>
+            </div>
+          </ThemeCustomizer>
+        </BrowserRouter>
+      </ThemeCustomizerProvider>
     </ThemeProvider>
   );
 }

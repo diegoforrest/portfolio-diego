@@ -13,8 +13,8 @@ export const AlbumCarousel = ({ albums }) => {
   return (
     <div className="album-carousel-wrapper">
       <div className="music-header">
-        <h3 className="bento-card-title music-title">
-          MY ALBUM COLLECTIONS
+        <h3 className="music-title">
+          Listening To
         </h3>
         <MusicNote sx={{ fontSize: 24 }} />
       </div>
@@ -115,7 +115,7 @@ export const AlbumCarousel = ({ albums }) => {
           {[...Array(8)].map((_, index) => (
             <SwiperSlide key={index} style={{ width: 'auto' }}>
               <span className="marquee-item">
-                <MusicNote sx={{ fontSize: 16 }} /> Music Never Sleeps
+                <MusicNote sx={{ fontSize: 16 }} /> This Vibe Doesn't End
               </span>
             </SwiperSlide>
           ))}

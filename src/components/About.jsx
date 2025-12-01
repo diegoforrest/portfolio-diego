@@ -444,13 +444,22 @@ const hobbies = [
 
 export const About = () => {
   const [filmOrder, setFilmOrder] = useState(films);
+  const [isShuffling, setIsShuffling] = useState(false);
 
   // Only show 3 films at a time
   const visibleFilms = filmOrder.slice(0, 3);
 
-  const shuffleFilms = () => {
+  const shuffleFilms = async () => {
+    if (isShuffling) return;
+    setIsShuffling(true);
+    
+    await new Promise(resolve => setTimeout(resolve, 600));
+    
     const shuffled = [...films].sort(() => Math.random() - 0.5);
     setFilmOrder(shuffled);
+    
+    await new Promise(resolve => setTimeout(resolve, 200));
+    setIsShuffling(false);
   };
 
   return (
@@ -583,9 +592,9 @@ export const About = () => {
           >
             <div className="films-header">
               <h3 className="bento-card-title filmbox-title">
-                <img src="/icons/popcorn.svg" alt="popcorn" style={{ width: 24, height: 20, filter: 'brightness(0) invert(1)' }} />
                 Binged & Loved
               </h3>
+              <img src="/icons/popcorn.svg" alt="popcorn" style={{ width: 24, height: 20, filter: 'brightness(0) invert(1)' }} />
             </div>
             <div className="films-content">
               <div className="film-stack">
@@ -615,8 +624,19 @@ export const About = () => {
                 onClick={shuffleFilms}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                disabled={isShuffling}
               >
-                <Shuffle sx={{ fontSize: 18 }} />
+                {isShuffling ? (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 0.5, repeat: Infinity, ease: "linear" }}
+                    style={{ display: 'flex', alignItems: 'center' }}
+                  >
+                    <Shuffle sx={{ fontSize: 18 }} />
+                  </motion.div>
+                ) : (
+                  <Shuffle sx={{ fontSize: 18 }} />
+                )}
                 <span>Shuffle</span>
               </motion.button>
             </div>
