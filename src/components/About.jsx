@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Coffee, DirectionsRun, Headset, MovieFilter, Shuffle, SportsBasketball, TrackChanges, Movie, DoNotStep, MusicNote, SportsEsports } from '@mui/icons-material';
+import { Coffee, DirectionsRun, Headset, MovieFilter, Shuffle, SportsBasketball, TrackChanges, Movie, DoNotStep, SportsEsports } from '@mui/icons-material';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { TechToolbox } from './TechToolbox';
-import  AlbumCarousel  from './AlbumCarousel';
-import  GameCarousel  from './GameCarousel';
+import { AlbumCarousel } from './AlbumCarousel';
+import { GameCarousel } from './GameCarousel';
 
 const ContributionDay = ({ day, index }) => {
   const getColorForLevel = useCallback((level) => {
@@ -279,77 +279,66 @@ const games = [
   {
     title: 'Dota Devotee',
     image: '/games/dota.png',
-    emoji: '🎮',
     description: "I've played Dota 2 for years. It's chaotic, punishing, and I keep coming back for more.",
     color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
   },
   {
     title: 'Counter-Strike 2',
     image: '/games/csgo.png',
-    emoji: '🎯',
     description: "From CS:GO to CS2, the tactical shooter that never gets old. Rush B, anyone?",
     color: 'linear-gradient(135deg, #f39c12 0%, #e67e22 100%)'
   },
   {
     title: 'Valorant',
     image: '/games/valorant.png',
-    emoji: '🔫',
     description: "When I want tactical shooting with abilities. The agent gameplay keeps it fresh.",
     color: 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)'
   },
   {
     title: 'GTA V',
     image: '/games/gta.png',
-    emoji: '🚗',
     description: "Los Santos is my second home. Chaos, heists, and endless possibilities.",
     color: 'linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)'
   },
   {
     title: 'NBA 2k',
     image: '/games/nba.png',
-    emoji: '🏀',
     description: "My go-to for basketball action. Building dynasties and breaking ankles.",
     color: 'linear-gradient(135deg, #e67e22 0%, #d35400 100%)'
   },
   {
     title: 'Red Dead Redemption 2',
     image: '/games/rdr.png',
-    emoji: '🤠',
     description: "The most beautiful game I've ever played. Arthur Morgan's story hits different.",
     color: 'linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%)'
   },
   {
     title: 'Rust',
     image: '/games/rust.png',
-    emoji: '🏠',
     description: "Survival at its finest. Trust no one, build everything, lose it all.",
     color: 'linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)'
   },
   {
     title: 'For Honor',
     image: '/games/forhonor.png',
-    emoji: '🏠',
     description: "Survival at its finest. Trust no one, build everything, lose it all.",
     color: 'linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)'
   },
   {
     title: 'Rainbow 6 Siege X',
     image: '/games/r6.png',
-    emoji: '🏠',
     description: "Survival at its finest. Trust no one, build everything, lose it all.",
     color: 'linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)'
   },
   {
     title: 'PUBG: Battlegrounds',
     image: '/games/pubg.png',
-    emoji: '🏠',
     description: "Survival at its finest. Trust no one, build everything, lose it all.",
     color: 'linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)'
   },
   {
     title: 'R.E.P.O.',
     image: '/games/repo.png',
-    emoji: '🏠',
     description: "Survival at its finest. Trust no one, build everything, lose it all.",
     color: 'linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)'
   },
@@ -652,30 +641,7 @@ export const About = () => {
             viewport={{ once: true }}
             className="bento-card music-card"
           >
-            <div className="music-header">
-              <h3 className="bento-card-title music-title">
-                MY ALBUM COLLECTIONS
-              </h3>
-              <MusicNote sx={{ fontSize: 24 }} />
-            </div>
-            <div className="music-content">
-              <AlbumCarousel albums={albums} />
-            </div>
-            {/* Sliding marquee */}
-            <div className="music-marquee">
-              <div className="music-marquee-track">
-                <div className="music-marquee-content">
-                  <span><MusicNote sx={{ fontSize: 16 }} /> Music Never Sleeps</span>
-                  <span><MusicNote sx={{ fontSize: 16 }} /> Music Never Sleeps</span>
-                  <span><MusicNote sx={{ fontSize: 16 }} /> Music Never Sleeps</span>
-                </div>
-                <div className="music-marquee-content" aria-hidden="true">
-                  <span><MusicNote sx={{ fontSize: 16 }} /> Music Never Sleeps</span>
-                  <span><MusicNote sx={{ fontSize: 16 }} /> Music Never Sleeps</span>
-                  <span><MusicNote sx={{ fontSize: 16 }} /> Music Never Sleeps</span>
-                </div>
-              </div>
-            </div>
+            <AlbumCarousel albums={albums} />
           </motion.div>
 
           {/* GitHub Contributions */}

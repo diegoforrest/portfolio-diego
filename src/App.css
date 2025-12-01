@@ -801,7 +801,7 @@ body {
 .bento-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr 1fr 1fr;
-  grid-template-rows: 275px 275px 375px 375px;
+  grid-template-rows: 275px 275px 375px 0px;
   gap: 12px;
   max-width: 95%;
   width: 100%;
@@ -1624,8 +1624,8 @@ body {
 
 /* Center card - main visible card */
 .game-card-center {
-  width: 65%;
-  height: 90%;
+  width: 85%;
+  height: 100%;
   z-index: 10;
   overflow: hidden;
   display: flex;
@@ -1736,7 +1736,6 @@ body {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 16px;
   box-sizing: border-box;
 }
 
@@ -1797,24 +1796,34 @@ body {
 }
 
 .game-swiper {
-  width: 180px;
+  width: 240px;
   height: 260px;
   overflow: visible;
 }
 
 .game-swiper-slide {
+  width: 240px !important;
+  height: 260px !important;
   border-radius: 16px;
-  overflow: hidden;
+  overflow: visible;
+  flex-shrink: 0;
 }
 
 .game-stack-card {
-  width: 100%;
-  height: 100%;
+  width: 240px;
+  height: 260px;
+  min-width: 240px;
+  min-height: 260px;
+  max-width: 240px;
+  max-height: 260px;
   border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   cursor: grab;
+  flex-shrink: 0;
+  padding: 8px;
+  box-sizing: border-box;
 }
 
 .game-stack-card:active {
@@ -1823,38 +1832,55 @@ body {
 
 .game-stack-image {
   width: 100%;
-  height: 50%;
+  height: 120px;
+  min-height: 120px;
+  max-height: 120px;
   overflow: hidden;
+  flex-shrink: 0;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
 }
 
 .game-stack-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
   pointer-events: none;
+  border-radius: 10px;
+  transform: scale(1);
+  transition: transform 0.3s ease;
+}
+
+.game-stack-card:hover .game-stack-image img {
+  transform: scale(1.1);
 }
 
 .game-stack-info {
-  padding: 14px;
+  padding: 12px 4px 4px 4px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   flex: 1;
+  overflow: hidden;
 }
 
 .game-stack-title {
-  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
   font-weight: 700;
   color: white;
   font-family: 'Inter';
 }
 
 .game-stack-description {
-  font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
   font-family: 'Inter';
-  line-height: 1.45;
+  line-height: 1.5;
   margin: 0;
 }
 
@@ -1878,6 +1904,7 @@ body {
   margin-bottom: 0;
 }
 
+
 .music-title {
   font-size: 1rem;
   font-weight: 700;
@@ -1885,31 +1912,7 @@ body {
   letter-spacing: 0.5px;
 }
 
-.music-nav-buttons {
-  display: flex;
-  gap: 8px;
-}
 
-.music-nav-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: rgba(102, 126, 234, 0.2);
-  border: 1px solid rgba(102, 126, 234, 0.3);
-  border-radius: 8px;
-  color: var(--text-color);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: 'Inter';
-}
-
-.music-nav-btn:hover {
-  background: rgba(102, 126, 234, 0.3);
-  border-color: rgba(102, 126, 234, 0.5);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-}
 
 .music-content {
   display: flex;
@@ -1929,11 +1932,18 @@ body {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   overflow: hidden;
   padding: 0;
   margin: 0;
+}
+
+.album-carousel-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 /* Swiper Carousel Styles */
@@ -1983,6 +1993,7 @@ body {
   display: block;
   border-radius: 12px;
 }
+
 
 
 .album-nav-btn {
@@ -2073,19 +2084,15 @@ body {
   border-radius: 0 0 20px 20px;
 }
 
-.music-marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 25s linear infinite;
+.music-marquee-swiper {
+  width: 100%;
 }
 
-.music-marquee-content {
-  display: flex;
-  gap: 40px;
-  padding-right: 40px;
+.music-marquee-swiper .swiper-wrapper {
+  transition-timing-function: linear !important;
 }
 
-.music-marquee-content span {
+.marquee-item {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -2094,15 +2101,6 @@ body {
   font-weight: 600;
   color: #667eea;
   white-space: nowrap;
-}
-
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
 }
 
 /* Contact Section */

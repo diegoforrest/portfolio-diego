@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import 'swiper/css'
 import 'swiper/css/effect-cards'
 
-const GameCarousel = ({ games }) => {
+export const GameCarousel = ({ games }) => {
   const swiperRef = useRef(null)
   const [isShuffling, setIsShuffling] = useState(false)
   const [gameOrder, setGameOrder] = useState(games)
@@ -33,7 +33,6 @@ const GameCarousel = ({ games }) => {
 
   return (
     <div className="game-carousel-container">
-      {/* Header with title and nav buttons */}
       <div className="game-carousel-header">
         <h3 className="game-carousel-title">
           <SportsEsports sx={{ fontSize: 20 }} />
@@ -122,5 +121,3 @@ const GameCarousel = ({ games }) => {
     </div>
   )
 }
-
-export default GameCarousel
