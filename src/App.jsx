@@ -4,13 +4,14 @@ import { Hero } from './components/Hero.jsx'
 import { Projects } from './components/Projects.jsx'
 import { Contact } from './components/Contact.jsx'
 import { Footer } from './components/Footer.jsx'
-import { ThemeProvider } from '@/components/ui/theme-provider'
+import { ThemeProvider, useTheme } from '@/components/ui/theme-provider'
 import { ThemeCustomizerProvider } from './components/ThemeCustomizerProvider.jsx'
 import { ThemeCustomizer } from './components/ThemeCustomizerShadcn.jsx'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'    
 import { About } from './components/About.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { DarkVeil } from './components/DarkVeil.jsx'
 
 
 
@@ -39,6 +40,10 @@ useEffect(() => {
       <ThemeCustomizerProvider>
         <BrowserRouter>
           <ThemeCustomizer>
+            {/* DarkVeil background - now inside providers for direct context access */}
+            <div className="darkveil-wrapper">
+              <DarkVeil />
+            </div>
             <div className={`app ${isLoaded ? "loaded" : ""}`}>
               <Navbar />
               <Routes>

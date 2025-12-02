@@ -4,14 +4,37 @@ const ThemeCustomizerContext = createContext(null);
 
 const DEFAULT_THEME = {
   primaryColor: 'oklch(63.7% .237 25.331)', // Red
+  surfaceColor: 'zinc', // Default surface color palette
   fontFamily: '"Inter", system-ui, sans-serif',
   textSize: 1,
 };
 
 const getStoredTheme = () => {
   if (typeof window === 'undefined') return DEFAULT_THEME;
-  const stored = localStorage.getItem('customTheme');
-  return stored ? JSON.parse(stored) : DEFAULT_THEME;
+  try {
+    const stored = localStorage.getItem('customTheme');
+    if (!stored) return DEFAULT_THEME;
+    
+    const parsed = JSON.parse(stored);
+    
+    // Validate that stored values are strings/numbers, not objects
+    // This fixes corrupted localStorage data
+    const isValid = 
+      typeof parsed.primaryColor === 'string' &&
+      typeof parsed.surfaceColor === 'string' &&
+      typeof parsed.fontFamily === 'string' &&
+      typeof parsed.textSize === 'number';
+    
+    if (!isValid) {
+      localStorage.removeItem('customTheme');
+      return DEFAULT_THEME;
+    }
+    
+    return parsed;
+  } catch {
+    localStorage.removeItem('customTheme');
+    return DEFAULT_THEME;
+  }
 };
 
 export function ThemeCustomizerProvider({ children }) {
@@ -29,6 +52,13 @@ export function ThemeCustomizerProvider({ children }) {
     root.style.setProperty('--hover-border', theme.primaryColor);
     root.style.setProperty('--gradient-start', theme.primaryColor);
     
+    // Surface color - set CSS class on root
+    const surfacePalettes = ['slate', 'gray', 'zinc', 'neutral', 'stone'];
+    surfacePalettes.forEach(p => root.classList.remove(`surface-${p}`));
+    if (theme.surfaceColor) {
+      root.classList.add(`surface-${theme.surfaceColor}`);
+    }
+    
     // Font family
     root.style.setProperty('--font-family', theme.fontFamily);
     document.body.style.fontFamily = theme.fontFamily;
@@ -39,6 +69,9 @@ export function ThemeCustomizerProvider({ children }) {
     
     // Save to localStorage
     localStorage.setItem('customTheme', JSON.stringify(theme));
+    
+    // Dispatch custom event for DarkVeil and other components
+    window.dispatchEvent(new CustomEvent('themechange', { detail: theme }));
   }, [theme]);
 
   // Update theme with history tracking
@@ -53,13 +86,34 @@ export function ThemeCustomizerProvider({ children }) {
   }, [historyIndex]);
 
   const setPrimaryColor = (color) => updateTheme({ primaryColor: color });
+  const setSurfaceColor = (surface) => updateTheme({ surfaceColor: surface });
   const setFontFamily = (font) => updateTheme({ fontFamily: font });
   const setTextSize = (size) => updateTheme({ textSize: size });
 
   const resetTheme = () => {
+    // Clear localStorage
+    localStorage.removeItem('customTheme');
+    
+    // Reset state
     setTheme(DEFAULT_THEME);
     setHistory([DEFAULT_THEME]);
     setHistoryIndex(0);
+    
+    // Reset CSS variables and styles to defaults
+    const root = document.documentElement;
+    root.style.setProperty('--primary-color', DEFAULT_THEME.primaryColor);
+    root.style.setProperty('--accent-color', DEFAULT_THEME.primaryColor);
+    root.style.setProperty('--hover-border', DEFAULT_THEME.primaryColor);
+    root.style.setProperty('--gradient-start', DEFAULT_THEME.primaryColor);
+    root.style.setProperty('--font-family', DEFAULT_THEME.fontFamily);
+    root.style.setProperty('--typography-scale', DEFAULT_THEME.textSize);
+    document.documentElement.style.fontSize = `${DEFAULT_THEME.textSize * 16}px`;
+    document.body.style.fontFamily = DEFAULT_THEME.fontFamily;
+    
+    // Reset surface color classes
+    const surfacePalettes = ['slate', 'gray', 'zinc', 'neutral', 'stone'];
+    surfacePalettes.forEach(p => root.classList.remove(`surface-${p}`));
+    root.classList.add(`surface-${DEFAULT_THEME.surfaceColor}`);
   };
 
   const undo = () => {
@@ -79,6 +133,7 @@ export function ThemeCustomizerProvider({ children }) {
   const value = {
     ...theme,
     setPrimaryColor,
+    setSurfaceColor,
     setFontFamily,
     setTextSize,
     resetTheme,

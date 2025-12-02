@@ -1,6 +1,49 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 import { Renderer, Program, Mesh, Triangle, Vec2 } from 'ogl';
+import { useTheme } from '@/components/ui/theme-provider';
+import { useThemeCustomizer } from './ThemeCustomizerProvider';
 import './DarkVeil.css';
+
+// Exact hue shift values calibrated by user testing
+const COLOR_TO_HUE_SHIFT = {
+  'oklch(63.7% .237 25.331)': 242,    // Red
+  'oklch(70.5% .213 47.604)': 220,    // Orange
+  'oklch(76.9% .188 70.08)': 208,     // Amber
+  'oklch(79.5% .184 86.047)': 200,    // Yellow
+  'oklch(76.8% .233 130.85)': 164,    // Lime
+  'oklch(72.3% .219 149.579)': 95,    // Green
+  'oklch(69.6% .17 162.48)': 63,      // Emerald
+  'oklch(70.4% .14 182.503)': 50,     // Teal
+  'oklch(71.5% .143 215.221)': 45,    // Cyan
+  'oklch(68.5% .169 237.323)': 42,    // Sky
+  'oklch(62.3% .214 259.815)': 24,    // Blue
+  'oklch(58.5% .233 277.117)': 15,    // Indigo
+  'oklch(60.6% .25 292.717)': 0,      // Violet
+  'oklch(62.7% .265 303.9)': 341,     // Purple
+  'oklch(66.7% .295 322.15)': 292,    // Fuchsia
+  'oklch(65.6% .241 354.308)': 282,   // Pink
+  'oklch(64.5% .246 16.439)': 258,    // Rose
+};
+
+// Fallback: extract hue from oklch and calculate shift
+function getHueShiftFromColor(color) {
+  // First check if we have a direct mapping
+  if (COLOR_TO_HUE_SHIFT[color] !== undefined) {
+    return COLOR_TO_HUE_SHIFT[color];
+  }
+  
+  // Fallback: parse oklch and calculate
+  if (color && color.startsWith('oklch')) {
+    const match = color.match(/oklch\(\s*[\d.]+%?\s+[\d.]+\s+([\d.]+)\s*\)/);
+    if (match) {
+      const hue = parseFloat(match[1]) || 0;
+      // Shader base is approximately green (~140°)
+      return hue - 140;
+    }
+  }
+  
+  return 0;
+}
 
 const vertex = `
 attribute vec2 position;
@@ -75,15 +118,44 @@ void main(){
 `;
 
 export function DarkVeil({
-  hueShift = 0,
   noiseIntensity = 0,
   scanlineIntensity = 0,
   speed = 0.5,
   scanlineFrequency = 0,
   warpAmount = 0,
-  resolutionScale = 1
+  resolutionScale = 1,
+  adaptToTheme = true
 }) {
   const ref = useRef(null);
+  const hueShiftRef = useRef(0);
+  
+  // Use the theme context directly now that we're inside the provider
+  const { theme } = useTheme();
+  const { primaryColor } = useThemeCustomizer();
+  
+  // Determine if dark mode based on theme context
+  const isDarkMode = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+  // Get hue shift from map based on primary color
+  const hueShift = useMemo(() => {
+    if (!adaptToTheme || !primaryColor) {
+      return 242; // Default red hue shift
+    }
+    const shift = COLOR_TO_HUE_SHIFT[primaryColor];
+    if (shift !== undefined) {
+      console.log('[DarkVeil] Hue shift for', primaryColor, '→', shift);
+      return shift;
+    }
+    // Fallback: return red
+    return 242;
+  }, [adaptToTheme, primaryColor]);
+  
+  // Keep ref updated so animation loop always has current value
+  useEffect(() => {
+    hueShiftRef.current = hueShift;
+    console.log('[DarkVeil] Updated hueShiftRef to:', hueShift);
+  }, [hueShift]);
+
   useEffect(() => {
     const canvas = ref.current;
     const parent = canvas.parentElement;
@@ -127,7 +199,8 @@ export function DarkVeil({
 
     const loop = () => {
       program.uniforms.uTime.value = ((performance.now() - start) / 1000) * speed;
-      program.uniforms.uHueShift.value = hueShift;
+      // Update hue shift from ref for real-time changes
+      program.uniforms.uHueShift.value = hueShiftRef.current;
       program.uniforms.uNoise.value = noiseIntensity;
       program.uniforms.uScan.value = scanlineIntensity;
       program.uniforms.uScanFreq.value = scanlineFrequency;
@@ -136,14 +209,21 @@ export function DarkVeil({
       frame = requestAnimationFrame(loop);
     };
 
+    console.log('[DarkVeil] WebGL initialized with hue shift:', hueShift);
     loop();
 
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener('resize', resize);
     };
-  }, [hueShift, noiseIntensity, scanlineIntensity, speed, scanlineFrequency, warpAmount, resolutionScale]);
-  return <canvas ref={ref} className="darkveil-canvas" />;
+  }, [noiseIntensity, scanlineIntensity, speed, scanlineFrequency, warpAmount, resolutionScale, hueShift]);
+  
+  return (
+    <canvas 
+      ref={ref} 
+      className={`darkveil-canvas ${isDarkMode ? '' : 'light-mode'}`}
+    />
+  );
 }
 
 export default DarkVeil;

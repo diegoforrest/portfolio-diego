@@ -1,10 +1,9 @@
 import { useState, createContext, useContext } from 'react';
-import { Settings2, Undo2, Redo2, RotateCcw, Check, Sun, Moon, Monitor } from 'lucide-react';
+import { Undo2, Redo2, RotateCcw, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -14,7 +13,6 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from '@/components/ui/dropdown-menu';
-import { useTheme } from '@/components/ui/theme-provider';
 import { useThemeCustomizer } from './ThemeCustomizerProvider';
 import { cn } from '@/lib/utils';
 
@@ -53,13 +51,20 @@ const PRIMARY_COLORS = [
   { name: 'Rose', value: 'oklch(64.5% .246 16.439)' },
 ];
 
-// Font options - Inter as default, Geist as alternative
+// Surface color palettes - showing 500 shade as preview
+const SURFACE_COLORS = [
+  { name: 'Slate', value: 'slate', preview: '#64748b' },
+  { name: 'Gray', value: 'gray', preview: '#6b7280' },
+  { name: 'Zinc', value: 'zinc', preview: '#71717a' },
+  { name: 'Neutral', value: 'neutral', preview: '#737373' },
+  { name: 'Stone', value: 'stone', preview: '#78716c' },
+];
+
+// Font options - Inter, Geist, JetBrains Mono only
 const FONT_OPTIONS = [
   { name: 'Inter', value: '"Inter", system-ui, sans-serif' },
   { name: 'Geist', value: '"Geist", system-ui, sans-serif' },
-  { name: 'System', value: 'system-ui, sans-serif' },
-  { name: 'Serif', value: '"Georgia", serif' },
-  { name: 'Mono', value: '"JetBrains Mono", monospace' },
+  { name: 'JetBrains Mono', value: '"JetBrains Mono", monospace' },
 ];
 
 const TEXT_SIZES = [
@@ -71,10 +76,11 @@ const TEXT_SIZES = [
 
 export function ThemeCustomizer({ children }) {
   const [open, setOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
   const { 
     primaryColor, 
     setPrimaryColor,
+    surfaceColor,
+    setSurfaceColor,
     fontFamily,
     setFontFamily,
     textSize,
@@ -101,33 +107,6 @@ export function ThemeCustomizer({ children }) {
           className="w-72 bg-zinc-900 border-zinc-800 text-white"
           sideOffset={5}
         >
-          {/* Theme Mode */}
-          <DropdownMenuLabel className="text-xs text-zinc-500 uppercase tracking-wider">
-            Appearance
-          </DropdownMenuLabel>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="flex items-center gap-2 text-zinc-100 focus:bg-zinc-800 focus:text-white">
-              {theme === 'dark' ? <Moon className="h-4 w-4" /> : theme === 'light' ? <Sun className="h-4 w-4" /> : <Monitor className="h-4 w-4" />}
-              <span>Theme</span>
-              <span className="ml-auto text-xs text-zinc-500 capitalize">{theme}</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent className="bg-zinc-900 border-zinc-800">
-              <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
-                <DropdownMenuRadioItem value="light" className="text-zinc-100 focus:bg-zinc-800 focus:text-white">
-                  <Sun className="h-4 w-4 mr-2" /> Light
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="dark" className="text-zinc-100 focus:bg-zinc-800 focus:text-white">
-                  <Moon className="h-4 w-4 mr-2" /> Dark
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="system" className="text-zinc-100 focus:bg-zinc-800 focus:text-white">
-                  <Monitor className="h-4 w-4 mr-2" /> System
-                </DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
-
-          <DropdownMenuSeparator className="bg-zinc-800" />
-
           {/* Primary Color */}
           <DropdownMenuLabel className="text-xs text-zinc-500 uppercase tracking-wider">
             Primary Color
@@ -145,6 +124,29 @@ export function ThemeCustomizer({ children }) {
                 title={color.name}
               >
                 {primaryColor === color.value && <Check className="h-3 w-3 text-white" />}
+              </button>
+            ))}
+          </div>
+
+          <DropdownMenuSeparator className="bg-zinc-800" />
+
+          {/* Surface Color */}
+          <DropdownMenuLabel className="text-xs text-zinc-500 uppercase tracking-wider">
+            Surface Color
+          </DropdownMenuLabel>
+          <div className="px-2 py-2 flex flex-wrap gap-1.5">
+            {SURFACE_COLORS.map((surface) => (
+              <button
+                key={surface.value}
+                onClick={() => setSurfaceColor(surface.value)}
+                className={cn(
+                  "w-6 h-6 rounded-full transition-all hover:scale-110 flex items-center justify-center border border-zinc-700",
+                  surfaceColor === surface.value && "ring-2 ring-white ring-offset-2 ring-offset-zinc-900"
+                )}
+                style={{ backgroundColor: surface.preview }}
+                title={surface.name}
+              >
+                {surfaceColor === surface.value && <Check className="h-3 w-3 text-white" />}
               </button>
             ))}
           </div>
