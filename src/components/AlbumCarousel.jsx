@@ -1,26 +1,31 @@
-import React, { useRef } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { EffectCoverflow, Navigation, Autoplay, FreeMode } from 'swiper/modules'
-import 'swiper/css'
-import 'swiper/css/effect-coverflow'
-import 'swiper/css/navigation'
-import 'swiper/css/free-mode'
-import { ArrowOutward, MusicNote } from '@mui/icons-material'
+import React, { useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import {
+  EffectCoverflow,
+  Navigation,
+  Autoplay,
+  FreeMode,
+} from "swiper/modules";
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/navigation";
+import "swiper/css/free-mode";
+import { ArrowOutward, MusicNote } from "@mui/icons-material";
 
 export const AlbumCarousel = ({ albums }) => {
-  const swiperRef = useRef(null)
+  const swiperRef = useRef(null);
 
   return (
     <div className="album-carousel-wrapper">
       <div className="music-header">
-        <h3 className="music-title">
+        <h3 className="bento-title">
           Listening To
+          <MusicNote sx={{ fontSize: 20 }} />
         </h3>
-        <MusicNote sx={{ fontSize: 24 }} />
       </div>
       <div className="album-carousel-main">
-        <button 
-          className="album-nav-btn album-nav-left" 
+        <button
+          className="album-nav-btn album-nav-left"
           onClick={() => swiperRef.current?.slidePrev()}
           type="button"
           aria-label="Previous album"
@@ -79,8 +84,8 @@ export const AlbumCarousel = ({ albums }) => {
           ))}
         </Swiper>
 
-        <button 
-          className="album-nav-btn album-nav-right" 
+        <button
+          className="album-nav-btn album-nav-right"
           onClick={() => swiperRef.current?.slideNext()}
           type="button"
           aria-label="Next album"
@@ -113,7 +118,7 @@ export const AlbumCarousel = ({ albums }) => {
           className="music-marquee-swiper"
         >
           {[...Array(8)].map((_, index) => (
-            <SwiperSlide key={index} style={{ width: 'auto' }}>
+            <SwiperSlide key={index} style={{ width: "auto" }}>
               <span className="marquee-item">
                 <MusicNote sx={{ fontSize: 16 }} /> This Vibe Doesn't End
               </span>
@@ -122,5 +127,5 @@ export const AlbumCarousel = ({ albums }) => {
         </Swiper>
       </div>
     </div>
-  )
-}
+  );
+};

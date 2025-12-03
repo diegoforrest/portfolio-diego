@@ -1,46 +1,52 @@
-import React, { useRef, useState } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { EffectCards, Navigation } from 'swiper/modules'
-import { ChevronLeft, ChevronRight, Shuffle, SportsEsports, SportsEsportsOutlined } from '@mui/icons-material'
-import { motion } from 'framer-motion'
+import React, { useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCards, Navigation } from "swiper/modules";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Shuffle,
+  SportsEsports,
+  SportsEsportsOutlined,
+} from "@mui/icons-material";
+import { motion } from "framer-motion";
 
-import 'swiper/css'
-import 'swiper/css/effect-cards'
+import "swiper/css";
+import "swiper/css/effect-cards";
 
 export const GameCarousel = ({ games }) => {
-  const swiperRef = useRef(null)
-  const [isShuffling, setIsShuffling] = useState(false)
-  const [gameOrder, setGameOrder] = useState(games)
+  const swiperRef = useRef(null);
+  const [isShuffling, setIsShuffling] = useState(false);
+  const [gameOrder, setGameOrder] = useState(games);
 
   const shuffleGames = async () => {
-    if (isShuffling) return
-    setIsShuffling(true)
-    
+    if (isShuffling) return;
+    setIsShuffling(true);
+
     // Loading delay
-    await new Promise(resolve => setTimeout(resolve, 800))
-    
-    const shuffled = [...games].sort(() => Math.random() - 0.5)
-    setGameOrder(shuffled)
-    
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    const shuffled = [...games].sort(() => Math.random() - 0.5);
+    setGameOrder(shuffled);
+
     // Reset to first slide
     if (swiperRef.current) {
-      swiperRef.current.slideToLoop(0, 0)
+      swiperRef.current.slideToLoop(0, 0);
     }
-    
-    await new Promise(resolve => setTimeout(resolve, 200))
-    setIsShuffling(false)
-  }
+
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    setIsShuffling(false);
+  };
 
   return (
     <div className="game-carousel-container">
       <div className="game-carousel-header">
-        <h3 className="game-carousel-title">
+        <h3 className="bento-title">
           <SportsEsportsOutlined sx={{ fontSize: 20 }} />
-          GAMES.TXT
+          Games I Play
         </h3>
         <div className="game-nav-buttons">
           <motion.button
-            className="game-nav-btn"
+            className="bento-btn bento-btn-icon"
             onClick={() => swiperRef.current?.slidePrev()}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -50,7 +56,7 @@ export const GameCarousel = ({ games }) => {
             <ChevronLeft sx={{ fontSize: 18 }} />
           </motion.button>
           <motion.button
-            className="game-nav-btn"
+            className="bento-btn bento-btn-icon"
             onClick={shuffleGames}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -69,7 +75,7 @@ export const GameCarousel = ({ games }) => {
             )}
           </motion.button>
           <motion.button
-            className="game-nav-btn"
+            className="bento-btn bento-btn-icon"
             onClick={() => swiperRef.current?.slideNext()}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -97,8 +103,11 @@ export const GameCarousel = ({ games }) => {
           loop={true}
         >
           {gameOrder.map((game, index) => (
-            <SwiperSlide key={`${game.title}-${index}`} className="game-swiper-slide">
-              <div 
+            <SwiperSlide
+              key={`${game.title}-${index}`}
+              className="game-swiper-slide"
+            >
+              <div
                 className="game-stack-card"
                 style={{ background: game.color }}
               >
@@ -109,9 +118,7 @@ export const GameCarousel = ({ games }) => {
                   <span className="game-stack-title">
                     {game.emoji} {game.title}
                   </span>
-                  <p className="game-stack-description">
-                    {game.description}
-                  </p>
+                  <p className="game-stack-description">{game.description}</p>
                 </div>
               </div>
             </SwiperSlide>
@@ -119,5 +126,5 @@ export const GameCarousel = ({ games }) => {
         </Swiper>
       </div>
     </div>
-  )
-}
+  );
+};

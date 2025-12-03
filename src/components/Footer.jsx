@@ -1,13 +1,31 @@
-import { LinkedIn, GitHub, Mail, ArrowOutward, ContentCopy, Check, ContactMail } from '@mui/icons-material';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import {
+  LinkedIn,
+  GitHub,
+  Mail,
+  ArrowOutward,
+  ContentCopy,
+  Check,
+  ContactMail,
+} from "@mui/icons-material";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-const EMAIL = 'diegoforrestcruz@gmail.com';
+const EMAIL = "diegoforrestcruz@gmail.com";
 
 const footerLinks = [
-  { name: 'Linkedin', icon: LinkedIn, url: 'https://www.linkedin.com/in/diegoforrestcruz/', external: true },
-  { name: 'Github', icon: GitHub, url: 'https://github.com/diegoforrest', external: true },
-  { name: 'Contact', icon: Mail, url: '/contact', external: false },
+  {
+    name: "Linkedin",
+    icon: LinkedIn,
+    url: "https://www.linkedin.com/in/diegoforrestcruz/",
+    external: true,
+  },
+  {
+    name: "Github",
+    icon: GitHub,
+    url: "https://github.com/diegoforrest",
+    external: true,
+  },
+  { name: "Contact", icon: Mail, url: "/contact", external: false },
 ];
 
 export const Footer = () => {
@@ -20,7 +38,7 @@ export const Footer = () => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy email:', err);
+      console.error("Failed to copy email:", err);
     }
   };
 
@@ -33,7 +51,7 @@ export const Footer = () => {
           <div className="footer-links">
             {footerLinks.map((link) => {
               const IconComponent = link.icon;
-              
+
               if (link.external) {
                 return (
                   <a
@@ -45,33 +63,35 @@ export const Footer = () => {
                   >
                     <IconComponent sx={{ fontSize: 18 }} />
                     <span>{link.name}</span>
-                    <ArrowOutward sx={{ fontSize: 16 }} className="footer-link-arrow" />
+                    <ArrowOutward
+                      sx={{ fontSize: 16 }}
+                      className="footer-link-arrow"
+                    />
                   </a>
                 );
               }
-              
+
               return (
-                <Link
-                  key={link.name}
-                  to={link.url}
-                  className="footer-link"
-                >
+                <Link key={link.name} to={link.url} className="footer-link">
                   <IconComponent sx={{ fontSize: 18 }} />
                   <span>{link.name}</span>
-                  <ArrowOutward sx={{ fontSize: 16 }} className="footer-link-arrow" />
+                  <ArrowOutward
+                    sx={{ fontSize: 16 }}
+                    className="footer-link-arrow"
+                  />
                 </Link>
               );
             })}
-            <button
-              onClick={copyEmail}
-              className="footer-link footer-mail-btn"
-            >
+            <button onClick={copyEmail} className="footer-link footer-mail-btn">
               <ContactMail sx={{ fontSize: 18 }} />
-              <span>{copied ? 'Copied!' : 'E-Mail'}</span>
+              <span>{copied ? "Copied!" : "E-Mail"}</span>
               {copied ? (
                 <Check sx={{ fontSize: 16 }} className="footer-link-arrow" />
               ) : (
-                <ContentCopy sx={{ fontSize: 16 }} className="footer-link-arrow" />
+                <ContentCopy
+                  sx={{ fontSize: 16 }}
+                  className="footer-link-arrow"
+                />
               )}
             </button>
           </div>

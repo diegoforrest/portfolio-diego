@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
-import { useTheme } from '@/components/ui/theme-provider';
+import { useTheme } from "@/components/ui/theme-provider";
 import { Settings2 } from "lucide-react";
-import { Link } from 'react-router-dom';
-import { useThemeCustomizerUI } from './ThemeCustomizerShadcn';
-import { ThemeToggleButton, useThemeTransition } from '@/components/ui/theme-toggle-button';
+import { Link } from "react-router-dom";
+import { useThemeCustomizerUI } from "./ThemeCustomizerShadcn";
+import {
+  ThemeToggleButton,
+  useThemeTransition,
+} from "@/components/ui/theme-toggle-button";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -26,10 +29,10 @@ export const Navbar = () => {
 
   const handleThemeToggle = () => {
     startTransition(() => {
-      setTheme(theme === 'dark' ? 'light' : 'dark');
+      setTheme(theme === "dark" ? "light" : "dark");
     });
   };
-  
+
   return (
     <motion.nav
       className="navbar"
@@ -37,14 +40,15 @@ export const Navbar = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <motion.a
-        href="/"
-        className="logo"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        diego
-      </motion.a>
+      <Link to="/" className="logo-link">
+        <motion.span
+          className="logo"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          diego
+        </motion.span>
+      </Link>
 
       <motion.ul
         className="nav-links"
@@ -54,34 +58,24 @@ export const Navbar = () => {
       >
         <motion.li
           variants={fadeInUp}
-          whileHover={{ scale: 1.1 }}
+          whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <a href="#Projects">Projects</a>
+          <button className="theme-toggle" onClick={openCustomizer}>
+            <Settings2 size={16} />
+          </button>
         </motion.li>
         <motion.li
           variants={fadeInUp}
-          whileHover={{ scale: 1.1 }}
+          whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <Link to="/contact">Contact</Link>
-        </motion.li>
-        <motion.li variants={fadeInUp}
-          whileHover={{ scale: 1.3 }}
-          whileTap={{ scale: 1 }}>
-          <button className="theme-toggle" onClick={openCustomizer}>
-            <Settings2 size={20} />
-          </button>
-        </motion.li>
-        <motion.li variants={fadeInUp}
-        whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}>
           <ThemeToggleButton
             theme={theme}
             variant="circle"
             start="center"
             onClick={handleThemeToggle}
-            className="bg-transparent border-none hover:bg-transparent text-[var(--logo-color)]"
+            className="theme-toggle"
           />
         </motion.li>
       </motion.ul>

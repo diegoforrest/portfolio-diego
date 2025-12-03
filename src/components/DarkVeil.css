@@ -15,7 +15,6 @@
   transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
-/* Light mode: invert the shader colors */
 .darkveil-canvas.light-mode {
   filter: invert(1) hue-rotate(180deg);
 }

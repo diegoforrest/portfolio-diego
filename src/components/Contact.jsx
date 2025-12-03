@@ -86,7 +86,7 @@ export const Contact = () => {
 
           <motion.button
             type="submit"
-            className="submit-btn"
+            className="btn btn-primary"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
