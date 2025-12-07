@@ -11,10 +11,9 @@ import {
 } from "@mui/icons-material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { InteractiveGradient } from "./InteractiveGradient";
 import { ArrowRight } from "lucide-react";
+import { CodeBlock } from "./CodeBlock";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -44,7 +43,7 @@ export const Hero = () => {
   return (
     <motion.section
       id="home"
-      className="hero"
+      className="hero-section"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.2 }}
@@ -57,16 +56,16 @@ export const Hero = () => {
           initial="initial"
           animate="animate"
         >
-          <motion.h1 className="hero-title" variants={fadeInUp}>
+          <motion.h1 className="hero-name" variants={fadeInUp}>
             Diego Forrest <br /> Cruz
           </motion.h1>
 
           <motion.div className="hero-badge" variants={fadeInUp}>
-            <span className="badge-dot"></span>
+            <span className="hero-badge-dot"></span>
             Software Engineer | Web Developer
           </motion.div>
 
-          <motion.p className="hero-description" variants={fadeInUp}>
+          <motion.p className="hero-desc" variants={fadeInUp}>
             Passionate about building clean, modern, and responsive web
             experiences using React, JavaScript, and Tailwind. I love turning
             ideas into smooth, user-friendly interfaces while continuously
@@ -133,7 +132,7 @@ export const Hero = () => {
               variants={fadeInUp}
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link"
+              className="social-icons"
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -144,7 +143,7 @@ export const Hero = () => {
               variants={fadeInUp}
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link"
+              className="social-icons"
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -155,7 +154,7 @@ export const Hero = () => {
               variants={fadeInUp}
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link"
+              className="social-icons"
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -166,25 +165,14 @@ export const Hero = () => {
       </div>
 
       <motion.div
-        className="hero-code"
+        className="hero-display-code"
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
       >
-        <div className="Code-Display">
-          <SyntaxHighlighter
-            language="typescript"
-            customStyle={{
-              margin: 0,
-              padding: "2rem",
-              height: "100%",
-              borderRadius: "20px 0 0 20px",
-              background: "rgba(30,41,59,1)",
-              backdropFilter: "blur(10px)",
-            }}
-            style={vscDarkPlus}
-          >
-            {`const aboutMe: DeveloperProfile = {
+        <div>
+          <CodeBlock
+            code={`const aboutMe: DeveloperProfile = {
   codename: "Diego Forrest Cruz",
   origin: "Bacoor, Philippines — somewhere between Dota2 and Vs Code",
   role: "Software Engineer and Web Developer",
@@ -205,7 +193,7 @@ export const Hero = () => {
     "Building smooth, modern interfaces while leveling up every day.",
   availability: "Open for work opportunities!",
 };`}
-          </SyntaxHighlighter>
+          />
         </div>
       </motion.div>
     </motion.section>

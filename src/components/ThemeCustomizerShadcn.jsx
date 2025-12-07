@@ -1,6 +1,6 @@
-import { useState, createContext, useContext } from 'react';
-import { Undo2, Redo2, RotateCcw, Check } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useState, createContext, useContext } from "react";
+import { Undo2, Redo2, RotateCcw, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,9 +12,9 @@ import {
   DropdownMenuSubContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-} from '@/components/ui/dropdown-menu';
-import { useThemeCustomizer } from './ThemeCustomizerProvider';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/dropdown-menu";
+import { useThemeCustomizer } from "./ThemeCustomizerProvider";
+import { cn } from "@/lib/utils";
 
 // Context for controlling the dropdown from other components
 const ThemeCustomizerUIContext = createContext(null);
@@ -22,62 +22,69 @@ const ThemeCustomizerUIContext = createContext(null);
 export const useThemeCustomizerUI = () => {
   const context = useContext(ThemeCustomizerUIContext);
   if (!context) {
-    throw new Error('useThemeCustomizerUI must be used within ThemeCustomizer');
+    throw new Error("useThemeCustomizerUI must be used within ThemeCustomizer");
   }
   return context;
 };
 
-// atom63-inspired color palette using oklch
 const PRIMARY_COLORS = [
   // Row 1 - Warm colors
-  { name: 'Red', value: 'oklch(63.7% .237 25.331)' },
-  { name: 'Orange', value: 'oklch(70.5% .213 47.604)' },
-  { name: 'Amber', value: 'oklch(76.9% .188 70.08)' },
-  { name: 'Yellow', value: 'oklch(79.5% .184 86.047)' },
-  { name: 'Lime', value: 'oklch(76.8% .233 130.85)' },
-  { name: 'Green', value: 'oklch(72.3% .219 149.579)' },
-  { name: 'Emerald', value: 'oklch(69.6% .17 162.48)' },
-  // Row 2 - Cool colors  
-  { name: 'Teal', value: 'oklch(70.4% .14 182.503)' },
-  { name: 'Cyan', value: 'oklch(71.5% .143 215.221)' },
-  { name: 'Sky', value: 'oklch(68.5% .169 237.323)' },
-  { name: 'Blue', value: 'oklch(62.3% .214 259.815)' },
-  { name: 'Indigo', value: 'oklch(58.5% .233 277.117)' },
-  { name: 'Violet', value: 'oklch(60.6% .25 292.717)' },
-  { name: 'Purple', value: 'oklch(62.7% .265 303.9)' },
+  { name: "Red", value: "oklch(63.7% .237 25.331)" },
+  { name: "Orange", value: "oklch(70.5% .213 47.604)" },
+  { name: "Amber", value: "oklch(76.9% .188 70.08)" },
+  { name: "Yellow", value: "oklch(79.5% .184 86.047)" },
+  { name: "Lime", value: "oklch(76.8% .233 130.85)" },
+  { name: "Green", value: "oklch(72.3% .219 149.579)" },
+  { name: "Emerald", value: "oklch(69.6% .17 162.48)" },
+  // Row 2 - Cool colors
+  { name: "Teal", value: "oklch(70.4% .14 182.503)" },
+  { name: "Cyan", value: "oklch(71.5% .143 215.221)" },
+  { name: "Sky", value: "oklch(68.5% .169 237.323)" },
+  { name: "Blue", value: "oklch(62.3% .214 259.815)" },
+  { name: "Indigo", value: "oklch(58.5% .233 277.117)" },
+  { name: "Violet", value: "oklch(60.6% .25 292.717)" },
+  { name: "Purple", value: "oklch(62.7% .265 303.9)" },
   // Row 3 - Pink/Rose
-  { name: 'Fuchsia', value: 'oklch(66.7% .295 322.15)' },
-  { name: 'Pink', value: 'oklch(65.6% .241 354.308)' },
-  { name: 'Rose', value: 'oklch(64.5% .246 16.439)' },
+  { name: "Fuchsia", value: "oklch(66.7% .295 322.15)" },
+  { name: "Pink", value: "oklch(65.6% .241 354.308)" },
+  { name: "Rose", value: "oklch(64.5% .246 16.439)" },
 ];
 
-// Surface color palettes - showing 500 shade as preview
+// Surface color palettes - neutral grays with varying hues in OKLCH
 const SURFACE_COLORS = [
-  { name: 'Slate', value: 'slate', preview: '#64748b' },
-  { name: 'Gray', value: 'gray', preview: '#6b7280' },
-  { name: 'Zinc', value: 'zinc', preview: '#71717a' },
-  { name: 'Neutral', value: 'neutral', preview: '#737373' },
-  { name: 'Stone', value: 'stone', preview: '#78716c' },
+  { name: "Slate", value: "oklch(54.61% 0.022 252.89)", preview: "#64748b" },
+  { name: "Gray", value: "oklch(55.01% 0.011 258.34)", preview: "#6b7280" },
+  { name: "Zinc", value: "oklch(55.51% 0.016 256.85)", preview: "#71717a" },
+  { name: "Neutral", value: "oklch(55.46% 0.007 77.65)", preview: "#737373" },
+  { name: "Stone", value: "oklch(54.77% 0.012 56.35)", preview: "#78716c" },
 ];
 
 // Font options - Inter, Geist, JetBrains Mono only
 const FONT_OPTIONS = [
-  { name: 'Inter', value: '"Inter", system-ui, sans-serif' },
-  { name: 'Geist', value: '"Geist", system-ui, sans-serif' },
-  { name: 'JetBrains Mono', value: '"JetBrains Mono", monospace' },
+  { name: "Inter", value: '"Inter", system-ui, sans-serif' },
+  { name: "Geist", value: '"Geist", system-ui, sans-serif' },
+  { name: "JetBrains Mono", value: '"JetBrains Mono", monospace' },
 ];
 
 const TEXT_SIZES = [
-  { name: 'Compact', value: '0.875' },
-  { name: 'Normal', value: '1' },
-  { name: 'Comfortable', value: '1.125' },
-  { name: 'Large', value: '1.25' },
+  { name: "Compact", value: "0.875" },
+  { name: "Normal", value: "1" },
+  { name: "Comfortable", value: "1.125" },
+  { name: "Large", value: "1.25" },
+];
+
+// Background options
+const BACKGROUND_OPTIONS = [
+  { name: "Dark Veil", value: "darkveil" },
+  { name: "Plasma", value: "plasma" },
+  { name: "Color Bends", value: "colorbends" },
+  { name: "None", value: "none" },
 ];
 
 export function ThemeCustomizer({ children }) {
   const [open, setOpen] = useState(false);
-  const { 
-    primaryColor, 
+  const {
+    primaryColor,
     setPrimaryColor,
     surfaceColor,
     setSurfaceColor,
@@ -85,25 +92,29 @@ export function ThemeCustomizer({ children }) {
     setFontFamily,
     textSize,
     setTextSize,
+    backgroundType,
+    setBackgroundType,
     resetTheme,
     undo,
     redo,
     canUndo,
-    canRedo
+    canRedo,
   } = useThemeCustomizer();
 
   const openCustomizer = () => setOpen(true);
   const closeCustomizer = () => setOpen(false);
 
   return (
-    <ThemeCustomizerUIContext.Provider value={{ openCustomizer, closeCustomizer, isOpen: open }}>
+    <ThemeCustomizerUIContext.Provider
+      value={{ openCustomizer, closeCustomizer, isOpen: open }}
+    >
       {children}
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <span className="hidden" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent 
-          align="end" 
+        <DropdownMenuContent
+          align="end"
           className="w-72 bg-zinc-900 border-zinc-800 text-white"
           sideOffset={5}
         >
@@ -118,12 +129,15 @@ export function ThemeCustomizer({ children }) {
                 onClick={() => setPrimaryColor(color.value)}
                 className={cn(
                   "w-6 h-6 rounded-full transition-all hover:scale-110 flex items-center justify-center",
-                  primaryColor === color.value && "ring-2 ring-white ring-offset-2 ring-offset-zinc-900"
+                  primaryColor === color.value &&
+                    "ring-2 ring-white ring-offset-2 ring-offset-zinc-900"
                 )}
                 style={{ backgroundColor: color.value }}
                 title={color.name}
               >
-                {primaryColor === color.value && <Check className="h-3 w-3 text-white" />}
+                {primaryColor === color.value && (
+                  <Check className="h-3 w-3 text-white" />
+                )}
               </button>
             ))}
           </div>
@@ -141,12 +155,15 @@ export function ThemeCustomizer({ children }) {
                 onClick={() => setSurfaceColor(surface.value)}
                 className={cn(
                   "w-6 h-6 rounded-full transition-all hover:scale-110 flex items-center justify-center border border-zinc-700",
-                  surfaceColor === surface.value && "ring-2 ring-white ring-offset-2 ring-offset-zinc-900"
+                  surfaceColor === surface.value &&
+                    "ring-2 ring-white ring-offset-2 ring-offset-zinc-900"
                 )}
                 style={{ backgroundColor: surface.preview }}
                 title={surface.name}
               >
-                {surfaceColor === surface.value && <Check className="h-3 w-3 text-white" />}
+                {surfaceColor === surface.value && (
+                  <Check className="h-3 w-3 text-white" />
+                )}
               </button>
             ))}
           </div>
@@ -161,14 +178,18 @@ export function ThemeCustomizer({ children }) {
             <DropdownMenuSubTrigger className="text-zinc-100 focus:bg-zinc-800 focus:text-white">
               <span>Font Family</span>
               <span className="ml-auto text-xs text-zinc-500">
-                {FONT_OPTIONS.find(f => f.value === fontFamily)?.name || 'Sans Serif'}
+                {FONT_OPTIONS.find((f) => f.value === fontFamily)?.name ||
+                  "Sans Serif"}
               </span>
             </DropdownMenuSubTrigger>
             <DropdownMenuSubContent className="bg-zinc-900 border-zinc-800">
-              <DropdownMenuRadioGroup value={fontFamily} onValueChange={setFontFamily}>
+              <DropdownMenuRadioGroup
+                value={fontFamily}
+                onValueChange={setFontFamily}
+              >
                 {FONT_OPTIONS.map((font) => (
-                  <DropdownMenuRadioItem 
-                    key={font.value} 
+                  <DropdownMenuRadioItem
+                    key={font.value}
                     value={font.value}
                     className="text-zinc-100 focus:bg-zinc-800 focus:text-white"
                     style={{ fontFamily: font.value }}
@@ -184,14 +205,18 @@ export function ThemeCustomizer({ children }) {
             <DropdownMenuSubTrigger className="text-zinc-100 focus:bg-zinc-800 focus:text-white">
               <span>Text Size</span>
               <span className="ml-auto text-xs text-zinc-500">
-                {TEXT_SIZES.find(s => s.value === String(textSize))?.name || 'Normal'}
+                {TEXT_SIZES.find((s) => s.value === String(textSize))?.name ||
+                  "Normal"}
               </span>
             </DropdownMenuSubTrigger>
             <DropdownMenuSubContent className="bg-zinc-900 border-zinc-800">
-              <DropdownMenuRadioGroup value={String(textSize)} onValueChange={(v) => setTextSize(parseFloat(v))}>
+              <DropdownMenuRadioGroup
+                value={String(textSize)}
+                onValueChange={(v) => setTextSize(parseFloat(v))}
+              >
                 {TEXT_SIZES.map((size) => (
-                  <DropdownMenuRadioItem 
-                    key={size.value} 
+                  <DropdownMenuRadioItem
+                    key={size.value}
                     value={size.value}
                     className="text-zinc-100 focus:bg-zinc-800 focus:text-white"
                   >
@@ -204,29 +229,61 @@ export function ThemeCustomizer({ children }) {
 
           <DropdownMenuSeparator className="bg-zinc-800" />
 
+          {/* Background */}
+          <DropdownMenuLabel className="text-xs text-zinc-500 uppercase tracking-wider">
+            Background
+          </DropdownMenuLabel>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger className="text-zinc-100 focus:bg-zinc-800 focus:text-white">
+              <span>Background Style</span>
+              <span className="ml-auto text-xs text-zinc-500">
+                {BACKGROUND_OPTIONS.find((b) => b.value === backgroundType)
+                  ?.name || "Dark Veil"}
+              </span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent className="bg-zinc-900 border-zinc-800">
+              <DropdownMenuRadioGroup
+                value={backgroundType}
+                onValueChange={setBackgroundType}
+              >
+                {BACKGROUND_OPTIONS.map((bg) => (
+                  <DropdownMenuRadioItem
+                    key={bg.value}
+                    value={bg.value}
+                    className="text-zinc-100 focus:bg-zinc-800 focus:text-white"
+                  >
+                    {bg.name}
+                  </DropdownMenuRadioItem>
+                ))}
+              </DropdownMenuRadioGroup>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+
+          <DropdownMenuSeparator className="bg-zinc-800" />
+
           {/* Actions */}
           <div className="px-2 py-2 flex gap-1">
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               className="h-8 w-8 text-zinc-400 hover:text-white hover:bg-zinc-800"
               onClick={undo}
               disabled={!canUndo}
             >
               <Undo2 className="h-4 w-4" />
             </Button>
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               className="h-8 w-8 text-zinc-400 hover:text-white hover:bg-zinc-800"
               onClick={redo}
               disabled={!canRedo}
             >
               <Redo2 className="h-4 w-4" />
             </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               className="ml-auto text-zinc-400 hover:text-white hover:bg-zinc-800"
               onClick={resetTheme}
             >

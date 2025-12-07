@@ -112,7 +112,12 @@ export const GameCarousel = ({ games }) => {
                 style={{ background: game.color }}
               >
                 <div className="game-stack-image">
-                  <img src={game.image} alt={game.title} draggable="false" />
+                  <img
+                    src={game.image}
+                    alt={game.title}
+                    draggable="false"
+                    loading="lazy"
+                  />
                 </div>
                 <div className="game-stack-info">
                   <span className="game-stack-title">

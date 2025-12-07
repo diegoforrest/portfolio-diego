@@ -51,7 +51,7 @@ export const Navbar = () => {
       </Link>
 
       <motion.ul
-        className="nav-links"
+        className="nav-theme"
         variants={staggerContainer}
         initial="initial"
         animate="animate"
@@ -61,7 +61,7 @@ export const Navbar = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <button className="theme-toggle" onClick={openCustomizer}>
+          <button className="nav-theme-button" onClick={openCustomizer}>
             <Settings2 size={16} />
           </button>
         </motion.li>
@@ -75,7 +75,7 @@ export const Navbar = () => {
             variant="circle"
             start="center"
             onClick={handleThemeToggle}
-            className="theme-toggle"
+            className="nav-theme-button"
           />
         </motion.li>
       </motion.ul>

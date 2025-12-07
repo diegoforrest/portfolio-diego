@@ -10,9 +10,10 @@ const ThemeCustomizerContext = createContext(null);
 
 const DEFAULT_THEME = {
   primaryColor: "oklch(63.7% .237 25.331)", // Red
-  surfaceColor: "zinc", // Default surface color palette
+  surfaceColor: "oklch(55.51% 0.016 256.85)", // Zinc
   fontFamily: '"Inter", system-ui, sans-serif',
   textSize: 1,
+  backgroundType: "darkveil", // Default background
 };
 
 const getStoredTheme = () => {
@@ -29,14 +30,21 @@ const getStoredTheme = () => {
       typeof parsed.primaryColor === "string" &&
       typeof parsed.surfaceColor === "string" &&
       typeof parsed.fontFamily === "string" &&
-      typeof parsed.textSize === "number";
+      typeof parsed.textSize === "number" &&
+      (typeof parsed.backgroundType === "string" ||
+        parsed.backgroundType === undefined);
 
     if (!isValid) {
       localStorage.removeItem("customTheme");
       return DEFAULT_THEME;
     }
 
-    return parsed;
+    // Add backgroundType if missing from old saved themes
+    return {
+      ...DEFAULT_THEME,
+      ...parsed,
+      backgroundType: parsed.backgroundType || DEFAULT_THEME.backgroundType,
+    };
   } catch {
     localStorage.removeItem("customTheme");
     return DEFAULT_THEME;
@@ -74,6 +82,32 @@ export function ThemeCustomizerProvider({ children }) {
     };
   };
 
+  // Helper function to generate a full color palette from oklch color
+  const generateColorPalette = (oklchColor) => {
+    const match = oklchColor.match(/oklch\(([^)]+)\)/);
+    if (!match) return null;
+
+    const parts = match[1].trim().split(/\s+/);
+    const chroma = parseFloat(parts[1]);
+    const hue = parts[2];
+
+    // Generate palette with varying lightness levels
+    // Tailwind-like scale: 50 (lightest) to 950 (darkest)
+    return {
+      50: `oklch(97% ${chroma * 0.1} ${hue})`,
+      100: `oklch(94% ${chroma * 0.2} ${hue})`,
+      200: `oklch(88% ${chroma * 0.4} ${hue})`,
+      300: `oklch(80% ${chroma * 0.6} ${hue})`,
+      400: `oklch(70% ${chroma * 0.8} ${hue})`,
+      500: `oklch(63% ${chroma} ${hue})`,
+      600: `oklch(55% ${chroma} ${hue})`,
+      700: `oklch(47% ${chroma * 0.95} ${hue})`,
+      800: `oklch(39% ${chroma * 0.9} ${hue})`,
+      900: `oklch(31% ${chroma * 0.8} ${hue})`,
+      950: `oklch(22% ${chroma * 0.7} ${hue})`,
+    };
+  };
+
   // Apply theme to CSS variables
   useEffect(() => {
     const root = document.documentElement;
@@ -86,11 +120,20 @@ export function ThemeCustomizerProvider({ children }) {
     root.style.setProperty("--primary-color-light", variants.light);
     root.style.setProperty("--primary-color-dark", variants.dark);
 
-    // Surface color - set CSS class on root
-    const surfacePalettes = ["slate", "gray", "zinc", "neutral", "stone"];
-    surfacePalettes.forEach((p) => root.classList.remove(`surface-${p}`));
-    if (theme.surfaceColor) {
-      root.classList.add(`surface-${theme.surfaceColor}`);
+    // Generate and set the full primary color palette for heatmap and other uses
+    const palette = generateColorPalette(theme.primaryColor);
+    if (palette) {
+      Object.entries(palette).forEach(([shade, color]) => {
+        root.style.setProperty(`--color-primary-${shade}`, color);
+      });
+    }
+
+    // Surface color - generate and set the full surface palette
+    const surfacePalette = generateColorPalette(theme.surfaceColor);
+    if (surfacePalette) {
+      Object.entries(surfacePalette).forEach(([shade, color]) => {
+        root.style.setProperty(`--color-surface-${shade}`, color);
+      });
     }
 
     // Font family
@@ -125,6 +168,7 @@ export function ThemeCustomizerProvider({ children }) {
   const setSurfaceColor = (surface) => updateTheme({ surfaceColor: surface });
   const setFontFamily = (font) => updateTheme({ fontFamily: font });
   const setTextSize = (size) => updateTheme({ textSize: size });
+  const setBackgroundType = (type) => updateTheme({ backgroundType: type });
 
   const resetTheme = () => {
     // Clear localStorage
@@ -144,16 +188,27 @@ export function ThemeCustomizerProvider({ children }) {
     root.style.setProperty("--primary-color-light", variants.light);
     root.style.setProperty("--primary-color-dark", variants.dark);
 
+    // Reset the full primary color palette
+    const palette = generateColorPalette(DEFAULT_THEME.primaryColor);
+    if (palette) {
+      Object.entries(palette).forEach(([shade, color]) => {
+        root.style.setProperty(`--color-primary-${shade}`, color);
+      });
+    }
+
+    // Reset surface color to default zinc palette
+    const surfacePalette = generateColorPalette(DEFAULT_THEME.surfaceColor);
+    if (surfacePalette) {
+      Object.entries(surfacePalette).forEach(([shade, color]) => {
+        root.style.setProperty(`--color-surface-${shade}`, color);
+      });
+    }
+
     root.style.setProperty("--font-family", DEFAULT_THEME.fontFamily);
     root.style.setProperty("--typography-scale", DEFAULT_THEME.textSize);
     document.documentElement.style.fontSize = `${
       DEFAULT_THEME.textSize * 16
     }px`;
-
-    // Reset surface color classes
-    const surfacePalettes = ["slate", "gray", "zinc", "neutral", "stone"];
-    surfacePalettes.forEach((p) => root.classList.remove(`surface-${p}`));
-    root.classList.add(`surface-${DEFAULT_THEME.surfaceColor}`);
   };
 
   const undo = () => {
@@ -176,6 +231,7 @@ export function ThemeCustomizerProvider({ children }) {
     setSurfaceColor,
     setFontFamily,
     setTextSize,
+    setBackgroundType,
     resetTheme,
     undo,
     redo,
@@ -193,9 +249,26 @@ export function ThemeCustomizerProvider({ children }) {
 export const useThemeCustomizer = () => {
   const context = useContext(ThemeCustomizerContext);
   if (!context) {
-    throw new Error(
-      "useThemeCustomizer must be used within ThemeCustomizerProvider"
+    // Protect against accidental usage outside the provider during HMR
+    // or when components mount before the provider. Return a safe
+    // fallback so the app doesn't crash; callers that need full
+    // functionality should ensure they're rendered within the provider.
+    console.warn(
+      "useThemeCustomizer used outside ThemeCustomizerProvider — returning safe defaults."
     );
+    return {
+      ...DEFAULT_THEME,
+      setPrimaryColor: () => {},
+      setSurfaceColor: () => {},
+      setFontFamily: () => {},
+      setTextSize: () => {},
+      setBackgroundType: () => {},
+      resetTheme: () => {},
+      undo: () => {},
+      redo: () => {},
+      canUndo: false,
+      canRedo: false,
+    };
   }
   return context;
 };

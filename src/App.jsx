@@ -1,65 +1,82 @@
-import './App.css'
-import { Navbar } from './components/Navbar.jsx'
-import { Hero } from './components/Hero.jsx'
-import { Projects } from './components/Projects.jsx'
-import { Contact } from './components/Contact.jsx'
-import { Footer } from './components/Footer.jsx'
-import { ThemeProvider, useTheme } from '@/components/ui/theme-provider'
-import { ThemeCustomizerProvider } from './components/ThemeCustomizerProvider.jsx'
-import { ThemeCustomizer } from './components/ThemeCustomizerShadcn.jsx'
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'    
-import { About } from './components/About.jsx'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { DarkVeil } from './components/DarkVeil.jsx'
+import "./App.css";
+import { Navbar } from "./components/Navbar.jsx";
+import { Hero } from "./components/Hero.jsx";
+import { Projects } from "./components/Projects.jsx";
+import { Contact } from "./components/Contact.jsx";
+import { Footer } from "./components/Footer.jsx";
+import { ThemeProvider, useTheme } from "@/components/ui/theme-provider";
+import {
+  ThemeCustomizerProvider,
+  useThemeCustomizer,
+} from "./components/ThemeCustomizerProvider.jsx";
+import { ThemeCustomizer } from "./components/ThemeCustomizerShadcn.jsx";
+import { useState, useEffect, lazy, Suspense } from "react";
+import { motion } from "framer-motion";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import BackgroundRenderer from "./components/BackgroundRenderer.jsx";
+import { AboutSkeleton } from "./components/AboutSkeleton.jsx";
 
+// Lazy load the heavy About section with bento grid
+const About = lazy(() =>
+  import("./components/About.jsx").then((module) => ({ default: module.About }))
+);
 
+function AppContent() {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const { backgroundType } = useThemeCustomizer();
+
+  useEffect(() => {
+    const originalScrollRestoration = window.history.scrollRestoration;
+
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    window.scrollTo(0, 0);
+    setIsLoaded(true);
+
+    return () => {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = originalScrollRestoration;
+      }
+    };
+  }, []);
+
+  return (
+    <BrowserRouter>
+      <ThemeCustomizer>
+        <div className="darkveil-wrapper">
+          <BackgroundRenderer backgroundType={backgroundType} />
+        </div>
+        <div className={`app ${isLoaded ? "loaded" : ""}`}>
+          <Navbar />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <Hero />
+                  <Projects />
+                  <Suspense fallback={<AboutSkeleton />}>
+                    <About />
+                  </Suspense>
+                  <Footer />
+                </>
+              }
+            />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </div>
+      </ThemeCustomizer>
+    </BrowserRouter>
+  );
+}
 
 function App() {
-  const [isLoaded, setIsLoaded] = useState(false);
-
-useEffect(() => {
-  const originalScrollRestoration = window.history.scrollRestoration;
-  
-  if ('scrollRestoration' in window.history) {
-    window.history.scrollRestoration = 'manual';
-  }
-  
-  window.scrollTo(0, 0);
-  setIsLoaded(true);
-
-  return () => {
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = originalScrollRestoration;
-    }
-  };
-}, []);
-
   return (
     <ThemeProvider defaultTheme="dark" storageKey="portfolio-theme">
       <ThemeCustomizerProvider>
-        <BrowserRouter>
-          <ThemeCustomizer>
-            {/* DarkVeil background - now inside providers for direct context access */}
-            <div className="darkveil-wrapper">
-              <DarkVeil />
-            </div>
-            <div className={`app ${isLoaded ? "loaded" : ""}`}>
-              <Navbar />
-              <Routes>
-                <Route path="/" element={
-                  <>
-                    <Hero />
-                    <Projects />
-                    <About />
-                    <Footer />
-                  </>
-                } />
-                <Route path="/contact" element={<Contact />} />
-              </Routes>
-            </div>
-          </ThemeCustomizer>
-        </BrowserRouter>
+        <AppContent />
       </ThemeCustomizerProvider>
     </ThemeProvider>
   );

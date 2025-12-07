@@ -73,6 +73,7 @@ export const AlbumCarousel = ({ albums }) => {
                   alt={album.title}
                   className="album-image"
                   draggable="false"
+                  loading="lazy"
                 />
                 <div className="album-overlay">
                   <ArrowOutward className="album-icon" />
