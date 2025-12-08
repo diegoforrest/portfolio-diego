@@ -34,9 +34,8 @@ const projects = [
     id: 2,
     title: "TaskHive",
     description:
-      "A Lightweight task manager that helps users work from idea to done without unnecessary complexity. Focus on what matters—priorities, progress, and quick reviews.",
-    image:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80",
+      "A Lightweight task manager that helps users work from idea to done without unnecessary complexity. Focus on what matters priorities, progress, and quick reviews.",
+    image: "./images/taskhive.png",
     tags: [
       { name: "Next.js", icon: "nextjs", color: "#000000" },
       { name: "Nest.js", icon: "nestjs", color: "#E0234E" },
@@ -53,8 +52,7 @@ const projects = [
     title: "Personal Portfolio",
     description:
       "Personal portfolio website showcasing projects, skills, and experience with interactive UI and responsive design.",
-    image:
-      "https://images.unsplash.com/photo-1555421689-d68471e189f2?w=800&q=80",
+    image: "./images/portfolio.png",
     tags: [
       { name: "React", icon: "react", color: "#61DAFB" },
       { name: "JavaScript", icon: "javascript", color: "#F7DF1E" },
@@ -62,7 +60,6 @@ const projects = [
       { name: "Framer Motion", icon: "framer", color: "#0055FF" },
     ],
     github: "https://github.com/diegoforrest/portfolio-diego",
-    live: "https://project3.com",
   },
 ];
 

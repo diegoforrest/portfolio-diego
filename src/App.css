@@ -1761,8 +1761,10 @@ body {
 
 /* Footer */
 .footer {
-  background: var(--background);
-  padding: 1.5rem 0;
+  background: transparent;
+  padding: 0 0 1.5rem 0;
+  position: relative;
+  z-index: 1;
 }
 
 .footer-container {

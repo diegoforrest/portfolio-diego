@@ -1,27 +1,26 @@
 import { useEffect, useRef } from "react";
-import { Renderer, Program, Mesh, Triangle, Transform } from "ogl";
-import { useTheme } from "./ThemeProvider";
-import "./DarkVeil.css";
+import { Renderer, Program, Mesh, Triangle } from "ogl";
+import { useThemeCustomizer } from "./ThemeCustomizerProvider";
+import "./Plasma.css";
 
-// Exact hue shift values calibrated by user testing (from DarkVeil)
 const COLOR_TO_HUE_SHIFT = {
-  "oklch(63.7% .237 25.331)": 242, // Red
-  "oklch(70.5% .213 47.604)": 220, // Orange
-  "oklch(76.9% .188 70.08)": 208, // Amber
-  "oklch(79.5% .184 86.047)": 200, // Yellow
-  "oklch(76.8% .233 130.85)": 164, // Lime
-  "oklch(72.3% .219 149.579)": 95, // Green
-  "oklch(69.6% .17 162.48)": 63, // Emerald
-  "oklch(70.4% .14 182.503)": 50, // Teal
-  "oklch(71.5% .143 215.221)": 45, // Cyan
-  "oklch(68.5% .169 237.323)": 42, // Sky
-  "oklch(62.3% .214 259.815)": 24, // Blue
-  "oklch(58.5% .233 277.117)": 15, // Indigo
-  "oklch(60.6% .25 292.717)": 0, // Violet
-  "oklch(62.7% .265 303.9)": 341, // Purple
-  "oklch(66.7% .295 322.15)": 292, // Fuchsia
-  "oklch(65.6% .241 354.308)": 282, // Pink
-  "oklch(64.5% .246 16.439)": 258, // Rose
+  "oklch(63.7% .237 25.331)": 242,
+  "oklch(70.5% .213 47.604)": 220,
+  "oklch(76.9% .188 70.08)": 208,
+  "oklch(79.5% .184 86.047)": 200,
+  "oklch(76.8% .233 130.85)": 164,
+  "oklch(72.3% .219 149.579)": 95,
+  "oklch(69.6% .17 162.48)": 63,
+  "oklch(70.4% .14 182.503)": 50,
+  "oklch(71.5% .143 215.221)": 45,
+  "oklch(68.5% .169 237.323)": 42,
+  "oklch(62.3% .214 259.815)": 24,
+  "oklch(58.5% .233 277.117)": 15,
+  "oklch(60.6% .25 292.717)": 0,
+  "oklch(62.7% .265 303.9)": 341,
+  "oklch(66.7% .295 322.15)": 292,
+  "oklch(65.6% .241 354.308)": 282,
+  "oklch(64.5% .246 16.439)": 258,
 };
 
 function getHueShiftFromColor(color) {
@@ -48,60 +47,57 @@ const hexToRgb = (hex) => {
   ];
 };
 
-// Convert OKLCH to approximate hex
 const oklchToHex = (oklch) => {
   const match = oklch?.match(/oklch\(([^)]+)\)/);
   if (!match) return "#ff6b35";
 
   const parts = match[1].trim().split(/\s+/);
-  const hue = parseFloat(parts[2]) || 0;
+  const L = parseFloat(parts[0]) / 100; // Lightness 0-1
+  const C = parseFloat(parts[1]) || 0; // Chroma
+  const H = parseFloat(parts[2]) || 0; // Hue in degrees
 
-  const h = hue / 60;
-  const c = 1;
-  const x = c * (1 - Math.abs((h % 2) - 1));
+  // Convert OKLCH to OKLAB
+  const hRad = (H * Math.PI) / 180;
+  const a = C * Math.cos(hRad);
+  const b = C * Math.sin(hRad);
 
-  let r, g, b;
-  if (h >= 0 && h < 1) {
-    r = c;
-    g = x;
-    b = 0;
-  } else if (h >= 1 && h < 2) {
-    r = x;
-    g = c;
-    b = 0;
-  } else if (h >= 2 && h < 3) {
-    r = 0;
-    g = c;
-    b = x;
-  } else if (h >= 3 && h < 4) {
-    r = 0;
-    g = x;
-    b = c;
-  } else if (h >= 4 && h < 5) {
-    r = x;
-    g = 0;
-    b = c;
-  } else {
-    r = c;
-    g = 0;
-    b = x;
-  }
+  // Convert OKLAB to linear RGB
+  const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
+  const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
+  const s_ = L - 0.0894841775 * a - 1.291485548 * b;
 
-  r = Math.round(r * 255);
-  g = Math.round(g * 255);
-  b = Math.round(b * 255);
+  const l = l_ * l_ * l_;
+  const m = m_ * m_ * m_;
+  const s = s_ * s_ * s_;
+
+  let r = +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
+  let g = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
+  let bVal = -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s;
+
+  // Apply gamma correction (sRGB)
+  const toSRGB = (val) => {
+    val = Math.max(0, Math.min(1, val));
+    return val <= 0.0031308
+      ? 12.92 * val
+      : 1.055 * Math.pow(val, 1 / 2.4) - 0.055;
+  };
+
+  r = Math.round(toSRGB(r) * 255);
+  g = Math.round(toSRGB(g) * 255);
+  bVal = Math.round(toSRGB(bVal) * 255);
 
   return `#${r.toString(16).padStart(2, "0")}${g
     .toString(16)
-    .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+    .padStart(2, "0")}${bVal.toString(16).padStart(2, "0")}`;
 };
 
 const vertex = `#version 300 es
 precision highp float;
 in vec2 position;
+in vec2 uv;
 out vec2 vUv;
 void main() {
-  vUv = position * 0.5 + 0.5;
+  vUv = uv;
   gl_Position = vec4(position, 0.0, 1.0);
 }
 `;
@@ -111,28 +107,13 @@ precision highp float;
 uniform vec2 iResolution;
 uniform float iTime;
 uniform vec3 uCustomColor;
-uniform float uUseCustomColor;
 uniform float uSpeed;
 uniform float uDirection;
 uniform float uScale;
 uniform float uOpacity;
 uniform vec2 uMouse;
 uniform float uMouseInteractive;
-uniform float uHueShift;
-in vec2 vUv;
 out vec4 fragColor;
-
-// YIQ color space hue shifting (same as DarkVeil)
-mat3 rgb2yiq=mat3(0.299,0.587,0.114,0.596,-0.274,-0.322,0.211,-0.523,0.312);
-mat3 yiq2rgb=mat3(1.0,0.956,0.621,1.0,-0.272,-0.647,1.0,-1.106,1.703);
-
-vec3 hueShiftRGB(vec3 col,float deg){
-    vec3 yiq=rgb2yiq*col;
-    float rad=radians(deg);
-    float cosh=cos(rad),sinh=sin(rad);
-    vec3 yiqShift=vec3(yiq.x,yiq.y*cosh-yiq.z*sinh,yiq.y*sinh+yiq.z*cosh);
-    return clamp(yiq2rgb*yiqShift,0.0,1.0);
-}
 
 void mainImage(out vec4 o, vec2 C) {
   vec2 center = iResolution.xy * 0.5;
@@ -151,8 +132,8 @@ void mainImage(out vec4 o, vec2 C) {
     d = p.y-T;
     
     p.x += .4*(1.+p.y)*sin(d + p.x*0.1)*cos(.34*d + p.x*0.05); 
-    Q = p.xz * mat2(cos(p.y+vec4(0,11,33,0)-T)); 
-    z+= d = abs(sqrt(dot(Q,Q)) - .25*(5.+S.y))/3.+8e-4; 
+    Q = p.xz *= mat2(cos(p.y+vec4(0,11,33,0)-T)); 
+    z+= d = abs(sqrt(length(Q*Q)) - .25*(5.+S.y))/3.+8e-4; 
     o = 1.+sin(S.y+p.z*.5+S.z-length(S-p)+vec4(2,1,0,8));
   }
   
@@ -170,63 +151,50 @@ vec3 sanitize(vec3 c){
 
 void main() {
   vec4 o = vec4(0.0);
-  vec2 fragCoord = vUv * iResolution.xy;
-  mainImage(o, fragCoord);
+  mainImage(o, gl_FragCoord.xy);
   vec3 rgb = sanitize(o.rgb);
   
-  // Apply hue shift
-  rgb = hueShiftRGB(rgb, uHueShift);
-  
+  // Apply monochromatic color based on primary color
   float intensity = (rgb.r + rgb.g + rgb.b) / 3.0;
-  vec3 customColor = intensity * uCustomColor;
-  vec3 finalColor = mix(rgb, customColor, step(0.5, uUseCustomColor));
+  vec3 finalColor = intensity * uCustomColor;
   
   float alpha = length(rgb) * uOpacity;
   fragColor = vec4(finalColor, alpha);
 }`;
 
-export const PlasmaBackground = () => {
+export default function PlasmaBackground() {
   const containerRef = useRef(null);
-  const canvasRef = useRef(null);
   const mousePos = useRef({ x: 0, y: 0 });
-  const rendererRef = useRef(null);
-  const programRef = useRef(null);
-  const rafRef = useRef(null);
-  const mountedRef = useRef(true);
-  const meshRef = useRef(null);
-  const { theme } = useTheme();
-  const { primaryColor } = theme || {};
+  const { primaryColor } = useThemeCustomizer();
 
   useEffect(() => {
-    if (!canvasRef.current) return;
-    mountedRef.current = true;
+    if (!containerRef.current) return;
+    const containerEl = containerRef.current;
 
-    const hueShift = getHueShiftFromColor(
-      primaryColor || "oklch(63.7% .237 25.331)"
-    );
     const color = oklchToHex(primaryColor || "oklch(63.7% .237 25.331)");
-    const useCustomColor = 0.0; // Use hue shifting instead of custom color
-    const customColorRgb = hexToRgb(color);
+    console.log("🎨 Plasma primaryColor:", primaryColor, "→ hex:", color);
+
     const speed = 1;
     const direction = "forward";
     const scale = 1;
     const opacity = 1;
-    const mouseInteractive = true;
+    const mouseInteractive = false;
 
+    const customColorRgb = hexToRgb(color);
     const directionMultiplier = direction === "reverse" ? -1.0 : 1.0;
 
     const renderer = new Renderer({
-      canvas: canvasRef.current,
-      width: window.innerWidth,
-      height: window.innerHeight,
-      alpha: true,
       webgl: 2,
+      alpha: true,
+      antialias: false,
       dpr: Math.min(window.devicePixelRatio || 1, 2),
     });
-
-    rendererRef.current = renderer;
     const gl = renderer.gl;
-    gl.clearColor(0, 0, 0, 0);
+    const canvas = gl.canvas;
+    canvas.style.display = "block";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    containerRef.current.appendChild(canvas);
 
     const geometry = new Triangle(gl);
 
@@ -235,101 +203,83 @@ export const PlasmaBackground = () => {
       fragment: fragment,
       uniforms: {
         iTime: { value: 0 },
-        iResolution: { value: [window.innerWidth, window.innerHeight] },
-        uCustomColor: { value: customColorRgb },
-        uUseCustomColor: { value: useCustomColor },
+        iResolution: { value: new Float32Array([1, 1]) },
+        uCustomColor: { value: new Float32Array(customColorRgb) },
         uSpeed: { value: speed * 0.4 },
         uDirection: { value: directionMultiplier },
         uScale: { value: scale },
         uOpacity: { value: opacity },
-        uMouse: { value: [0, 0] },
+        uMouse: { value: new Float32Array([0, 0]) },
         uMouseInteractive: { value: mouseInteractive ? 1.0 : 0.0 },
-        uHueShift: { value: hueShift },
       },
-      transparent: true,
     });
-    programRef.current = program;
 
     const mesh = new Mesh(gl, { geometry, program });
-    meshRef.current = mesh;
-    const scene = new Transform();
-    scene.addChild(mesh);
-
-    gl.clearColor(0, 0, 0, 0);
 
     const handleMouseMove = (e) => {
       if (!mouseInteractive) return;
-      mousePos.current.x = e.clientX;
-      mousePos.current.y = e.clientY;
-      program.uniforms.uMouse.value = [mousePos.current.x, mousePos.current.y];
+      const rect = containerRef.current.getBoundingClientRect();
+      mousePos.current.x = e.clientX - rect.left;
+      mousePos.current.y = e.clientY - rect.top;
+      const mouseUniform = program.uniforms.uMouse.value;
+      mouseUniform[0] = mousePos.current.x;
+      mouseUniform[1] = mousePos.current.y;
     };
 
     if (mouseInteractive) {
-      window.addEventListener("mousemove", handleMouseMove);
+      containerEl.addEventListener("mousemove", handleMouseMove);
     }
 
     const setSize = () => {
-      const width = Math.max(1, Math.floor(window.innerWidth));
-      const height = Math.max(1, Math.floor(window.innerHeight));
+      const rect = containerRef.current.getBoundingClientRect();
+      const width = Math.max(1, Math.floor(rect.width));
+      const height = Math.max(1, Math.floor(rect.height));
       renderer.setSize(width, height);
-      program.uniforms.iResolution.value = [
-        gl.drawingBufferWidth,
-        gl.drawingBufferHeight,
-      ];
+      const res = program.uniforms.iResolution.value;
+      res[0] = gl.drawingBufferWidth;
+      res[1] = gl.drawingBufferHeight;
     };
 
     const ro = new ResizeObserver(setSize);
-    ro.observe(document.body);
+    ro.observe(containerEl);
     setSize();
 
-    rafRef.current = null;
+    let raf = 0;
     const t0 = performance.now();
     const loop = (t) => {
-      if (!mountedRef.current) return;
-      const r = rendererRef.current;
-      const p = programRef.current;
-      if (!r || !p) return;
       let timeValue = (t - t0) * 0.001;
-      p.uniforms.iTime.value = timeValue;
-      r.gl.clear(r.gl.COLOR_BUFFER_BIT);
-      if (typeof r.render === "function") {
-        try {
-          r.render({ scene });
-        } catch (e) {
-          console.warn("Renderer.render failed, falling back to mesh.draw", e);
-          const m = meshRef.current;
-          if (m && typeof m.draw === "function") {
-            m.draw({ program: programRef.current });
-          }
-        }
+      if (direction === "pingpong") {
+        const pingpongDuration = 10;
+        const segmentTime = timeValue % pingpongDuration;
+        const isForward = Math.floor(timeValue / pingpongDuration) % 2 === 0;
+        const u = segmentTime / pingpongDuration;
+        const smooth = u * u * (3 - 2 * u);
+        const pingpongTime = isForward
+          ? smooth * pingpongDuration
+          : (1 - smooth) * pingpongDuration;
+        program.uniforms.uDirection.value = 1.0;
+        program.uniforms.iTime.value = pingpongTime;
       } else {
-        const m = meshRef.current;
-        if (m && typeof m.draw === "function") {
-          m.draw({ program: programRef.current });
-        }
+        program.uniforms.iTime.value = timeValue;
       }
-      rafRef.current = requestAnimationFrame(loop);
+      renderer.render({ scene: mesh });
+      raf = requestAnimationFrame(loop);
     };
-    rafRef.current = requestAnimationFrame(loop);
+    raf = requestAnimationFrame(loop);
 
     return () => {
-      mountedRef.current = false;
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(raf);
       ro.disconnect();
-      if (mouseInteractive) {
-        window.removeEventListener("mousemove", handleMouseMove);
+      if (mouseInteractive && containerEl) {
+        containerEl.removeEventListener("mousemove", handleMouseMove);
       }
-      // dispose program and renderer safely
       try {
-        programRef.current?.remove?.();
-      } catch (e) {}
-      rendererRef.current?.gl.getExtension("WEBGL_lose_context")?.loseContext();
-      rendererRef.current = null;
-      programRef.current = null;
+        containerEl?.removeChild(canvas);
+      } catch {
+        console.warn("Canvas already removed from container");
+      }
     };
   }, [primaryColor]);
 
-  return <canvas ref={canvasRef} className="darkveil-canvas" />;
-};
-
-export default PlasmaBackground;
+  return <div ref={containerRef} className="plasma-container" />;
+}

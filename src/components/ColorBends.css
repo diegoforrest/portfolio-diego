@@ -6,4 +6,9 @@
   height: 100%;
   pointer-events: none;
   z-index: 0;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.color-bends-container.light-mode {
+  filter: invert(1) hue-rotate(180deg);
 }
