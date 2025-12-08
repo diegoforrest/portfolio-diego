@@ -5,8 +5,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Shuffle,
-  SportsEsports,
   SportsEsportsOutlined,
+  Autorenew,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 
@@ -66,9 +66,9 @@ export const GameCarousel = ({ games }) => {
             {isShuffling ? (
               <motion.div
                 animate={{ rotate: 360 }}
-                transition={{ duration: 0.5, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
               >
-                <Shuffle sx={{ fontSize: 14 }} />
+                <Autorenew sx={{ fontSize: 14 }} />
               </motion.div>
             ) : (
               <Shuffle sx={{ fontSize: 14 }} />
@@ -120,9 +120,7 @@ export const GameCarousel = ({ games }) => {
                   />
                 </div>
                 <div className="game-stack-info">
-                  <span className="game-stack-title">
-                    {game.emoji} {game.title}
-                  </span>
+                  <span className="game-stack-title">{game.title}</span>
                   <p className="game-stack-description">{game.description}</p>
                 </div>
               </div>

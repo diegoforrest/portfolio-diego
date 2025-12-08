@@ -63,27 +63,21 @@ const projects = [
   },
 ];
 
-// stacking configuration
-const STACK_BASE = 140;
-const STACK_STEP = 140;
-const ProjectCard = ({ project, index }) => {
-  const cardRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start end", "start start"],
-  });
+const STACK_TOP = 50;
+const STACK_OFFSET = 50; // offset for each stacked card to show a bit of the previous one
+const CARD_SPACING = 0;
 
-  const scale = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [0.6, 1]);
+const ProjectCard = ({ project, index, total }) => {
+  const cardRef = useRef(null);
 
   return (
     <motion.div
       ref={cardRef}
       style={{
-        scale,
-        opacity,
         position: "sticky",
-        top: `${STACK_BASE + index * STACK_STEP}px`,
+        top: `${STACK_TOP + index * STACK_OFFSET}px`,
+        marginBottom: index < total - 1 ? `${CARD_SPACING}px` : "0",
+        zIndex: index,
       }}
       className="project-card-stack"
     >
@@ -171,7 +165,12 @@ export const Projects = () => {
 
         <div className="projects-stack-container">
           {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+            <ProjectCard
+              key={project.id}
+              project={project}
+              index={index}
+              total={projects.length}
+            />
           ))}
         </div>
       </div>

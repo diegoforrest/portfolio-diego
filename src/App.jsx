@@ -64,7 +64,15 @@ function AppContent() {
                 </>
               }
             />
-            <Route path="/contact" element={<Contact />} />
+            <Route
+              path="/contact"
+              element={
+                <>
+                  <Contact />
+                  <Footer />
+                </>
+              }
+            />
           </Routes>
         </div>
       </ThemeCustomizer>

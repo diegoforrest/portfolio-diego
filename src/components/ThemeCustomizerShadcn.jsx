@@ -174,90 +174,111 @@ export function ThemeCustomizer({ children }) {
           <DropdownMenuLabel className="text-xs text-zinc-500 uppercase tracking-wider">
             Typography
           </DropdownMenuLabel>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="text-zinc-100 focus:bg-zinc-800 focus:text-white">
-              <span>Font Family</span>
-              <span className="ml-auto text-xs text-zinc-500">
-                {FONT_OPTIONS.find((f) => f.value === fontFamily)?.name ||
-                  "Sans Serif"}
-              </span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent className="bg-zinc-900 border-zinc-800">
-              <DropdownMenuRadioGroup
-                value={fontFamily}
-                onValueChange={setFontFamily}
-              >
-                {FONT_OPTIONS.map((font) => (
-                  <DropdownMenuRadioItem
-                    key={font.value}
-                    value={font.value}
-                    className="text-zinc-100 focus:bg-zinc-800 focus:text-white"
-                    style={{ fontFamily: font.value }}
-                  >
-                    {font.name}
-                  </DropdownMenuRadioItem>
-                ))}
-              </DropdownMenuRadioGroup>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
 
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="text-zinc-100 focus:bg-zinc-800 focus:text-white">
-              <span>Text Size</span>
-              <span className="ml-auto text-xs text-zinc-500">
+          {/* Font Family - Inline buttons */}
+          <div className="px-2 py-2">
+            <div className="text-xs text-zinc-400 mb-2">Font family</div>
+            <div className="flex gap-2">
+              {FONT_OPTIONS.map((font) => (
+                <button
+                  key={font.value}
+                  onClick={() => setFontFamily(font.value)}
+                  className={cn(
+                    "flex-1 px-3 py-2 rounded-md text-sm font-medium transition-all",
+                    "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white",
+                    fontFamily === font.value &&
+                      "bg-white text-zinc-900 hover:bg-white hover:text-zinc-900"
+                  )}
+                  style={{ fontFamily: font.value }}
+                >
+                  Aa
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Text Size */}
+          <div className="px-2 py-2">
+            <div className="flex items-center justify-between text-xs mb-2">
+              <span className="text-zinc-400">Text size</span>
+              <span className="text-zinc-500">
                 {TEXT_SIZES.find((s) => s.value === String(textSize))?.name ||
-                  "Normal"}
+                  "Normal"}{" "}
+                (1x)
               </span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent className="bg-zinc-900 border-zinc-800">
-              <DropdownMenuRadioGroup
-                value={String(textSize)}
-                onValueChange={(v) => setTextSize(parseFloat(v))}
-              >
-                {TEXT_SIZES.map((size) => (
-                  <DropdownMenuRadioItem
-                    key={size.value}
-                    value={size.value}
-                    className="text-zinc-100 focus:bg-zinc-800 focus:text-white"
-                  >
-                    {size.name}
-                  </DropdownMenuRadioItem>
-                ))}
-              </DropdownMenuRadioGroup>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
+            </div>
+            <div className="flex gap-1">
+              {TEXT_SIZES.map((size) => (
+                <button
+                  key={size.value}
+                  onClick={() => setTextSize(parseFloat(size.value))}
+                  className={cn(
+                    "flex-1 px-2 py-1 text-xs rounded transition-all",
+                    "bg-zinc-800 text-zinc-400 hover:bg-zinc-700",
+                    String(textSize) === size.value && "bg-zinc-700 text-white"
+                  )}
+                >
+                  {size.name}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <DropdownMenuSeparator className="bg-zinc-800" />
 
-          {/* Background */}
-          <DropdownMenuLabel className="text-xs text-zinc-500 uppercase tracking-wider">
-            Background
+          {/* Background/Wallpaper */}
+          <DropdownMenuLabel className="text-xs text-zinc-500 uppercase tracking-wider flex items-center justify-between">
+            <span>Wallpaper</span>
+            <span className="text-zinc-600 normal-case">Work in Progress</span>
           </DropdownMenuLabel>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="text-zinc-100 focus:bg-zinc-800 focus:text-white">
-              <span>Background Style</span>
-              <span className="ml-auto text-xs text-zinc-500">
-                {BACKGROUND_OPTIONS.find((b) => b.value === backgroundType)
-                  ?.name || "Dark Veil"}
-              </span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent className="bg-zinc-900 border-zinc-800">
-              <DropdownMenuRadioGroup
-                value={backgroundType}
-                onValueChange={setBackgroundType}
+          <div className="px-2 py-2">
+            <div className="grid grid-cols-3 gap-2">
+              {BACKGROUND_OPTIONS.map((bg) => (
+                <button
+                  key={bg.value}
+                  onClick={() => setBackgroundType(bg.value)}
+                  className={cn(
+                    "relative aspect-video rounded-md overflow-hidden transition-all",
+                    "bg-gradient-to-br from-zinc-700 to-zinc-800",
+                    "hover:ring-2 hover:ring-zinc-600",
+                    backgroundType === bg.value && "ring-2 ring-white"
+                  )}
+                  title={bg.name}
+                >
+                  {/* Placeholder background preview */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    {backgroundType === bg.value && (
+                      <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                        <Check className="h-4 w-4 text-white" />
+                      </div>
+                    )}
+                    <span className="text-xs text-zinc-400 px-1 text-center">
+                      {bg.name}
+                    </span>
+                  </div>
+                </button>
+              ))}
+              <button
+                onClick={() => setBackgroundType("none")}
+                className={cn(
+                  "relative aspect-video rounded-md overflow-hidden transition-all",
+                  "bg-zinc-900 border border-zinc-700",
+                  "hover:ring-2 hover:ring-zinc-600",
+                  backgroundType === "none" && "ring-2 ring-white"
+                )}
+                title="None"
               >
-                {BACKGROUND_OPTIONS.map((bg) => (
-                  <DropdownMenuRadioItem
-                    key={bg.value}
-                    value={bg.value}
-                    className="text-zinc-100 focus:bg-zinc-800 focus:text-white"
-                  >
-                    {bg.name}
-                  </DropdownMenuRadioItem>
-                ))}
-              </DropdownMenuRadioGroup>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
+                {backgroundType === "none" && (
+                  <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                    <Check className="h-4 w-4 text-white" />
+                  </div>
+                )}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-xs text-zinc-500">None</span>
+                </div>
+              </button>
+            </div>
+          </div>
 
           <DropdownMenuSeparator className="bg-zinc-800" />
 

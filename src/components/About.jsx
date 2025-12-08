@@ -18,6 +18,7 @@ import {
   Movie,
   DoNotStep,
   SportsEsports,
+  Autorenew,
 } from "@mui/icons-material";
 import { TechToolbox } from "./TechToolbox";
 import { AlbumCarousel } from "./AlbumCarousel";
@@ -105,77 +106,77 @@ const games = [
     image: "/games/dota.png",
     description:
       "I've played Dota 2 for years. It's chaotic, punishing, and I keep coming back for more.",
-    color: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    color: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
   },
   {
     title: "Counter-Strike 2",
     image: "/games/csgo.png",
     description:
       "From CS:GO to CS2, the tactical shooter that never gets old. Rush B, anyone?",
-    color: "linear-gradient(135deg, #f39c12 0%, #e67e22 100%)",
+    color: "linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)",
   },
   {
     title: "Valorant",
     image: "/games/valorant.png",
     description:
       "When I want tactical shooting with abilities. The agent gameplay keeps it fresh.",
-    color: "linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)",
+    color: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
   },
   {
     title: "GTA V",
     image: "/games/gta.png",
     description:
       "Los Santos is my second home. Chaos, heists, and endless possibilities.",
-    color: "linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)",
+    color: "linear-gradient(135deg, #00b894 0%, #00cec9 100%)",
   },
   {
     title: "NBA 2k",
     image: "/games/nba.png",
     description:
       "My go-to for basketball action. Building dynasties and breaking ankles.",
-    color: "linear-gradient(135deg, #e67e22 0%, #d35400 100%)",
+    color: "linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%)",
   },
   {
     title: "Red Dead Redemption 2",
     image: "/games/rdr.png",
     description:
       "The most beautiful game I've ever played. Arthur Morgan's story hits different.",
-    color: "linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%)",
+    color: "linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%)",
   },
   {
     title: "Rust",
     image: "/games/rust.png",
     description:
       "Survival at its finest. Trust no one, build everything, lose it all.",
-    color: "linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)",
+    color: "linear-gradient(135deg, #fab1a0 0%, #ff7675 100%)",
   },
   {
     title: "For Honor",
     image: "/games/forhonor.png",
     description:
-      "Survival at its finest. Trust no one, build everything, lose it all.",
-    color: "linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)",
+      "Medieval combat with Vikings, Knights, and Samurai. Honor, steel, and epic duels.",
+    color: "linear-gradient(135deg, #636e72 0%, #2d3436 100%)",
   },
   {
-    title: "Rainbow 6 Siege X",
+    title: "Rainbow 6 Siege",
     image: "/games/r6.png",
     description:
-      "Survival at its finest. Trust no one, build everything, lose it all.",
-    color: "linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)",
+      "Tactical team shooter where every wall is destructible and strategy is everything.",
+    color: "linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)",
   },
   {
     title: "PUBG: Battlegrounds",
     image: "/games/pubg.png",
     description:
-      "Survival at its finest. Trust no one, build everything, lose it all.",
-    color: "linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)",
+      "The original battle royale. Drop in, loot up, and be the last one standing.",
+    color: "linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%)",
   },
   {
     title: "R.E.P.O.",
     image: "/games/repo.png",
     description:
-      "Survival at its finest. Trust no one, build everything, lose it all.",
-    color: "linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)",
+      "Intense extraction shooter. Get in, grab the loot, and make it out alive.",
+    color: "linear-gradient(135deg, #55efc4 0%, #00b894 100%)",
   },
 ];
 
@@ -253,14 +254,6 @@ const albums = [
     image: "/albums/nexttoyou.png",
     spotifyUrl: "https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe",
   },
-];
-
-// Stack card colors
-const stackColors = [
-  "linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)",
-  "linear-gradient(135deg, #f39c12 0%, #e67e22 100%)",
-  "linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)",
-  "linear-gradient(135deg, #3498db 0%, #2980b9 100%)",
 ];
 
 const hobbies = [
@@ -512,13 +505,13 @@ export const About = () => {
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{
-                      duration: 0.5,
+                      duration: 1,
                       repeat: Infinity,
                       ease: "linear",
                     }}
                     style={{ display: "flex", alignItems: "center" }}
                   >
-                    <Shuffle sx={{ fontSize: 18 }} />
+                    <Autorenew sx={{ fontSize: 18 }} />
                   </motion.div>
                 ) : (
                   <Shuffle sx={{ fontSize: 18 }} />
