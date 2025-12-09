@@ -1,18 +1,12 @@
-import { useState, createContext, useContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { Undo2, Redo2, RotateCcw, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-} from "@/components/ui/dropdown-menu";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useThemeCustomizer } from "./ThemeCustomizerProvider";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +20,8 @@ export const useThemeCustomizerUI = () => {
   }
   return context;
 };
+
+export const ThemeCustomizerTrigger = PopoverTrigger;
 
 const PRIMARY_COLORS = [
   // Row 1 - Warm colors
@@ -50,7 +46,6 @@ const PRIMARY_COLORS = [
   { name: "Rose", value: "oklch(64.5% .246 16.439)" },
 ];
 
-// Surface color palettes - neutral grays with varying hues in OKLCH
 const SURFACE_COLORS = [
   { name: "Slate", value: "oklch(54.61% 0.022 252.89)", preview: "#64748b" },
   { name: "Gray", value: "oklch(55.01% 0.011 258.34)", preview: "#6b7280" },
@@ -59,7 +54,6 @@ const SURFACE_COLORS = [
   { name: "Stone", value: "oklch(54.77% 0.012 56.35)", preview: "#78716c" },
 ];
 
-// Font options - Inter, Geist, JetBrains Mono only
 const FONT_OPTIONS = [
   { name: "Inter", value: '"Inter", system-ui, sans-serif' },
   { name: "Geist", value: '"Geist", system-ui, sans-serif' },
@@ -75,10 +69,14 @@ const TEXT_SIZES = [
 
 // Background options
 const BACKGROUND_OPTIONS = [
-  { name: "Dark Veil", value: "darkveil" },
-  { name: "Plasma", value: "plasma" },
-  { name: "Color Bends", value: "colorbends" },
-  { name: "None", value: "none" },
+  { name: "Dark Veil", value: "darkveil", preview: "/images/darkveil.png" },
+  { name: "Plasma", value: "plasma", preview: "/images/plasma.png" },
+  {
+    name: "Color Bends",
+    value: "colorbends",
+    preview: "/images/colorblend.png",
+  },
+  { name: "None", value: "none", preview: null },
 ];
 
 export function ThemeCustomizer({ children }) {
@@ -104,216 +102,241 @@ export function ThemeCustomizer({ children }) {
   const openCustomizer = () => setOpen(true);
   const closeCustomizer = () => setOpen(false);
 
+  useEffect(() => {
+    if (primaryColor) {
+      try {
+        document.documentElement.style.setProperty(
+          "--primary-color",
+          primaryColor
+        );
+      } catch (e) {
+        // ignore if invalid color value
+      }
+    }
+  }, [primaryColor]);
+
   return (
     <ThemeCustomizerUIContext.Provider
       value={{ openCustomizer, closeCustomizer, isOpen: open }}
     >
-      {children}
-      <DropdownMenu open={open} onOpenChange={setOpen}>
-        <DropdownMenuTrigger asChild>
-          <span className="hidden" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
+      <Popover open={open} onOpenChange={setOpen}>
+        {children}
+        <PopoverContent
           align="end"
-          className="w-72 bg-zinc-900 border-zinc-800 text-white"
-          sideOffset={5}
+          className="w-[320px] p-4! bg-[#2c3240] border border-[#3a404f] text-white rounded-lg"
+          sideOffset={8}
         >
-          {/* Primary Color */}
-          <DropdownMenuLabel className="text-xs text-zinc-500 uppercase tracking-wider">
-            Primary Color
-          </DropdownMenuLabel>
-          <div className="px-2 py-2 flex flex-wrap gap-1.5">
-            {PRIMARY_COLORS.map((color) => (
-              <button
-                key={color.value}
-                onClick={() => setPrimaryColor(color.value)}
-                className={cn(
-                  "w-6 h-6 rounded-full transition-all hover:scale-110 flex items-center justify-center",
-                  primaryColor === color.value &&
-                    "ring-2 ring-white ring-offset-2 ring-offset-zinc-900"
-                )}
-                style={{ backgroundColor: color.value }}
-                title={color.name}
+          <div className="space-y-5!">
+            <div>
+              <h2
+                className="text-sm font-semibold"
+                style={{
+                  color: "var(--text-color-light, rgba(255,255,255,0.9))",
+                }}
               >
-                {primaryColor === color.value && (
-                  <Check className="h-3 w-3 text-white" />
-                )}
-              </button>
-            ))}
-          </div>
-
-          <DropdownMenuSeparator className="bg-zinc-800" />
-
-          {/* Surface Color */}
-          <DropdownMenuLabel className="text-xs text-zinc-500 uppercase tracking-wider">
-            Surface Color
-          </DropdownMenuLabel>
-          <div className="px-2 py-2 flex flex-wrap gap-1.5">
-            {SURFACE_COLORS.map((surface) => (
-              <button
-                key={surface.value}
-                onClick={() => setSurfaceColor(surface.value)}
-                className={cn(
-                  "w-6 h-6 rounded-full transition-all hover:scale-110 flex items-center justify-center border border-zinc-700",
-                  surfaceColor === surface.value &&
-                    "ring-2 ring-white ring-offset-2 ring-offset-zinc-900"
-                )}
-                style={{ backgroundColor: surface.preview }}
-                title={surface.name}
-              >
-                {surfaceColor === surface.value && (
-                  <Check className="h-3 w-3 text-white" />
-                )}
-              </button>
-            ))}
-          </div>
-
-          <DropdownMenuSeparator className="bg-zinc-800" />
-
-          {/* Typography */}
-          <DropdownMenuLabel className="text-xs text-zinc-500 uppercase tracking-wider">
-            Typography
-          </DropdownMenuLabel>
-
-          {/* Font Family - Inline buttons */}
-          <div className="px-2 py-2">
-            <div className="text-xs text-zinc-400 mb-2">Font family</div>
-            <div className="flex gap-2">
-              {FONT_OPTIONS.map((font) => (
-                <button
-                  key={font.value}
-                  onClick={() => setFontFamily(font.value)}
-                  className={cn(
-                    "flex-1 px-3 py-2 rounded-md text-sm font-medium transition-all",
-                    "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white",
-                    fontFamily === font.value &&
-                      "bg-white text-zinc-900 hover:bg-white hover:text-zinc-900"
-                  )}
-                  style={{ fontFamily: font.value }}
-                >
-                  Aa
-                </button>
-              ))}
+                Colors
+              </h2>
             </div>
-          </div>
 
-          {/* Text Size */}
-          <div className="px-2 py-2">
-            <div className="flex items-center justify-between text-xs mb-2">
-              <span className="text-zinc-400">Text size</span>
-              <span className="text-zinc-500">
-                {TEXT_SIZES.find((s) => s.value === String(textSize))?.name ||
-                  "Normal"}{" "}
-                (1x)
-              </span>
+            {/* Primary Color */}
+            <div>
+              <h3 className="text-[11px] font-normal text-white/50 mb-2">
+                Primary color
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {PRIMARY_COLORS.map((color) => (
+                  <button
+                    key={color.value}
+                    onClick={() => setPrimaryColor(color.value)}
+                    className={cn(
+                      "w-8 h-8 rounded-full transition-all hover:scale-105 flex items-center justify-center",
+                      primaryColor === color.value &&
+                        "ring-2 ring-white/80 ring-offset-2 ring-offset-[#2c3240]"
+                    )}
+                    style={{ backgroundColor: color.value }}
+                    title={color.name}
+                  >
+                    {primaryColor === color.value && (
+                      <Check
+                        className="h-4 w-4 text-white drop-shadow-lg"
+                        strokeWidth={3}
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="flex gap-1">
-              {TEXT_SIZES.map((size) => (
-                <button
-                  key={size.value}
-                  onClick={() => setTextSize(parseFloat(size.value))}
-                  className={cn(
-                    "flex-1 px-2 py-1 text-xs rounded transition-all",
-                    "bg-zinc-800 text-zinc-400 hover:bg-zinc-700",
-                    String(textSize) === size.value && "bg-zinc-700 text-white"
-                  )}
-                >
-                  {size.name}
-                </button>
-              ))}
+
+            {/* Surface Color */}
+            <div>
+              <h3 className="text-[11px] font-normal text-white/50 mb-2">
+                Surface color
+              </h3>
+              <div className="flex gap-2">
+                {SURFACE_COLORS.map((surface) => (
+                  <button
+                    key={surface.value}
+                    onClick={() => setSurfaceColor(surface.value)}
+                    className={cn(
+                      "w-8 h-8 rounded-full transition-all hover:scale-105 flex items-center justify-center border border-white/10",
+                      surfaceColor === surface.value &&
+                        "ring-2 ring-white/80 ring-offset-2 ring-offset-[#2c3240]"
+                    )}
+                    style={{ backgroundColor: surface.preview }}
+                    title={surface.name}
+                  >
+                    {surfaceColor === surface.value && (
+                      <Check
+                        className="h-4 w-4 text-white drop-shadow-lg"
+                        strokeWidth={3}
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <DropdownMenuSeparator className="bg-zinc-800" />
+            {/* Typography */}
+            <div>
+              <h2 className="text-sm font-medium text-white/90 mb-3">
+                Typography
+              </h2>
 
-          {/* Background/Wallpaper */}
-          <DropdownMenuLabel className="text-xs text-zinc-500 uppercase tracking-wider flex items-center justify-between">
-            <span>Wallpaper</span>
-            <span className="text-zinc-600 normal-case">Work in Progress</span>
-          </DropdownMenuLabel>
-          <div className="px-2 py-2">
-            <div className="grid grid-cols-3 gap-2">
-              {BACKGROUND_OPTIONS.map((bg) => (
-                <button
-                  key={bg.value}
-                  onClick={() => setBackgroundType(bg.value)}
-                  className={cn(
-                    "relative aspect-video rounded-md overflow-hidden transition-all",
-                    "bg-gradient-to-br from-zinc-700 to-zinc-800",
-                    "hover:ring-2 hover:ring-zinc-600",
-                    backgroundType === bg.value && "ring-2 ring-white"
-                  )}
-                  title={bg.name}
-                >
-                  {/* Placeholder background preview */}
-                  <div className="absolute inset-0 flex items-center justify-center">
+              {/* Font Family */}
+              <div className="mb-3">
+                <h3 className="text-[11px] font-normal text-white/50 mb-2">
+                  Font family
+                </h3>
+                <div className="inline-flex rounded-lg bg-[#1f2430] p-1 w-full">
+                  {FONT_OPTIONS.map((font) => (
+                    <button
+                      key={font.value}
+                      onClick={() => setFontFamily(font.value)}
+                      className={cn(
+                        "flex-1 px-4 py-1.5 text-sm font-medium transition-all rounded-md",
+                        fontFamily === font.value
+                          ? "bg-[#3a404f] text-white shadow-sm"
+                          : "text-white/50 hover:text-white/70"
+                      )}
+                      style={
+                        fontFamily === font.value
+                          ? { fontFamily: font.value }
+                          : {}
+                      }
+                    >
+                      Aa
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Text Size */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-[11px] font-normal text-white/50">
+                    Text size
+                  </h3>
+                  <span className="text-[11px] text-white/40">
+                    {TEXT_SIZES.find((s) => s.value === String(textSize))
+                      ?.name || "Normal"}
+                  </span>
+                </div>
+                <Slider
+                  value={[
+                    TEXT_SIZES.findIndex((s) => s.value === String(textSize)),
+                  ]}
+                  onValueChange={(value) =>
+                    setTextSize(parseFloat(TEXT_SIZES[value[0]].value))
+                  }
+                  max={TEXT_SIZES.length - 1}
+                  step={1}
+                  className="w-full [&_[role=slider]]:bg-white [&_[role=slider]]:border-white/20 [&_.bg-primary]:bg-white/30"
+                />
+              </div>
+            </div>
+
+            {/* Wallpaper */}
+            <div>
+              <h3 className="text-[11px] font-normal text-white/50 mb-2">
+                Wallpaper
+              </h3>
+              <div className="grid grid-cols-4 gap-2">
+                {BACKGROUND_OPTIONS.map((bg) => (
+                  <button
+                    key={bg.value}
+                    onClick={() => setBackgroundType(bg.value)}
+                    className={cn(
+                      "relative h-16 rounded-lg overflow-hidden transition-all hover:scale-105",
+                      bg.preview
+                        ? "bg-cover bg-center"
+                        : "bg-[#1f2430] border border-white/10",
+                      backgroundType === bg.value && "ring-2 ring-white/80"
+                    )}
+                    style={
+                      bg.preview
+                        ? { backgroundImage: `url(${bg.preview})` }
+                        : {}
+                    }
+                    title={bg.name}
+                  >
                     {backgroundType === bg.value && (
-                      <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-                        <Check className="h-4 w-4 text-white" />
+                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                        <Check
+                          className="h-5 w-5 text-white drop-shadow-lg"
+                          strokeWidth={3}
+                        />
                       </div>
                     )}
-                    <span className="text-xs text-zinc-400 px-1 text-center">
-                      {bg.name}
-                    </span>
-                  </div>
-                </button>
-              ))}
-              <button
-                onClick={() => setBackgroundType("none")}
-                className={cn(
-                  "relative aspect-video rounded-md overflow-hidden transition-all",
-                  "bg-zinc-900 border border-zinc-700",
-                  "hover:ring-2 hover:ring-zinc-600",
-                  backgroundType === "none" && "ring-2 ring-white"
-                )}
-                title="None"
-              >
-                {backgroundType === "none" && (
-                  <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-                    <Check className="h-4 w-4 text-white" />
-                  </div>
-                )}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xs text-zinc-500">None</span>
-                </div>
-              </button>
+                    {bg.value === "none" && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-[11px] text-white/50">None</span>
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div>
+              <h3 className="text-[11px] font-normal text-white/50 mb-2">
+                Actions
+              </h3>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 h-9 bg-transparent border-white/10 text-white/60 hover:bg-white/5 hover:text-white hover:border-white/20 disabled:opacity-30"
+                  onClick={undo}
+                  disabled={!canUndo}
+                >
+                  <Undo2 className="h-3.5 w-3.5 mr-1.5" />
+                  Undo
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 h-9 bg-transparent border-white/10 text-white/60 hover:bg-white/5 hover:text-white hover:border-white/20 disabled:opacity-30"
+                  onClick={redo}
+                  disabled={!canRedo}
+                >
+                  <Redo2 className="h-3.5 w-3.5 mr-1.5" />
+                  Redo
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 h-9 bg-transparent border-white/10 text-white/60 hover:bg-white/5 hover:text-white hover:border-white/20"
+                  onClick={resetTheme}
+                >
+                  <RotateCcw className="h-3.5 w-3.5 mr-1.5" />
+                  Reset
+                </Button>
+              </div>
             </div>
           </div>
-
-          <DropdownMenuSeparator className="bg-zinc-800" />
-
-          {/* Actions */}
-          <div className="px-2 py-2 flex gap-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-zinc-400 hover:text-white hover:bg-zinc-800"
-              onClick={undo}
-              disabled={!canUndo}
-            >
-              <Undo2 className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-zinc-400 hover:text-white hover:bg-zinc-800"
-              onClick={redo}
-              disabled={!canRedo}
-            >
-              <Redo2 className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="ml-auto text-zinc-400 hover:text-white hover:bg-zinc-800"
-              onClick={resetTheme}
-            >
-              <RotateCcw className="h-4 w-4 mr-1" />
-              Reset
-            </Button>
-          </div>
-        </DropdownMenuContent>
-      </DropdownMenu>
+        </PopoverContent>
+      </Popover>
     </ThemeCustomizerUIContext.Provider>
   );
 }

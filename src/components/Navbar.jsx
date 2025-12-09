@@ -2,7 +2,11 @@ import { motion } from "framer-motion";
 import { useTheme } from "@/components/ui/theme-provider";
 import { Settings2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useThemeCustomizerUI } from "./ThemeCustomizerShadcn";
+import { Button } from "@/components/ui/button";
+import {
+  useThemeCustomizerUI,
+  ThemeCustomizerTrigger,
+} from "./ThemeCustomizerShadcn";
 import {
   ThemeToggleButton,
   useThemeTransition,
@@ -24,7 +28,6 @@ const staggerContainer = {
 
 export const Navbar = () => {
   const { theme, setTheme } = useTheme();
-  const { openCustomizer } = useThemeCustomizerUI();
   const { startTransition } = useThemeTransition();
 
   const handleThemeToggle = () => {
@@ -61,9 +64,11 @@ export const Navbar = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <button className="nav-theme-button" onClick={openCustomizer}>
-            <Settings2 size={16} />
-          </button>
+          <ThemeCustomizerTrigger asChild>
+            <Button variant="ghost" size="icon" className="nav-theme-button">
+              <Settings2 size={16} />
+            </Button>
+          </ThemeCustomizerTrigger>
         </motion.li>
         <motion.li
           variants={fadeInUp}

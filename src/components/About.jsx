@@ -192,67 +192,78 @@ const albums = [
     title: "Yvette",
     artist: "Vedo",
     image: "/albums/yvette.png",
-    spotifyUrl: "https://open.spotify.com/album/5Pj5xT0hGsXwM0X6cGxWLl",
+    spotifyUrl:
+      "https://open.spotify.com/track/2dPERaR67UjUmksgkPGXD3?si=17347e03a0a6485c",
   },
   {
     title: "Love to Dream",
     artist: "Doja Cat",
     image: "/albums/lovetodream.png",
-    spotifyUrl: "https://open.spotify.com/album/4yP0hdKOZPNshxUOjY0cZj",
+    spotifyUrl:
+      "https://open.spotify.com/track/6Q9IUoBTNLHgBib1FSFGbj?si=0549cc2cf1ba4ea7",
   },
   {
     title: "Coming Back",
     artist: "J.Tajor",
     image: "/albums/comingback.png",
-    spotifyUrl: "https://open.spotify.com/album/3T4tUhGYeRNVUGevb0wThu",
+    spotifyUrl:
+      "https://open.spotify.com/track/2EvkvOTeQfPAVIXDO98qV1?si=73fc0db7f98b4291",
   },
   {
     title: "Folded",
     artist: "Kehlani",
     image: "/albums/folded.png",
-    spotifyUrl: "https://open.spotify.com/album/3mH6qwIy9crq0I9YQbOuDf",
+    spotifyUrl:
+      "https://open.spotify.com/track/0bxPRWprUVpQK0UFcddkrA?si=ea35038ae4f54836",
   },
   {
     title: "BLEACH",
     artist: "BROCKHAMPTON",
     image: "/albums/bleach.png",
-    spotifyUrl: "https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe",
+    spotifyUrl:
+      "https://open.spotify.com/track/0dWOFwdXrbBUYqD9DLsoyK?si=43dd68fa0f5d4679",
   },
   {
     title: "Ride",
     artist: "Aaron May",
     image: "/albums/ride.png",
-    spotifyUrl: "https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe",
+    spotifyUrl:
+      "https://open.spotify.com/track/2Mm9FCqnjH9k6JfOvr3Hg7?si=3fba7ea16a744e64",
   },
   {
     title: "The Fight is Over",
     artist: "Urbandub",
     image: "/albums/fightisover.png",
-    spotifyUrl: "https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe",
+    spotifyUrl:
+      "https://open.spotify.com/track/5ettB3H684D7vmYtxB4nJS?si=d65f8188775042d1",
   },
   {
     title: "I wanted you",
     artist: "INA",
     image: "/albums/iwantedyou.png",
-    spotifyUrl: "https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe",
+    spotifyUrl:
+      "https://open.spotify.com/track/0Z8zCIj5S8XOTl7eMQH2VK?si=64022add7dd64206",
   },
   {
     title: "No Scrubs",
     artist: "TLC",
     image: "/albums/noscrubs.png",
-    spotifyUrl: "https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe",
+    spotifyUrl:
+      "https://open.spotify.com/track/1KGi9sZVMeszgZOWivFpxs?si=ff0e43b86b794faf",
   },
   {
     title: "Overboard",
     artist: "Justin Bieber ft Jessica Jarrell",
     image: "/albums/overboard.png",
-    spotifyUrl: "https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe",
+    spotifyUrl:
+      "https://open.spotify.com/track/1tzkJMX3gNjnpcHdLD0pM3?si=dad6279160754e2e",
   },
   {
     title: "Next to you",
     artist: "Chris Brown ft Justin Bieber",
     image: "/albums/nexttoyou.png",
-    spotifyUrl: "https://open.spotify.com/album/2ODvWsOgouMbaA5xf0RkJe",
+    spotifyUrl:
+      "https://open.spotify.com/track/7gd01LMH2gBcoDngSt8sq9?si=495f70c297354cb6",
   },
 ];
 
