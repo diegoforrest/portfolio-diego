@@ -151,18 +151,20 @@ export function ThemeCustomizerProvider({ children }) {
   }, [theme]);
 
   // Update theme with history tracking
-  const updateTheme = useCallback(
-    (updates) => {
-      setTheme((prev) => {
-        const newTheme = { ...prev, ...updates };
-        // Add to history
-        setHistory((h) => [...h.slice(0, historyIndex + 1), newTheme]);
-        setHistoryIndex((i) => i + 1);
-        return newTheme;
-      });
-    },
-    [historyIndex]
-  );
+  const updateTheme = useCallback((updates) => {
+    let newThemeSnapshot;
+
+    setTheme((prev) => {
+      newThemeSnapshot = { ...prev, ...updates };
+      return newThemeSnapshot;
+    });
+
+    // Update history using the snapshot to avoid stale closures
+    setHistoryIndex((currentIndex) => {
+      setHistory((h) => [...h.slice(0, currentIndex + 1), newThemeSnapshot]);
+      return currentIndex + 1;
+    });
+  }, []);
 
   const setPrimaryColor = (color) => updateTheme({ primaryColor: color });
   const setSurfaceColor = (surface) => updateTheme({ surfaceColor: surface });
@@ -211,19 +213,33 @@ export function ThemeCustomizerProvider({ children }) {
     }px`;
   };
 
-  const undo = () => {
-    if (historyIndex > 0) {
-      setHistoryIndex((i) => i - 1);
-      setTheme(history[historyIndex - 1]);
-    }
-  };
+  const undo = useCallback(() => {
+    setHistoryIndex((currentIndex) => {
+      if (currentIndex > 0) {
+        setHistory((h) => {
+          setTheme(h[currentIndex - 1]);
+          return h;
+        });
+        return currentIndex - 1;
+      }
+      return currentIndex;
+    });
+  }, []);
 
-  const redo = () => {
-    if (historyIndex < history.length - 1) {
-      setHistoryIndex((i) => i + 1);
-      setTheme(history[historyIndex + 1]);
-    }
-  };
+  const redo = useCallback(() => {
+    setHistoryIndex((currentIndex) => {
+      setHistory((h) => {
+        if (currentIndex < h.length - 1) {
+          setTheme(h[currentIndex + 1]);
+          return h;
+        }
+        return h;
+      });
+      return currentIndex < history.length - 1
+        ? currentIndex + 1
+        : currentIndex;
+    });
+  }, [history.length]);
 
   const value = {
     ...theme,

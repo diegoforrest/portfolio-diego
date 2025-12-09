@@ -1,18 +1,5 @@
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useTransform,
-} from "framer-motion";
-import {
-  GitHub,
-  LaunchOutlined,
-  ChevronRight,
-  ArrowRightAlt,
-  ArrowForward,
-  KeyboardArrowRight,
-} from "@mui/icons-material";
-import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { GitHub, LaunchOutlined } from "@mui/icons-material";
 import { Icon } from "./Icon";
 
 const projects = [
@@ -58,6 +45,7 @@ const projects = [
       { name: "JavaScript", icon: "javascript", color: "#F7DF1E" },
       { name: "CSS3", icon: "css3", color: "#1572B6" },
       { name: "Framer Motion", icon: "framer", color: "#0055FF" },
+      { name: "Tailwind CSS", icon: "tailwind", color: "#06B6D4" },
     ],
     github: "https://github.com/diegoforrest/portfolio-diego",
   },
@@ -68,11 +56,8 @@ const STACK_OFFSET = 50; // offset for each stacked card to show a bit of the pr
 const CARD_SPACING = 0;
 
 const ProjectCard = ({ project, index, total }) => {
-  const cardRef = useRef(null);
-
   return (
     <motion.div
-      ref={cardRef}
       style={{
         position: "sticky",
         top: `${STACK_TOP + index * STACK_OFFSET}px`,
@@ -90,18 +75,16 @@ const ProjectCard = ({ project, index, total }) => {
           <p className="project-description">{project.description}</p>
 
           <div className="project-tech-stack">
-            {project.tags.map((tag, i) => {
-              return (
-                <span key={i} className="tech-tag">
-                  <Icon
-                    name={tag.icon}
-                    className="tech-icon"
-                    style={{ color: tag.color }}
-                  />
-                  {tag.name}
-                </span>
-              );
-            })}
+            {project.tags.map((tag, i) => (
+              <span key={i} className="tech-tag">
+                <Icon
+                  name={tag.icon}
+                  className="tech-icon"
+                  style={{ color: tag.color }}
+                />
+                {tag.name}
+              </span>
+            ))}
           </div>
 
           <div className="project-actions">
@@ -145,7 +128,6 @@ const ProjectCard = ({ project, index, total }) => {
 };
 
 export const Projects = () => {
-  const [isHovering, setIsHovering] = useState(false);
   return (
     <section id="projects" className="projects-section">
       <div className="projects-container">

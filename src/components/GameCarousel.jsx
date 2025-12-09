@@ -42,7 +42,7 @@ export const GameCarousel = ({ games }) => {
       <div className="game-carousel-header">
         <h3 className="bento-title">
           <SportsEsportsOutlined sx={{ fontSize: 20 }} />
-          Games I Play
+          Games.txt
         </h3>
         <div className="game-nav-buttons">
           <motion.button

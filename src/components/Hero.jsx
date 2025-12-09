@@ -1,33 +1,16 @@
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowDownward,
-  ArrowOutward,
+  Description,
   GitHub,
-  Instagram,
   KeyboardArrowDown,
   KeyboardArrowRight,
   LinkedIn,
-  TextSnippetOutlined,
 } from "@mui/icons-material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { InteractiveGradient } from "./InteractiveGradient";
 import { ArrowRight } from "lucide-react";
 import { CodeBlock } from "./CodeBlock";
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 },
-};
-
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
 
 const iconTransformAnimation = {
   initial: { opacity: 0, rotateX: 90 },
@@ -48,34 +31,55 @@ export const Hero = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.2 }}
     >
-      <InteractiveGradient />
       <div className="hero-container">
         <motion.div
           className="hero-content"
-          variants={staggerContainer}
-          initial="initial"
-          animate="animate"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, staggerChildren: 0.1 }}
         >
-          <motion.h1 className="hero-name" variants={fadeInUp}>
+          <motion.h1
+            className="hero-name"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             Diego Forrest <br /> Cruz
           </motion.h1>
 
-          <motion.div className="hero-badge" variants={fadeInUp}>
+          <motion.div
+            className="hero-badge"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
             <span className="hero-badge-dot"></span>
             Software Engineer | Web Developer
           </motion.div>
 
-          <motion.p className="hero-desc" variants={fadeInUp}>
+          <motion.p
+            className="hero-desc"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             Passionate about building clean, modern, and responsive web
             experiences using React, JavaScript, and Tailwind. I love turning
             ideas into smooth, user-friendly interfaces while continuously
             improving my skills and creativity.
           </motion.p>
 
-          <motion.div className="hero-buttons" variants={staggerContainer}>
+          <motion.div
+            className="hero-buttons"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <motion.a
               href="#projects"
-              variants={fadeInUp}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
               className="btn btn-secondary"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -101,14 +105,16 @@ export const Hero = () => {
             </motion.a>
             <motion.a
               href="https://drive.google.com/file/d/1ZxbI0Jjl3APAb_R1RP5419B4b_bC0Wih/view?usp=drive_link"
-              variants={fadeInUp}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
               target="_blank"
               className="btn btn-primary"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               Resume
-              <TextSnippetOutlined size={18} />
+              <Description size={18} />
             </motion.a>
             <Link
               to="/contact"
@@ -126,10 +132,17 @@ export const Hero = () => {
             </Link>
           </motion.div>
 
-          <motion.div className="hero-socials" variants={staggerContainer}>
+          <motion.div
+            className="hero-socials"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
             <motion.a
               href="https://github.com/diegoforrest"
-              variants={fadeInUp}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
               target="_blank"
               rel="noopener noreferrer"
               className="social-icons"
@@ -140,7 +153,9 @@ export const Hero = () => {
             </motion.a>
             <motion.a
               href="https://www.linkedin.com/in/diego-forrest-cruz"
-              variants={fadeInUp}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
               target="_blank"
               rel="noopener noreferrer"
               className="social-icons"
@@ -148,17 +163,6 @@ export const Hero = () => {
               whileTap={{ scale: 0.95 }}
             >
               <LinkedIn sx={{ fontSize: 35 }} />
-            </motion.a>
-            <motion.a
-              href="https://www.instagram.com/diegod.666"
-              variants={fadeInUp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-icons"
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Instagram sx={{ fontSize: 35 }} />
             </motion.a>
           </motion.div>
         </motion.div>
@@ -173,25 +177,25 @@ export const Hero = () => {
         <div>
           <CodeBlock
             code={`const aboutMe: DeveloperProfile = {
-  codename: "Diego Forrest Cruz",
-  origin: "Bacoor, Philippines — somewhere between Dota2 and Vs Code",
-  role: "Software Engineer and Web Developer",
+  IGN: "Diego Forrest Cruz",
+  origin: "Bacoor, Philippines — powered by caffeine, Dota2, and VS Code",
+  role: "Software Engineer & Web Developer",
 
   stack: {
-    languages: ["JavaScript", "TypeScript", "HTML", "CSS" , "Python" , "PHP"],
-    frameworks: ["React", "Next.js", "TailwindCSS" , "Node.js" , "Nest.Js"],
+    languages: ["JavaScript", "TypeScript", "HTML", "CSS"],
+    frameworks: ["React", "Next.js", "TailwindCSS", "Node.js", "NestJS"],
   },
 
   traits: [
-    "UI/UX enthusiast",
-    "Passionate Coder",
-    "Gamer at heart",
-    "Continues Learning",
+    "Creative problem-solver",
+    "Team player with solo game skills",
+    "Relentless bug hunter",
+    "ADHD-powered focus mode",
   ],
 
   missionStatement:
-    "Building smooth, modern interfaces while leveling up every day.",
-  availability: "Open for work opportunities!",
+    "Crafting seamless, modern web magic and leveling up every single day.",
+  availability: "Ready to join epic quests & collaborate on awesome projects!",
 };`}
           />
         </div>

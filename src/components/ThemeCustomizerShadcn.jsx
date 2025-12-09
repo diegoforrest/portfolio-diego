@@ -67,7 +67,6 @@ const TEXT_SIZES = [
   { name: "Large", value: "1.25" },
 ];
 
-// Background options
 const BACKGROUND_OPTIONS = [
   { name: "Dark Veil", value: "darkveil", preview: "/images/darkveil.png" },
   { name: "Plasma", value: "plasma", preview: "/images/plasma.png" },
@@ -99,39 +98,47 @@ export function ThemeCustomizer({ children }) {
     canRedo,
   } = useThemeCustomizer();
 
-  const openCustomizer = () => setOpen(true);
-  const closeCustomizer = () => setOpen(false);
+  // Prevent body scroll when customizer is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [open]);
 
   useEffect(() => {
     if (primaryColor) {
-      try {
-        document.documentElement.style.setProperty(
-          "--primary-color",
-          primaryColor
-        );
-      } catch (e) {
-        // ignore if invalid color value
-      }
+      document.documentElement.style.setProperty(
+        "--primary-color",
+        primaryColor
+      );
     }
   }, [primaryColor]);
 
   return (
-    <ThemeCustomizerUIContext.Provider
-      value={{ openCustomizer, closeCustomizer, isOpen: open }}
-    >
-      <Popover open={open} onOpenChange={setOpen}>
+    <ThemeCustomizerUIContext.Provider value={{ isOpen: open }}>
+      <Popover open={open} onOpenChange={setOpen} modal={true}>
         {children}
         <PopoverContent
           align="end"
-          className="w-[320px] p-4! bg-[#2c3240] border border-[#3a404f] text-white rounded-lg"
+          className="w-[320px] p-0! border rounded-lg overflow-hidden flex flex-col max-h-[580px]"
+          style={{
+            backgroundColor: "var(--card-bg)",
+            borderColor: "var(--theme-card-bg)",
+          }}
           sideOffset={8}
+          onInteractOutside={() => setOpen(false)}
         >
-          <div className="space-y-5!">
+          <div
+            className="space-y-3! p-4! overflow-y-auto flex-1 scrollbar-hide"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
             <div>
               <h2
-                className="text-sm font-semibold"
+                className="text-s font-semibold"
                 style={{
-                  color: "var(--text-color-light, rgba(255,255,255,0.9))",
+                  color: "var(--text-color-light)",
                 }}
               >
                 Colors
@@ -140,8 +147,13 @@ export function ThemeCustomizer({ children }) {
 
             {/* Primary Color */}
             <div>
-              <h3 className="text-[11px] font-normal text-white/50 mb-2">
-                Primary color
+              <h3
+                className="text-l font-semibold mb-2!"
+                style={{
+                  color: "var(--text-color)",
+                }}
+              >
+                Primary Color
               </h3>
               <div className="flex flex-wrap gap-2">
                 {PRIMARY_COLORS.map((color) => (
@@ -169,8 +181,13 @@ export function ThemeCustomizer({ children }) {
 
             {/* Surface Color */}
             <div>
-              <h3 className="text-[11px] font-normal text-white/50 mb-2">
-                Surface color
+              <h3
+                className="text-l font-semibold mb-2!"
+                style={{
+                  color: "var(--text-color)",
+                }}
+              >
+                Surface Color
               </h3>
               <div className="flex gap-2">
                 {SURFACE_COLORS.map((surface) => (
@@ -196,33 +213,55 @@ export function ThemeCustomizer({ children }) {
               </div>
             </div>
 
+            {/* Divider */}
+            <div
+              className="h-px w-full mt-5!"
+              style={{ backgroundColor: "var(--text-color-light)" }}
+            />
+
             {/* Typography */}
             <div>
-              <h2 className="text-sm font-medium text-white/90 mb-3">
+              <h2
+                className="text-s font-semibold"
+                style={{
+                  color: "var(--text-color-light)",
+                }}
+              >
                 Typography
               </h2>
 
               {/* Font Family */}
-              <div className="mb-3">
-                <h3 className="text-[11px] font-normal text-white/50 mb-2">
+              <div className="mb-3! mt-3!">
+                <h3
+                  className="text-l font-semibold mb-2!"
+                  style={{
+                    color: "var(--text-color)",
+                  }}
+                >
                   Font family
                 </h3>
-                <div className="inline-flex rounded-lg bg-[#1f2430] p-1 w-full">
+                <div
+                  className="inline-flex rounded-lg p-1 w-auto"
+                  style={{ backgroundColor: "var(--theme-font-bg)" }}
+                >
                   {FONT_OPTIONS.map((font) => (
                     <button
                       key={font.value}
                       onClick={() => setFontFamily(font.value)}
+                      title={font.name}
                       className={cn(
-                        "flex-1 px-4 py-1.5 text-sm font-medium transition-all rounded-md",
-                        fontFamily === font.value
-                          ? "bg-[#3a404f] text-white shadow-sm"
-                          : "text-white/50 hover:text-white/70"
+                        "w-12 h-8 flex items-center justify-center px-2 py-1 text-xs font-bold transition-all rounded-sm",
+                        fontFamily === font.value ? "shadow-sm" : ""
                       )}
-                      style={
-                        fontFamily === font.value
-                          ? { fontFamily: font.value }
-                          : {}
-                      }
+                      style={{
+                        backgroundColor:
+                          fontFamily === font.value
+                            ? "var(--primary-color)"
+                            : "transparent",
+                        color: "var(--text-color)",
+                        fontFamily:
+                          fontFamily === font.value ? font.value : undefined,
+                      }}
                     >
                       Aa
                     </button>
@@ -231,15 +270,28 @@ export function ThemeCustomizer({ children }) {
               </div>
 
               {/* Text Size */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-[11px] font-normal text-white/50">
+              <div className="relative">
+                {/* Under Construction Overlay */}
+                <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/5 backdrop-blur-[2px] rounded-lg cursor-not-allowed">
+                  <span
+                    className="text-xs font-semibold px-3 py-1 rounded-full bg-black/20"
+                    style={{
+                      color: "var(--text-color-light)",
+                    }}
+                  >
+                    Work in Progress
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between mb-3! mt-3!">
+                  <h3
+                    className="text-l font-semibold"
+                    style={{
+                      color: "var(--text-color)",
+                    }}
+                  >
                     Text size
                   </h3>
-                  <span className="text-[11px] text-white/40">
-                    {TEXT_SIZES.find((s) => s.value === String(textSize))
-                      ?.name || "Normal"}
-                  </span>
                 </div>
                 <Slider
                   value={[
@@ -250,14 +302,64 @@ export function ThemeCustomizer({ children }) {
                   }
                   max={TEXT_SIZES.length - 1}
                   step={1}
-                  className="w-full [&_[role=slider]]:bg-white [&_[role=slider]]:border-white/20 [&_.bg-primary]:bg-white/30"
+                  className="w-auto pointer-events-none"
+                  style={{
+                    "--slider-track-bg": "var(--primary-color)",
+                    "--slider-thumb-ring": "var(--primary-color-light)",
+                    "--slider-thumb-inner": "var(--background",
+                  }}
                 />
+                {/* Preset labels under the slider */}
+                <div className="mt-2! relative">
+                  <div
+                    className="flex text-[11px]"
+                    style={{
+                      color: "var(--text-color-light)",
+                    }}
+                  >
+                    <span
+                      className="absolute left-0"
+                      style={{ transform: "translateX(0%)" }}
+                    >
+                      {TEXT_SIZES[0].name}
+                    </span>
+                    <span
+                      className="absolute"
+                      style={{ left: "33.33%", transform: "translateX(-50%)" }}
+                    >
+                      {TEXT_SIZES[1].name}
+                    </span>
+                    <span
+                      className="absolute"
+                      style={{ left: "66.66%", transform: "translateX(-50%)" }}
+                    >
+                      {TEXT_SIZES[2].name}
+                    </span>
+                    <span
+                      className="absolute right-0"
+                      style={{ transform: "translateX(0%)" }}
+                    >
+                      {TEXT_SIZES[3].name}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 
+            {/* Divider */}
+            <div
+              className="h-px w-full mt-8!"
+              style={{ backgroundColor: "var(--text-color-light)" }}
+            />
+
             {/* Wallpaper */}
             <div>
-              <h3 className="text-[11px] font-normal text-white/50 mb-2">
+              <h3
+                className="text-s font-semibold mb-3!"
+                style={{
+                  color: "var(--text-color-light)",
+                }}
+              >
                 Wallpaper
               </h3>
               <div className="grid grid-cols-4 gap-2">
@@ -266,16 +368,14 @@ export function ThemeCustomizer({ children }) {
                     key={bg.value}
                     onClick={() => setBackgroundType(bg.value)}
                     className={cn(
-                      "relative h-16 rounded-lg overflow-hidden transition-all hover:scale-105",
-                      bg.preview
-                        ? "bg-cover bg-center"
-                        : "bg-[#1f2430] border border-white/10",
+                      "relative h-12 rounded-lg overflow-hidden transition-all hover:scale-105 mb-1!",
+                      bg.preview ? "bg-cover bg-center" : "",
                       backgroundType === bg.value && "ring-2 ring-white/80"
                     )}
                     style={
                       bg.preview
                         ? { backgroundImage: `url(${bg.preview})` }
-                        : {}
+                        : { backgroundColor: "var(--theme-font-bg)" }
                     }
                     title={bg.name}
                   >
@@ -289,50 +389,78 @@ export function ThemeCustomizer({ children }) {
                     )}
                     {bg.value === "none" && (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-[11px] text-white/50">None</span>
+                        <span
+                          className="text-[11px]"
+                          style={{ color: "var(--text-color)" }}
+                        >
+                          None
+                        </span>
                       </div>
                     )}
                   </button>
                 ))}
               </div>
             </div>
+          </div>
 
-            {/* Actions */}
-            <div>
-              <h3 className="text-[11px] font-normal text-white/50 mb-2">
-                Actions
-              </h3>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex-1 h-9 bg-transparent border-white/10 text-white/60 hover:bg-white/5 hover:text-white hover:border-white/20 disabled:opacity-30"
-                  onClick={undo}
-                  disabled={!canUndo}
-                >
-                  <Undo2 className="h-3.5 w-3.5 mr-1.5" />
-                  Undo
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex-1 h-9 bg-transparent border-white/10 text-white/60 hover:bg-white/5 hover:text-white hover:border-white/20 disabled:opacity-30"
-                  onClick={redo}
-                  disabled={!canRedo}
-                >
-                  <Redo2 className="h-3.5 w-3.5 mr-1.5" />
-                  Redo
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex-1 h-9 bg-transparent border-white/10 text-white/60 hover:bg-white/5 hover:text-white hover:border-white/20"
-                  onClick={resetTheme}
-                >
-                  <RotateCcw className="h-3.5 w-3.5 mr-1.5" />
-                  Reset
-                </Button>
-              </div>
+          {/* Actions - Sticky Bottom */}
+          <div
+            className="sticky bottom-0 pt-3! px-4! pb-4! rounded-b-lg"
+            style={{
+              borderTop: "1px solid var(--text-color-light)",
+              backgroundColor: "var(--theme-card-nav-bg)",
+            }}
+          >
+            <h3
+              className="text-s font-semibold mb-2!"
+              style={{
+                color: "var(--text-color-light)",
+              }}
+            >
+              Actions
+            </h3>
+            <div className="flex gap-2 justify-start">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-10 h-8 disabled:opacity-30 transition-all active:scale-[0.8]"
+                style={{
+                  backgroundColor: "var(--card-bg)",
+                  borderColor: "var(--card-border-alt)",
+                  color: "var(--text-color)",
+                }}
+                onClick={undo}
+                disabled={!canUndo}
+              >
+                <Undo2 className="h-4 w-4 mr-1.5" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-10 h-8 disabled:opacity-30 transition-all active:scale-[0.9]"
+                style={{
+                  backgroundColor: "var(--card-bg)",
+                  borderColor: "var(--card-border-alt)",
+                  color: "var(--text-color)",
+                }}
+                onClick={redo}
+                disabled={!canRedo}
+              >
+                <Redo2 className="h-4 w-4 mr-1.5" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-10 h-8 transition-all active:scale-[0.9]"
+                style={{
+                  backgroundColor: "var(--card-bg)",
+                  borderColor: "var(--card-border-alt)",
+                  color: "var(--text-color)",
+                }}
+                onClick={resetTheme}
+              >
+                <RotateCcw className="h-4 w-4 mr-1.5" />
+              </Button>
             </div>
           </div>
         </PopoverContent>

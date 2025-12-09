@@ -12,20 +12,6 @@ import {
   useThemeTransition,
 } from "@/components/ui/theme-toggle-button";
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 },
-};
-
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
 export const Navbar = () => {
   const { theme, setTheme } = useTheme();
   const { startTransition } = useThemeTransition();
@@ -53,14 +39,11 @@ export const Navbar = () => {
         </motion.span>
       </Link>
 
-      <motion.ul
-        className="nav-theme"
-        variants={staggerContainer}
-        initial="initial"
-        animate="animate"
-      >
+      <motion.ul className="nav-theme">
         <motion.li
-          variants={fadeInUp}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -71,7 +54,9 @@ export const Navbar = () => {
           </ThemeCustomizerTrigger>
         </motion.li>
         <motion.li
-          variants={fadeInUp}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

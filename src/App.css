@@ -86,6 +86,10 @@
   --card-border-alt: var(--color-surface-700);
   --icon-color: oklch(100% 0 0);
 
+  --theme-card-bg: var(--color-surface-900);
+  --theme-card-nav-bg: var(--color-surface-950);
+  --theme-font-bg: var(--color-surface-700);
+
   /* GitHub Heatmap Contribution Levels */
   --heatmap-level-0: color-mix(
     in oklab,
@@ -126,6 +130,10 @@
   --card-border: var(--color-surface-300);
   --card-border-alt: var(--color-surface-300);
   --icon-color: oklch(0% 0 0);
+
+  --theme-card-bg: var(--color-surface-50);
+  --theme-card-nav-bg: var(--color-surface-50);
+  --theme-font-bg: var(--color-surface-300);
 
   /* GitHub Heatmap Contribution Levels */
   --heatmap-level-0: color-mix(
@@ -1610,7 +1618,7 @@ body {
   width: 28px;
   height: 28px;
   padding: 5px;
-  background: rgba(60, 60, 70, 0);
+  background: rgba(24, 24, 32, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 50%;
   color: rgba(255, 255, 255, 0.9);
@@ -1713,7 +1721,8 @@ body {
 
 /* Contact Section */
 .contact-section {
-  padding: 5rem 0 7.5rem;
+  margin: 0;
+  padding-bottom: 7.5rem;
   background: transparent;
 }
 
@@ -1849,51 +1858,12 @@ body {
   padding: 0;
 }
 
-.footer-link::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--text-color-reverse);
-  transition: width 0.3s ease;
-}
-
 .footer-link:hover {
   opacity: 0.7;
 }
 
-.footer-link:hover::after {
-  width: 100%;
-}
-
 .footer-link-arrow {
   opacity: 1;
-}
-
-/* Floating Contact Button */
-.floating-contact-btn {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  transition: box-shadow 0.3s ease;
-}
-
-.floating-contact-btn:hover {
-  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
 }
 
 /* Contact Popover */
@@ -2423,17 +2393,6 @@ body {
 
   .footer-link {
     font-size: 0.9rem;
-  }
-
-  /* --- Floating Contact Button --- */
-  .floating-contact-btn {
-    position: static;
-    width: 100%;
-    height: auto;
-    padding: 1rem;
-    border-radius: 12px;
-    margin: 1rem 1rem 0 1rem;
-    max-width: calc(100% - 2rem);
   }
 
   .contact-popover {
