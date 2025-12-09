@@ -4,6 +4,7 @@ import { Hero } from "./components/Hero.jsx";
 import { Projects } from "./components/Projects.jsx";
 import { Contact } from "./components/Contact.jsx";
 import { Footer } from "./components/Footer.jsx";
+import { FloatingContactButton } from "./components/FloatingContactButton.jsx";
 import { ThemeProvider, useTheme } from "@/components/ui/theme-provider";
 import {
   ThemeCustomizerProvider,
@@ -61,6 +62,7 @@ function AppContent() {
                     <About />
                   </Suspense>
                   <Footer />
+                  <FloatingContactButton />
                 </>
               }
             />

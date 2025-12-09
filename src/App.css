@@ -1872,6 +1872,62 @@ body {
   opacity: 1;
 }
 
+/* Floating Contact Button */
+.floating-contact-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: box-shadow 0.3s ease;
+}
+
+.floating-contact-btn:hover {
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Contact Popover */
+.contact-popover {
+  width: 400px;
+  max-width: 90vw;
+  padding: 0;
+}
+
+.contact-popover-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--card-border-alt);
+}
+
+.contact-popover-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0 0 0.5rem 0;
+}
+
+.contact-popover-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-color-light);
+  margin: 0;
+}
+
+.contact-popover-form {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
 /* ============================================
    RESPONSIVE DESIGN
    ============================================
@@ -2367,6 +2423,33 @@ body {
 
   .footer-link {
     font-size: 0.9rem;
+  }
+
+  /* --- Floating Contact Button --- */
+  .floating-contact-btn {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 1rem 1rem 0 1rem;
+    max-width: calc(100% - 2rem);
+  }
+
+  .contact-popover {
+    width: 95vw;
+  }
+
+  .contact-popover-header {
+    padding: 1.25rem;
+  }
+
+  .contact-popover-title {
+    font-size: 1.125rem;
+  }
+
+  .contact-popover-form {
+    padding: 1.25rem;
   }
 }
 
