@@ -1,7 +1,7 @@
 import "./App.css";
 import { Navbar } from "./components/layout/Navbar.jsx";
 import { Hero } from "./components/layout/Hero.jsx";
-import { Projects } from "./components/layout/projects";
+import { Projects } from "./components/layout/Projects.jsx";
 import { Contact } from "./components/layout/Contact.jsx";
 import { Footer } from "./components/layout/Footer.jsx";
 import { ThemeProvider, useTheme } from "@/components/ui/theme-provider";
