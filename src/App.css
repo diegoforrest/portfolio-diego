@@ -1910,7 +1910,7 @@ body {
 
   .hero-section::before {
     height: 70%;
-    clip-path: polygon(0 70%, 100% 30%, 100% 100%, 0% 100%);
+    clip-path: polygon(0 55%, 100% 25%, 100% 100%, 0% 100%);
   }
 
   .hero-container {
@@ -1922,16 +1922,17 @@ body {
   }
 
   .hero-name {
+    margin-top: -5rem;
     font-size: 3rem;
     line-height: 1.2;
     text-shadow: 0 2px 8px rgba(255, 0, 110, 0.1);
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   .hero-badge {
     font-size: 0.6rem;
     padding: 0.375rem 0.75rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   .hero-badge-dot {
@@ -1940,9 +1941,9 @@ body {
   }
 
   .hero-desc {
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.6;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .hero-buttons {
@@ -1950,7 +1951,7 @@ body {
     gap: 0.5rem;
     justify-content: center;
     flex-wrap: wrap;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .hero-buttons .btn {
@@ -1975,24 +1976,23 @@ body {
   }
 
   .hero-socials {
-    justify-content: flex-start;
-    gap: 1rem;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .hero-socials svg {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .hero-display-code {
-    width: 100%;
-    max-width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
+    display: none;
   }
 
   /* --- Projects Section --- */
   .projects-section {
-    padding: 3rem 0;
+    padding: 0 0;
+    margin: 0;
   }
 
   .projects-container {
@@ -2000,6 +2000,7 @@ body {
   }
 
   .projects-title {
+    margin-top: 2rem;
     font-size: 1.75rem;
   }
 

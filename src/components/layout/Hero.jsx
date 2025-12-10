@@ -86,7 +86,7 @@ export const Hero = () => {
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
             >
-              View My Work
+              Explore
               <AnimatePresence mode="wait">
                 {isHovering ? (
                   <motion.div
