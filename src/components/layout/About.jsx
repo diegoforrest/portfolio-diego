@@ -20,15 +20,13 @@ import {
   SportsEsports,
   Autorenew,
 } from "@mui/icons-material";
-import { TechToolbox } from "./TechToolbox";
-import { AlbumCarousel } from "./AlbumCarousel";
-import { GameCarousel } from "./GameCarousel";
-import { GitHubSkeleton } from "./GitHubSkeleton";
-import { FilmSkeleton } from "./FilmSkeleton";
+import { TechToolbox } from "../features/about";
+import { AlbumCarousel, GameCarousel, FilmSkeleton } from "../features/media";
+import { GitHubSkeleton } from "../features/github";
 
 // Lazy load the heavy GitHub heatmap component
 const GitHubContributions = lazy(() =>
-  import("./GitHubContributions").then((module) => ({
+  import("../features/github").then((module) => ({
     default: module.GitHubContributions,
   }))
 );

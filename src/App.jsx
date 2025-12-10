@@ -1,24 +1,26 @@
 import "./App.css";
-import { Navbar } from "./components/Navbar.jsx";
-import { Hero } from "./components/Hero.jsx";
-import { Projects } from "./components/Projects.jsx";
-import { Contact } from "./components/Contact.jsx";
-import { Footer } from "./components/Footer.jsx";
+import { Navbar } from "./components/layout/Navbar.jsx";
+import { Hero } from "./components/layout/Hero.jsx";
+import { Projects } from "./components/layout/projects";
+import { Contact } from "./components/layout/Contact.jsx";
+import { Footer } from "./components/layout/Footer.jsx";
 import { ThemeProvider, useTheme } from "@/components/ui/theme-provider";
 import {
   ThemeCustomizerProvider,
   useThemeCustomizer,
-} from "./components/ThemeCustomizerProvider.jsx";
-import { ThemeCustomizer } from "./components/ThemeCustomizerShadcn.jsx";
+} from "./components/theming/ThemeCustomizerProvider.jsx";
+import { ThemeCustomizer } from "./components/theming/ThemeCustomizerShadcn.jsx";
 import { useState, useEffect, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import BackgroundRenderer from "./components/BackgroundRenderer.jsx";
-import { AboutSkeleton } from "./components/AboutSkeleton.jsx";
+import BackgroundRenderer from "./components/backgrounds/BackgroundRenderer.jsx";
+import { AboutSkeleton } from "./components/features/about";
 
 // Lazy load the heavy About section with bento grid
 const About = lazy(() =>
-  import("./components/About.jsx").then((module) => ({ default: module.About }))
+  import("./components/layout/About.jsx").then((module) => ({
+    default: module.About,
+  }))
 );
 
 function AppContent() {

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Renderer, Program, Mesh, Triangle } from "ogl";
-import { useThemeCustomizer } from "./ThemeCustomizerProvider";
+import { useThemeCustomizer } from "../theming/ThemeCustomizerProvider";
 import "./Plasma.css";
 
 const COLOR_TO_HUE_SHIFT = {

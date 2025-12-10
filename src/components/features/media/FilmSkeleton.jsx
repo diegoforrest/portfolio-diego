@@ -1,4 +1,4 @@
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "../../ui/skeleton";
 
 export const FilmSkeleton = ({ index }) => {
   const rotations = [-15, 0, 12];

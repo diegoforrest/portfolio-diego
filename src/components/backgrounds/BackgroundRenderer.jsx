@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import DarkVeil from "./DarkVeil";
+import DarkVeil from "./DarkVeil.jsx";
 
 // Lazy load the new backgrounds for code splitting
 const PlasmaBackground = lazy(() => import("./PlasmaBackground"));

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { GitHub, LaunchOutlined } from "@mui/icons-material";
-import { Icon } from "./Icon";
+import { Icon } from "../common";
 
 const projects = [
   {

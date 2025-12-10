@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { CodeBlock } from "./CodeBlock";
+import { CodeBlock } from "../common";
 
 const iconTransformAnimation = {
   initial: { opacity: 0, rotateX: 90 },

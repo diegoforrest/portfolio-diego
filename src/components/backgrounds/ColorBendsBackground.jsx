@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { useTheme } from "@/components/ui/theme-provider";
-import { useThemeCustomizer } from "./ThemeCustomizerProvider";
+import { useThemeCustomizer } from "../theming/ThemeCustomizerProvider";
 import "./ColorBends.css";
 
 const MAX_COLORS = 8;

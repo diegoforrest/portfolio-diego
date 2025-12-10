@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   useThemeCustomizerUI,
   ThemeCustomizerTrigger,
-} from "./ThemeCustomizerShadcn";
+} from "../theming/ThemeCustomizerShadcn";
 import {
   ThemeToggleButton,
   useThemeTransition,

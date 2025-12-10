@@ -156,6 +156,7 @@ body {
   line-height: 1.6;
   color: var(--text-color);
   background-color: var(--background);
+  max-width: 100vw;
 }
 
 .app {
@@ -1866,371 +1867,16 @@ body {
   opacity: 1;
 }
 
-/* Contact Popover */
-.contact-popover {
-  width: 400px;
-  max-width: 90vw;
-  padding: 0;
-}
-
-.contact-popover-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid var(--card-border-alt);
-}
-
-.contact-popover-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text-color);
-  margin: 0 0 0.5rem 0;
-}
-
-.contact-popover-subtitle {
-  font-size: 0.875rem;
-  color: var(--text-color-light);
-  margin: 0;
-}
-
-.contact-popover-form {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
 /* ============================================
-   RESPONSIVE DESIGN
-   ============================================
-   
-   Breakpoints:
-   - Laptop: ≤ 1440px
-   - Tablet Landscape: ≤ 1024px
-   - Tablet: ≤ 834px
-   - Mobile Landscape: ≤ 768px
-   - Mobile: ≤ 480px
-   
+   RESPONSIVE DESIGN - MOBILE FIRST
    ============================================ */
-
-/* -------------------- Laptop (max-width: 1440px) -------------------- */
-@media (max-width: 1440px) {
-  /* --- Layout Adjustments --- */
-  .about-container {
-    padding: 0 48px;
-  }
-
-  .bento-grid {
-    max-width: 100%;
-  }
-}
-
-/* -------------------- Tablet Landscape (max-width: 1024px) -------------------- */
-@media (max-width: 1024px) {
-  /* --- Bento Grid --- */
-  .bento-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .education-card {
-    grid-column: span 1;
-  }
-
-  .tech-stack-card {
-    grid-column: span 1;
-  }
-
-  .beyond-card,
-  .films-card {
-    grid-column: span 2;
-  }
-
-  .tech-grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-
-/* -------------------- Tablet (max-width: 834px) -------------------- */
-@media (max-width: 834px) {
-  /* --- About Section --- */
-  .about-container {
-    padding: 0 2rem;
-  }
-
-  .about-title {
-    font-size: 2.5rem;
-  }
-
-  /* --- Bento Grid --- */
-  .bento-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .education-card,
-  .tech-stack-card,
-  .github-card,
-  .beyond-card,
-  .films-card,
-  .games-card,
-  .music-card,
-  .profile-card,
-  .intro-card {
-    grid-column: span 1;
-  }
-
-  .bento-card {
-    padding: 1.5rem;
-  }
-
-  /* --- Contact Section --- */
-  .contact-form {
-    padding: 2rem;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-}
-
-/* -------------------- Mobile Landscape (max-width: 768px) -------------------- */
-@media (max-width: 768px) {
-  /* --- Navbar --- */
-  .navbar {
-    padding: 0 1.25rem;
-  }
-
-  .logo {
-    font-size: 1.25rem;
-  }
-
-  .nav-links {
-    gap: 1rem;
-  }
-
-  .nav-links a {
-    font-size: 0.875rem;
-    padding: 0.375rem 0.625rem;
-  }
-
-  /* --- Hero Section --- */
-  .hero,
-  .hero-section {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 6.25rem 1.25rem 3.75rem;
-    text-align: center;
-  }
-
-  .hero-content,
-  .hero-container {
-    text-align: center;
-  }
-
-  .hero-badge {
-    font-size: 0.75rem;
-    padding: 0.375rem 0.75rem;
-  }
-
-  .hero-title,
-  .hero-name {
-    font-size: 2.5rem;
-  }
-
-  .hero-description,
-  .hero-desc {
-    font-size: 1rem;
-  }
-
-  .hero-buttons {
-    justify-content: center;
-  }
-
-  .hero-image,
-  .hero-display-code {
-    order: 1;
-  }
-
-  .hero-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .hero-code,
-  .hero-display-code {
-    display: flex;
-    width: 100%;
-    max-width: 21.875rem;
-    justify-content: center;
-    order: 0;
-    margin-bottom: 1.5rem;
-    transform: scale(0.85);
-  }
-
-  .hero-description,
-  .hero-desc {
-    order: -1;
-  }
-
-  .hero-buttons {
-    order: 1;
-  }
-
-  .hero-socials {
-    order: 2;
-  }
-
-  .btn {
-    padding: 0.625rem 1.125rem;
-    font-size: 0.9rem;
-  }
-
-  /* --- Projects Section --- */
-  .projects-section {
-    padding: 3.75rem 0;
-  }
-
-  .projects-title {
-    font-size: 2rem;
-  }
-
-  .projects-subtitle {
-    font-size: 1rem;
-  }
-
-  .projects-stack-container {
-    padding-bottom: 12.5rem;
-  }
-
-  .project-card-stack {
-    position: relative !important;
-    top: 0 !important;
-  }
-
-  .project-card-inner {
-    grid-template-columns: 1fr;
-    min-height: auto;
-    height: auto;
-    max-height: none;
-    overflow: visible;
-  }
-
-  .project-content-section {
-    padding: 2rem;
-    order: 2;
-  }
-
-  .project-image-section {
-    height: 15.625rem;
-    order: 1;
-    padding: 0;
-  }
-
-  .project-title {
-    font-size: 2rem;
-  }
-
-  .project-description {
-    font-size: 1rem;
-  }
-
-  .project-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-    border-radius: 12px;
-    display: block;
-  }
-
-  /* project-image-section rules are defined earlier; no overrides needed here */
-
-  /* --- About Section --- */
-  .about-section {
-    padding: 3.75rem 0;
-  }
-
-  .about-subtitle {
-    font-size: 1rem;
-  }
-
-  /* --- Tech Grid --- */
-  .tech-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-
-  .tech-item {
-    padding: 12px;
-  }
-
-  .tech-icon-large {
-    font-size: 2rem;
-  }
-
-  .tech-name {
-    font-size: 0.75rem;
-  }
-
-  /* --- Films Card --- */
-  .film-stack {
-    width: 200px;
-    height: 300px;
-  }
-
-  .film-card {
-    width: 180px;
-    height: 260px;
-  }
-
-  .film-0 {
-    transform: translateX(-20px) rotate(-6deg) scale(0.9);
-  }
-
-  .film-2 {
-    transform: translateX(20px) rotate(6deg) scale(0.9);
-  }
-
-  /* --- Contact Section --- */
-  .contact-section {
-    padding: 3.75rem 0 5rem;
-  }
-
-  .contact-title {
-    font-size: 2rem;
-  }
-
-  .contact-subtitle {
-    font-size: 1.15rem;
-  }
-
-  .contact-form {
-    padding: 1.75rem;
-  }
-
-  .submit-btn {
-    width: 100%;
-  }
-
-  /* --- Footer --- */
-  .footer-content {
-    flex-direction: column;
-    gap: 1.5rem;
-    text-align: center;
-  }
-
-  .footer-links {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.875rem;
-  }
-}
 
 /* -------------------- Mobile (max-width: 480px) -------------------- */
 @media (max-width: 480px) {
   /* --- Navbar --- */
   .navbar {
     padding: 0 1rem;
+    height: 60px;
   }
 
   .logo {
@@ -2241,49 +1887,114 @@ body {
     gap: 0.5rem;
   }
 
+  .nav-links a {
+    font-size: 0.8rem;
+    padding: 0.375rem 0.5rem;
+  }
+
   /* --- Hero Section --- */
-  .hero,
   .hero-section {
+    min-height: 100vh;
+    grid-template-columns: 1fr;
     padding: 5rem 1rem 2.5rem;
+    gap: 1.5rem;
+    margin-top: -4rem;
+    padding-top: 5rem;
+    background-size: 150% 150%;
+    max-width: 100vw;
   }
 
-  .hero-title,
+  .hero-section::after {
+    display: none;
+  }
+
+  .hero-section::before {
+    height: 70%;
+    clip-path: polygon(0 70%, 100% 30%, 100% 100%, 0% 100%);
+  }
+
+  .hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 100%;
+  }
+
   .hero-name {
-    font-size: 2rem;
+    font-size: 3rem;
+    line-height: 1.2;
+    text-shadow: 0 2px 8px rgba(255, 0, 110, 0.1);
+    margin-bottom: 0.5rem;
   }
 
-  .hero-description,
+  .hero-badge {
+    font-size: 0.6rem;
+    padding: 0.375rem 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-badge-dot {
+    width: 5px;
+    height: 5px;
+  }
+
   .hero-desc {
     font-size: 0.9rem;
-  }
-
-  .hero-buttons {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .hero-buttons .btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .hero-socials {
-    justify-content: center;
-  }
-
-  .hero-code,
-  .hero-display-code {
-    max-width: 17.5rem;
-    transform: scale(0.75);
+    line-height: 1.6;
     margin-bottom: 1rem;
   }
 
-  .btn {
-    padding: 0.5rem 0.875rem;
-    font-size: 0.85rem;
+  .hero-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .hero-buttons .btn {
+    flex: 1;
+    justify-content: center;
+    padding: 0.5rem auto;
+    font-size: 0.75rem;
+  }
+
+  .btn-primary {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .btn-secondary {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .hero-buttons .btn svg {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  .hero-socials {
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  .hero-display-code {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
   }
 
   /* --- Projects Section --- */
+  .projects-section {
+    padding: 3rem 0;
+  }
+
   .projects-container {
     padding: 0 1rem;
   }
@@ -2292,8 +2003,23 @@ body {
     font-size: 1.75rem;
   }
 
+  .projects-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .project-card-inner {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
   .project-content-section {
     padding: 1.5rem;
+    order: 2;
+  }
+
+  .project-image-section {
+    height: 200px;
+    order: 1;
   }
 
   .project-title {
@@ -2306,10 +2032,24 @@ body {
 
   .tech-tag {
     padding: 0.5rem 0.75rem;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+  }
+
+  .project-links {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .project-link {
+    width: 100%;
+    justify-content: center;
   }
 
   /* --- About Section --- */
+  .about-section {
+    padding: 3rem 0;
+  }
+
   .about-container {
     padding: 0 1rem;
   }
@@ -2318,26 +2058,55 @@ body {
     font-size: 1.75rem;
   }
 
-  .about-header {
-    margin-bottom: 40px;
+  .about-subtitle {
+    font-size: 0.9rem;
   }
 
-  /* --- Bento Cards --- */
+  .about-header {
+    margin-bottom: 2rem;
+  }
+
+  /* --- Bento Grid --- */
+  .bento-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
   .bento-card {
-    padding: 16px;
+    padding: 1rem;
+    grid-column: span 1 !important;
   }
 
   .bento-title {
     font-size: 0.9rem;
   }
 
+  /* --- Intro Card --- */
   .intro-card h1 {
     font-size: 1.5rem;
-    margin-bottom: 24px;
+    margin-bottom: 1rem;
   }
 
   .intro-card p {
     font-size: 0.9rem;
+  }
+
+  /* --- Tech Grid --- */
+  .tech-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+
+  .tech-item {
+    padding: 0.75rem;
+  }
+
+  .tech-icon-large {
+    font-size: 1.75rem;
+  }
+
+  .tech-name {
+    font-size: 0.7rem;
   }
 
   /* --- Films Card --- */
@@ -2352,14 +2121,18 @@ body {
   }
 
   .film-0 {
-    left: -1.875rem;
+    transform: translateX(-30px) rotate(-8deg) scale(0.85);
   }
 
   .film-2 {
-    left: 8.75rem;
+    transform: translateX(30px) rotate(8deg) scale(0.85);
   }
 
   /* --- Contact Section --- */
+  .contact-section {
+    padding: 3rem 0 4rem;
+  }
+
   .contact-container {
     padding: 0 1rem;
   }
@@ -2376,9 +2149,20 @@ body {
     padding: 1.25rem;
   }
 
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
   .form-group input,
   .form-group textarea {
     padding: 0.75rem 0.875rem;
+    font-size: 0.9rem;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 0.875rem;
     font-size: 0.9rem;
   }
 
@@ -2387,28 +2171,23 @@ body {
     padding: 0 1rem;
   }
 
+  .footer-content {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
   .footer-copyright {
     font-size: 0.8rem;
   }
 
+  .footer-links {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
   .footer-link {
     font-size: 0.9rem;
-  }
-
-  .contact-popover {
-    width: 95vw;
-  }
-
-  .contact-popover-header {
-    padding: 1.25rem;
-  }
-
-  .contact-popover-title {
-    font-size: 1.125rem;
-  }
-
-  .contact-popover-form {
-    padding: 1.25rem;
   }
 }
 
