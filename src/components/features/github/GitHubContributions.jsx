@@ -32,8 +32,8 @@ const ContributionDay = ({ day, index }) => {
       <div
         key={index}
         style={{
-          width: "10px",
-          height: "10px",
+          width: "var(--heatmap-box-size)",
+          height: "var(--heatmap-box-size)",
           borderRadius: "3px",
           backgroundColor: "var(--heatmap-level-0)",
         }}
@@ -47,8 +47,8 @@ const ContributionDay = ({ day, index }) => {
         <Tooltip.Trigger asChild>
           <div
             style={{
-              width: "10px",
-              height: "10px",
+              width: "var(--heatmap-box-size)",
+              height: "var(--heatmap-box-size)",
               borderRadius: "3px",
               backgroundColor: `var(--heatmap-level-${heatmapLevel})`,
               cursor: "pointer",
@@ -199,15 +199,21 @@ export const GitHubContributions = () => {
   const renderGrid = useCallback(() => {
     if (isLoading) {
       return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "var(--heatmap-gap)",
+          }}
+        >
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} style={{ display: "flex", gap: "2px" }}>
+            <div key={i} style={{ display: "flex", gap: "var(--heatmap-gap)" }}>
               {Array.from({ length: 26 }).map((_, j) => (
                 <div
                   key={j}
                   style={{
-                    width: "10px",
-                    height: "10px",
+                    width: "var(--heatmap-box-size)",
+                    height: "var(--heatmap-box-size)",
                     borderRadius: "3px",
                     backgroundColor: "var(--heatmap-level-0)",
                   }}
@@ -240,12 +246,12 @@ export const GitHubContributions = () => {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "2px",
+            gap: "var(--heatmap-gap)",
             minWidth: "max-content",
           }}
         >
           {processedData.rows.map((row, i) => (
-            <div key={i} style={{ display: "flex", gap: "2px" }}>
+            <div key={i} style={{ display: "flex", gap: "var(--heatmap-gap)" }}>
               {row.map((day, j) => (
                 <ContributionDay
                   key={`${i}-${j}`}

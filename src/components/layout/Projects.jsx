@@ -9,6 +9,10 @@ const projects = [
     description:
       "A mobile application for offline image-based detection of rice disease detection",
     image: "./images/paddyscan.png",
+    imageMobile:
+      "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&h=800&fit=crop", // Mobile version (vertical)
+    imageTablet:
+      "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&h=600&fit=crop", // Tablet version
     tags: [
       { name: "Flutter", icon: "flutter", color: "#02569B" },
       { name: "Dart", icon: "dart", color: "#0175C2" },
@@ -23,6 +27,10 @@ const projects = [
     description:
       "A Lightweight task manager that helps users work from idea to done without unnecessary complexity. Focus on what matters priorities, progress, and quick reviews.",
     image: "./images/taskhive.png",
+    imageMobile:
+      "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&h=800&fit=crop", // Mobile version (vertical)
+    imageTablet:
+      "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&h=600&fit=crop", // Tablet version
     tags: [
       { name: "Next.js", icon: "nextjs", color: "#000000" },
       { name: "Nest.js", icon: "nestjs", color: "#E0234E" },
@@ -40,6 +48,10 @@ const projects = [
     description:
       "Personal portfolio website showcasing projects, skills, and experience with interactive UI and responsive design.",
     image: "./images/portfolio.png",
+    imageMobile:
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=800&fit=crop", // Mobile version (vertical)
+    imageTablet:
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop", // Tablet version
     tags: [
       { name: "React", icon: "react", color: "#61DAFB" },
       { name: "JavaScript", icon: "javascript", color: "#F7DF1E" },
@@ -116,11 +128,24 @@ const ProjectCard = ({ project, index, total }) => {
         </div>
 
         <div className="project-image-section">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="project-image"
-          />
+          <picture>
+            {/* Mobile: max-width 480px (vertical orientation) */}
+            <source
+              media="(max-width: 480px)"
+              srcSet={project.imageMobile || project.image}
+            />
+            {/* Tablet: 481px - 768px */}
+            <source
+              media="(min-width: 481px) and (max-width: 768px)"
+              srcSet={project.imageTablet || project.image}
+            />
+            {/* Desktop: default fallback */}
+            <img
+              src={project.image}
+              alt={project.title}
+              className="project-image"
+            />
+          </picture>
         </div>
       </div>
     </motion.div>

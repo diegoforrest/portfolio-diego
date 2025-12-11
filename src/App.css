@@ -90,6 +90,10 @@
   --theme-card-nav-bg: var(--color-surface-950);
   --theme-font-bg: var(--color-surface-700);
 
+  /* GitHub Heatmap */
+  --heatmap-box-size: 10px;
+  --heatmap-gap: 2px;
+
   /* GitHub Heatmap Contribution Levels */
   --heatmap-level-0: color-mix(
     in oklab,
@@ -603,6 +607,8 @@ body {
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
+  display: block;
+  border-radius: 12px;
 }
 
 .project-image-section {
@@ -612,13 +618,6 @@ body {
   order: 2;
   padding: 1.5rem;
   box-sizing: border-box;
-}
-
-.project-image {
-  border-radius: 12px;
-  height: 100%;
-  width: 100%;
-  display: block;
 }
 
 .project-card-inner:hover .project-image {
@@ -1841,6 +1840,13 @@ body {
   align-items: center;
 }
 
+.footer-links-main,
+.footer-links-contact {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
 .footer-link {
   display: inline-flex;
   align-items: center;
@@ -1872,7 +1878,473 @@ body {
    ============================================ */
 
 /* -------------------- Mobile (max-width: 480px) -------------------- */
+/* -------------------- Tablet / Mobile Landscape (max-width: 768px) -------------------- */
+@media (max-width: 768px) {
+  :root {
+    --heatmap-box-size: 12px;
+    --heatmap-gap: 2px;
+  }
+
+  /* --- Navbar --- */
+  .navbar {
+    padding: 0 1.5rem;
+    height: 60px;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+  }
+
+  /* --- Hero Section --- */
+  .hero-section {
+    min-height: 100vh;
+    grid-template-columns: 1fr;
+    padding: 5rem 2rem 3rem;
+    gap: 2rem;
+    margin-top: -4rem;
+    padding-top: 6rem;
+    background-size: 160% 160%;
+    max-width: 100vw;
+  }
+
+  .hero-section::after {
+    display: none;
+  }
+
+  .hero-section::before {
+    height: 75%;
+    clip-path: polygon(0 58%, 100% 25%, 100% 100%, 0% 100%);
+  }
+
+  .hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .hero-name {
+    margin-top: -4rem;
+    font-size: 3.75rem;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-badge {
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-badge-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .hero-desc {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-buttons {
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+    justify-content: center;
+  }
+
+  .hero-buttons .btn {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  .hero-socials {
+    gap: 1.25rem;
+    justify-content: center;
+  }
+
+  .hero-socials svg {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .hero-display-code {
+    display: none;
+  }
+
+  /* --- Projects Section --- */
+  .projects-section {
+    padding: 0;
+    margin: 0;
+  }
+
+  .projects-container {
+    padding: 0 2.5rem;
+  }
+
+  .projects-title {
+    margin-top: 3rem;
+    font-size: 2.25rem;
+  }
+
+  .projects-subtitle {
+    font-size: 1.1rem;
+    padding: 0 1rem;
+  }
+
+  .project-card-stack {
+    margin: -2rem 0 0 0;
+  }
+
+  .project-card-inner {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    overflow: hidden;
+  }
+
+  .project-content-section {
+    padding: 2rem;
+    order: 1;
+  }
+
+  .project-image-section {
+    position: static;
+    width: 100%;
+    height: 240px;
+    order: 2;
+    padding: 1.25rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .project-image {
+    border-radius: 12px;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .project-card-inner:hover .project-image {
+    transform: none;
+  }
+
+  .project-title {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-description {
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .tech-tag {
+    padding: 0.55rem 0.85rem;
+    font-size: 0.85rem;
+  }
+
+  .project-tech-stack {
+    margin-bottom: 1.75rem;
+  }
+
+  /* --- About Section --- */
+  .about-section {
+    padding: 4rem 0;
+  }
+
+  .about-container {
+    padding: 0 2rem;
+  }
+
+  .about-title {
+    font-size: 2rem;
+  }
+
+  .about-subtitle {
+    font-size: 1rem;
+  }
+
+  .about-header {
+    margin-bottom: 2.5rem;
+  }
+
+  /* --- Bento Grid --- */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto auto auto;
+    gap: 0.75rem;
+  }
+
+  .bento-card {
+    padding: 1rem;
+  }
+
+  .bento-title {
+    font-size: 0.9rem;
+  }
+
+  /* Card Positioning */
+  .profile-card {
+    grid-column: 1 / 4;
+    grid-row: 1 / 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    background: transparent;
+    border: none;
+  }
+
+  .profile-card img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--card-border-alt);
+  }
+
+  .intro-card {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+  }
+
+  .education-card {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+  }
+
+  .beyond-card {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+  }
+
+  .github-card {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+  }
+
+  .github-card .github-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .github-card-header {
+    margin-bottom: 1rem;
+  }
+
+  .github-card .github-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tech-stack-card {
+    grid-column: 3 / 4;
+    grid-row: 3 / 4;
+  }
+
+  .films-card {
+    grid-column: 1 / 2;
+    grid-row: 4 / 5;
+  }
+
+  .films-card .films-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .games-card {
+    grid-column: 2 / 3;
+    grid-row: 4 / 5;
+  }
+
+  .music-card {
+    grid-column: 3 / 4;
+    grid-row: 4 / 5;
+  }
+
+  /* --- Intro Card --- */
+  .intro-card h1 {
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .intro-card p {
+    font-size: 1rem;
+  }
+
+  /* --- Tech Grid --- */
+  .tech-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
+  }
+
+  .tech-item {
+    padding: 0.65rem;
+  }
+
+  .tech-icon-large {
+    font-size: 1.8rem;
+    width: 32px;
+    height: 32px;
+  }
+
+  .tech-name {
+    font-size: 0.8rem;
+  }
+
+  /* --- Films Card --- */
+  .film-stack {
+    width: 17rem;
+    height: 13.5rem;
+    position: relative;
+  }
+
+  .film-card {
+    width: 8.5rem;
+    height: 12rem;
+  }
+
+  .film-0 {
+    left: -2.5rem;
+    top: 2rem;
+    transform: rotate(-8deg) scale(0.88);
+  }
+
+  .film-1 {
+    left: 4.25rem;
+    top: 0;
+    transform: scale(1);
+  }
+
+  .film-2 {
+    left: 11rem;
+    top: 2rem;
+    transform: rotate(8deg) scale(0.88);
+  }
+
+  /* --- Music Box --- */
+  .music-card {
+    padding: 1.25rem 0 0 0;
+    overflow: hidden;
+  }
+
+  .music-header {
+    padding: 0 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .music-content {
+    padding: 0;
+    margin: 0;
+  }
+
+  .album-carousel-main {
+    padding: 0;
+  }
+
+  .album-swiper-slide {
+    width: 15.5rem !important;
+    height: 15rem !important;
+  }
+
+  .music-marquee {
+    border-radius: 0 0 1.25rem 1.25rem;
+    margin: 0;
+    margin-top: 1rem;
+  }
+
+  /* --- Contact Section --- */
+  .contact-section {
+    padding: 4rem 0 5rem;
+  }
+
+  .contact-container {
+    padding: 0 2rem;
+  }
+
+  .contact-title {
+    font-size: 2rem;
+  }
+
+  .contact-subtitle {
+    font-size: 1.15rem;
+  }
+
+  .contact-form {
+    padding: 1.75rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 0.85rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+
+  /* --- Footer --- */
+  .footer-container {
+    padding: 0 2rem;
+  }
+
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .footer-copyright {
+    font-size: 0.9rem;
+    order: 1;
+    width: 100%;
+    text-align: center;
+  }
+
+  .footer-links {
+    order: 2;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: center;
+    gap: 0.65rem 1.5rem;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+  }
+
+  .footer-link {
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 480px) {
+  :root {
+    --heatmap-box-size: 11px;
+    --heatmap-gap: 2px;
+  }
+
   /* --- Navbar --- */
   .navbar {
     padding: 0 1rem;
@@ -1977,7 +2449,7 @@ body {
 
   .hero-socials {
     justify-content: center;
-    gap: 0.75rem;
+    gap: 1rem;
   }
 
   .hero-socials svg {
@@ -1991,49 +2463,80 @@ body {
 
   /* --- Projects Section --- */
   .projects-section {
-    padding: 0 0;
+    padding: 0;
     margin: 0;
   }
 
   .projects-container {
-    padding: 0 1rem;
+    padding: 0 2rem;
   }
 
   .projects-title {
     margin-top: 2rem;
-    font-size: 1.75rem;
+    font-size: 2rem;
   }
 
   .projects-subtitle {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    padding: 0 0.75rem;
+  }
+
+  .project-card-stack {
+    margin: -2.5rem 0 0 0;
   }
 
   .project-card-inner {
     grid-template-columns: 1fr;
     min-height: auto;
+    overflow: hidden;
   }
 
   .project-content-section {
     padding: 1.5rem;
-    order: 2;
+    order: 1;
   }
 
   .project-image-section {
+    position: static;
+    width: 100%;
     height: 200px;
-    order: 1;
+    order: 2;
+    padding: 1rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .project-image {
+    border-radius: 12px;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .project-card-inner:hover .project-image {
+    transform: none;
   }
 
   .project-title {
     font-size: 1.5rem;
+    margin-bottom: 1rem;
   }
 
   .project-description {
     font-size: 0.9rem;
+    margin-bottom: 1rem;
   }
 
   .tech-tag {
     padding: 0.5rem 0.75rem;
     font-size: 0.8rem;
+  }
+
+  .project-tech-stack {
+    margin-bottom: 1.5rem;
   }
 
   .project-links {
@@ -2069,17 +2572,95 @@ body {
 
   /* --- Bento Grid --- */
   .bento-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
   }
 
   .bento-card {
     padding: 1rem;
-    grid-column: span 1 !important;
+    grid-column: unset;
+    grid-row: unset;
   }
 
   .bento-title {
     font-size: 0.9rem;
+  }
+
+  /* Card Order */
+  .profile-card {
+    order: 1;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: transparent;
+    border: none;
+  }
+
+  .profile-card img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--card-border-alt);
+  }
+
+  .intro-card {
+    order: 2;
+  }
+
+  .education-card {
+    order: 3;
+  }
+
+  .tech-stack-card {
+    order: 4;
+    height: 350px;
+    min-height: auto;
+  }
+
+  .beyond-card {
+    order: 5;
+  }
+
+  .github-card {
+    order: 6;
+  }
+
+  .github-card .github-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .github-card-header {
+    margin-bottom: 1rem;
+  }
+
+  .github-card .github-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .films-card {
+    order: 7;
+  }
+
+  .films-card .films-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .games-card {
+    order: 8;
+  }
+
+  .music-card {
+    order: 9;
   }
 
   /* --- Intro Card --- */
@@ -2094,12 +2675,12 @@ body {
 
   /* --- Tech Grid --- */
   .tech-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
   }
 
   .tech-item {
-    padding: 0.75rem;
+    padding: 0.5rem;
   }
 
   .tech-icon-large {
@@ -2112,21 +2693,63 @@ body {
 
   /* --- Films Card --- */
   .film-stack {
-    width: 11.25rem;
-    height: 15.625rem;
+    width: 15rem;
+    height: 13rem;
+    position: relative;
   }
 
   .film-card {
-    width: 8.75rem;
-    height: 12.5rem;
+    width: 8rem;
+    height: 11.5rem;
   }
 
   .film-0 {
-    transform: translateX(-30px) rotate(-8deg) scale(0.85);
+    left: -3rem;
+    top: 2rem;
+    transform: rotate(-9deg) scale(0.85);
+  }
+
+  .film-1 {
+    left: 3.75rem;
+    top: 0;
+    transform: scale(1);
   }
 
   .film-2 {
-    transform: translateX(30px) rotate(8deg) scale(0.85);
+    left: 10.5rem;
+    top: 2rem;
+    transform: rotate(9deg) scale(0.85);
+  }
+
+  /* --- Music Box --- */
+  .music-card {
+    padding: 1rem 0 0 0;
+    overflow: hidden;
+  }
+
+  .music-header {
+    padding: 0 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .music-content {
+    padding: 0;
+    margin: 0;
+  }
+
+  .album-carousel-main {
+    padding: 0;
+  }
+
+  .album-swiper-slide {
+    width: 14rem !important;
+    height: 14rem !important;
+  }
+
+  .music-marquee {
+    border-radius: 0 0 1.25rem 1.25rem;
+    margin: 0;
+    margin-top: 1rem;
   }
 
   /* --- Contact Section --- */
@@ -2173,22 +2796,40 @@ body {
   }
 
   .footer-content {
+    display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
     text-align: center;
   }
 
+  /* Put copyright on its own row, centered */
   .footer-copyright {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
+    order: 1;
+    width: 100%;
+    text-align: center;
   }
 
+  /* Links row centered underneath copyright */
   .footer-links {
-    flex-direction: column;
-    gap: 1rem;
+    order: 2;
+    /* place items in two centered columns so they form two centered rows */
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: center;
+    gap: 0.5rem 1.25rem;
+    align-items: center;
+    width: 100%;
+    padding: 0;
   }
 
   .footer-link {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
